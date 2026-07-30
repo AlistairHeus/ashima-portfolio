@@ -1,0 +1,114 @@
+---
+/**
+ * Secondary projects list with stacked photo visual.
+ */
+import Chip from '../ui/Chip.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { ASSETS } from '../../constants/assets';
+import { OTHER_PROJECTS } from '../../constants/other-projects';
+---
+
+<section
+  class="pb-20 pt-6 md:pb-28 md:pt-10"
+  aria-labelledby="other-projects-heading"
+>
+  <Container>
+    <SectionHeading id="other-projects-heading" title="Other projects" />
+
+    <div class="mt-12 grid items-start gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-16">
+      <ul class="divide-y divide-muted/30 border-y border-muted/30">
+        {
+          OTHER_PROJECTS.map((project, index) => {
+            const muted = index > 0;
+
+            return (
+              <li class="py-5 md:py-6">
+                {
+                  project.href ? (
+                    <a href={project.href} class="group block">
+                      <h3
+                        class:list={[
+                          'font-display text-xl font-bold text-heading transition-colors group-hover:text-ink md:text-[1.75rem] md:leading-[1.2]',
+                          muted && 'opacity-60',
+                        ]}
+                      >
+                        {project.title}
+                      </h3>
+                    </a>
+                  ) : (
+                    <h3
+                      class:list={[
+                        'font-display text-xl font-bold text-heading md:text-[1.75rem] md:leading-[1.2]',
+                        muted && 'opacity-50',
+                      ]}
+                    >
+                      {project.title}
+                    </h3>
+                  )
+                }
+                <ul class="mt-3 flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <li>
+                      <Chip label={tag} size="sm" tone={muted ? 'muted' : 'default'} />
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <div class="relative mx-auto hidden h-[28rem] w-full max-w-md sm:block lg:mx-0 lg:h-[34rem]">
+        <img
+          src={ASSETS.otherProjectsStack}
+          alt=""
+          aria-hidden="true"
+          class="absolute left-[8%] top-0 w-[78%] rotate-[4deg] opacity-70 shadow-[0_1px_5.5px_rgba(0,0,0,0.25)]"
+          loading="lazy"
+          decoding="async"
+        />
+        <img
+          src={ASSETS.otherProjectsStack}
+          alt=""
+          aria-hidden="true"
+          class="absolute left-[4%] top-[8%] w-[82%] rotate-[-3deg] opacity-85 shadow-[0_1px_5.5px_rgba(0,0,0,0.25)]"
+          loading="lazy"
+          decoding="async"
+        />
+        <img
+          src={ASSETS.otherProjectsStack}
+          alt="Stacked project photography"
+          class="photo-stack-top absolute left-[10%] top-[14%] w-[84%] rotate-[1deg] shadow-[0_1px_5.5px_rgba(0,0,0,0.25)]"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .photo-stack-top {
+    animation: stack-lift 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 120ms;
+  }
+
+  @keyframes stack-lift {
+    from {
+      opacity: 0;
+      transform: translateY(1rem) rotate(-4deg);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) rotate(1deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-stack-top {
+      animation: none;
+    }
+  }
+</style>

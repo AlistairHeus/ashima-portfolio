@@ -1,0 +1,84 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+/* Lato — labels, HELLO!, tracked UI */
+@import "@fontsource/lato/300.css";
+@import "@fontsource/lato/400.css";
+@import "@fontsource/lato/700.css";
+
+/* Mukta — body / bio copy */
+@import "@fontsource/mukta/400.css";
+@import "@fontsource/mukta/500.css";
+
+/* Amarna — brand, headlines, section titles (humanist sans) */
+@import "@fontsource/amarna/300.css";
+@import "@fontsource/amarna/400.css";
+@import "@fontsource/amarna/700.css";
+
+/* Betania Patmos — handwritten accent for experience + specialties */
+@import "@fontsource/betania-patmos/400.css";
+
+/**
+ * Design tokens mapped into Tailwind v4 utilities.
+ * Example: `bg-canvas`, `text-muted`, `font-display`, `max-w-content`.
+ */
+@theme {
+  --color-canvas: rgba(217, 217, 217, 0.8);
+  --color-ink: #2e2f38;
+  --color-muted: #60728c;
+  --color-dark: #181818;
+  --color-heading: #4c4c4c;
+  --color-on-surface-variant: #49454f;
+  --color-border-strong: #484848;
+  --color-border-soft: #9ba1a5;
+  --color-footer-wash: rgb(96 114 140 / 0.23);
+  --color-panel-wash: rgb(96 114 140 / 0.12);
+  --color-underline: #e6c35c;
+
+  --color-project-1-label: #3b576e;
+  --color-project-1-surface: #bed7ed;
+  --color-project-2-label: #7c340a;
+  --color-project-2-surface: #eaa57d;
+  --color-project-3-label: #4a3a06;
+  --color-project-3-surface: #dcc67d;
+  --color-project-4-label: #2e3716;
+  --color-project-4-surface: #a9b195;
+
+  --font-display: "Amarna", "Segoe UI", sans-serif;
+  --font-sans: "Lato", "Segoe UI", sans-serif;
+  --font-body: "Mukta", "Segoe UI", sans-serif;
+  --font-accent: "Betania Patmos", "Segoe Print", cursive;
+
+  --max-width-content: 75rem;
+  --max-width-wide: 90rem;
+  /* Mobile/tablet gutters only — large screens rely on max-width centering */
+  --spacing-page: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-canvas font-body text-ink antialiased;
+    margin: 0;
+    min-height: 100%;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-muted);
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

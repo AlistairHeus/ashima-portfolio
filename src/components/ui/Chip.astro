@@ -1,0 +1,31 @@
+---
+/**
+ * Outlined suggestion chip used for case-study and project tags.
+ */
+type Props = {
+  /** Chip label text. */
+  label: string;
+  /** Visual emphasis for active vs muted rows. */
+  tone?: 'default' | 'muted';
+  /** Optional smaller size for list rows. */
+  size?: 'md' | 'sm';
+};
+
+const { label, tone = 'default', size = 'md' } = Astro.props;
+
+const toneClass = tone === 'muted' ? 'opacity-50 border-border-soft' : 'border-border-strong';
+const sizeClass =
+  size === 'sm'
+    ? 'px-4 py-1.5 text-xs'
+    : 'px-4 py-1.5 text-sm';
+---
+
+<span
+  class:list={[
+    'inline-flex items-center justify-center rounded-lg border border-solid font-body font-medium text-on-surface-variant',
+    toneClass,
+    sizeClass,
+  ]}
+>
+  {label}
+</span>

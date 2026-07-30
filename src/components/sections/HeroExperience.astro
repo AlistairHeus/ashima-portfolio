@@ -1,0 +1,44 @@
+---
+/**
+ * Hero meta panel: experience years + specialties with Figma hairline rules.
+ * Top + bottom horizontals and a center vertical divider — no outer side borders.
+ */
+import { PERSON } from "../../constants/person";
+---
+
+<dl class="grid w-full grid-cols-1 sm:grid-cols-[1.15fr_1fr]">
+  <div class="pl-16 py-5 border-[2px] border-muted/50 border-l-0">
+    <dt
+      class="font-sans text-md font-bold uppercase tracking-[0.16em] text-muted"
+    >
+      Experience
+    </dt>
+    <dd
+      class="mt-2 font-accent text-lg leading-6 text-muted md:text-[1.125rem]"
+    >
+      {PERSON.experienceYears}
+    </dd>
+  </div>
+
+  <div class="pl-8 py-5 border-[2px] border-muted/50 border-l-0 border-r-0">
+    <dt
+      class="font-sans font-bold text-md uppercase tracking-[0.16em] text-muted"
+    >
+      Specialises in
+    </dt>
+    <dd class="mt-2">
+      <ul
+        class="space-y-0 font-accent text-lg leading-6 text-muted md:text-[1.125rem]"
+      >
+        {
+          PERSON.specialties.map((specialty) => (
+            <li>
+              <span aria-hidden="true">→ </span>
+              {specialty}
+            </li>
+          ))
+        }
+      </ul>
+    </dd>
+  </div>
+</dl>

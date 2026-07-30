@@ -1,0 +1,21 @@
+---
+/**
+ * Homepage composition — sections own their layout and behavior.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FeaturedCaseStudies from '../components/sections/FeaturedCaseStudies.astro';
+import HeroSection from '../components/sections/HeroSection.astro';
+import OtherProjects from '../components/sections/OtherProjects.astro';
+import SiteFooter from '../components/sections/SiteFooter.astro';
+import SiteHeader from '../components/sections/SiteHeader.astro';
+---
+
+<BaseLayout path="/">
+  <SiteHeader />
+  <main>
+    <HeroSection />
+    <FeaturedCaseStudies />
+    <OtherProjects />
+  </main>
+  <SiteFooter />
+</BaseLayout>
