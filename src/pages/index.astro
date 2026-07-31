@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
+import ProjectFolder from "../components/ProjectFolder.astro";
 
 const colors = [
 	{
@@ -151,6 +152,20 @@ const bodyStyles = [
 							Footer
 						</p>
 						<Footer />
+					</article>
+
+					<article class="overflow-hidden rounded-2xl border border-outline/45">
+						<p class="type-chip border-b border-outline/45 px-5 py-3 text-muted">
+							ProjectFolder — visual only (slot below is optional)
+						</p>
+						<div class="bg-canvas p-8">
+							<ProjectFolder
+								number="01"
+								imageSrc="/images/project-folder-demo.png"
+								imageAlt="Air India brand extension project thumbnail"
+								href="/work"
+							/>
+						</div>
 					</article>
 				</div>
 			</section>

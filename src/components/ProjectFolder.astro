@@ -1,0 +1,166 @@
+---
+/**
+ * Reusable project folder visual (Figma node 149:561).
+ *
+ * Layers (back → front):
+ * 1. Tabbed back silhouette (SVG)
+ * 2. Index number (debossed into tab)
+ * 3. Front flap panel (rounded gradient rect — the pocket)
+ * 4. Tilted project image
+ * 5. Paperclip
+ *
+ * Optional default slot for title / description / chips below.
+ */
+interface Props {
+	readonly number: string;
+	readonly imageSrc: string;
+	readonly imageAlt: string;
+	readonly href?: string;
+	readonly folderSrc?: string;
+	readonly paperclipSrc?: string;
+	readonly class?: string;
+}
+
+const {
+	number,
+	imageSrc,
+	imageAlt,
+	href,
+	folderSrc = '/images/folder-shape.svg',
+	paperclipSrc = '/icons/paperclip.png',
+	class: className,
+} = Astro.props;
+
+const Wrapper = href ? 'a' : 'div';
+/** Unique filter id so multiple folders on one page do not collide. */
+const innerShadowId = `pf-inner-${crypto.randomUUID()}`;
+---
+
+<div class:list={['relative w-full max-w-[510px]', className]}>
+	<Wrapper
+		href={href}
+		class:list={[
+			'project-folder relative block w-full overflow-visible',
+			href &&
+				'no-underline outline-offset-4 focus-visible:outline-2 focus-visible:outline-primary',
+		]}
+	>
+		{/* Frame: 510 × 370.5 */}
+		<div class="relative w-full pt-[72.65%]">
+			{/*
+			  Figma text Inner Shadow on 149:564:
+			  X 0 · Y −2 · Blur 16 · Spread 0 · #90A9C8 @ 100%
+			  CSS text-shadow cannot do inset glyphs — SVG filter matches Figma.
+			*/}
+			<svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
+				<defs>
+					<filter
+						id={innerShadowId}
+						x="-50%"
+						y="-50%"
+						width="200%"
+						height="200%"
+						color-interpolation-filters="sRGB"
+					>
+						<feOffset dx="0" dy="-2" in="SourceAlpha" result="offset" />
+						<feGaussianBlur in="offset" stdDeviation="8" result="blur" />
+						<feComposite
+							in="blur"
+							in2="SourceAlpha"
+							operator="arithmetic"
+							k2="-1"
+							k3="1"
+							result="shadowMask"
+						/>
+						<feFlood flood-color="#90A9C8" flood-opacity="1" result="shadowColor" />
+						<feComposite
+							in="shadowColor"
+							in2="shadowMask"
+							operator="in"
+							result="shadow"
+						/>
+						<feComposite in="shadow" in2="SourceGraphic" operator="over" />
+					</filter>
+				</defs>
+			</svg>
+
+			{/* 1. Tabbed back — SVG includes drop shadow padding */}
+			<div
+				class="pointer-events-none absolute inset-[-0.76%_-1.53%_-2.91%_-1.14%] z-0"
+				aria-hidden="true"
+			>
+				<img
+					src={folderSrc}
+					alt=""
+					class="size-full object-fill select-none"
+				/>
+			</div>
+
+			{/* 2. Index number — Figma 149:564 · Lato Bold 70 · #AAD0F1 */}
+			<p
+				class="absolute top-[1.9%] left-[7.45%] z-[1] w-[18.2%] font-label text-[clamp(2.5rem,8vw,4.375rem)] font-bold leading-none text-primary-soft"
+				style={`filter: url(#${innerShadowId})`}
+				aria-hidden="true"
+			>
+				{number}
+			</p>
+
+			{/*
+			  3. Front flap — Figma 149:565
+			  top 69 / 370.5 ≈ 18.6%, height 302 / 370.5 ≈ 81.5%
+			  Covers the body so the photo sits in a pocket.
+			*/}
+			<div
+				class="project-folder__flap pointer-events-none absolute top-[18.6%] right-0 bottom-0 left-0 z-[2] rounded-[22px]"
+				aria-hidden="true"
+			>
+			</div>
+
+			{/*
+			  4 + 5. Image + paperclip — Figma 149:566
+			  Image area: left 9.06%, top 23.55%, 81.9% × 71.6%
+			  Paperclip: 25×82 at left 73.5%, top 10.8% of frame
+			*/}
+			<div
+				class="absolute top-[23.55%] left-[9.06%] z-[3] flex h-[71.65%] w-[81.9%] items-center justify-center"
+			>
+				<div
+					class="relative aspect-[402/238] w-[96.3%] -rotate-4 overflow-hidden rounded-xl shadow-[0px_1px_5.5px_0px_rgba(0,0,0,0.25)]"
+				>
+					<img
+						src={imageSrc}
+						alt={imageAlt}
+						class="absolute inset-0 size-full object-cover"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+			</div>
+
+			<img
+				src={paperclipSrc}
+				alt=""
+				aria-hidden="true"
+				class="pointer-events-none absolute top-[10.8%] left-[73.5%] z-[4] h-[22.1%] w-[4.9%] object-contain select-none"
+			/>
+		</div>
+	</Wrapper>
+
+	{
+		Astro.slots.has('default') && (
+			<div class="mt-6">
+				<slot />
+			</div>
+		)
+	}
+</div>
+
+<style>
+	.project-folder__flap {
+		background-image: linear-gradient(
+			180.41deg,
+			rgb(190, 215, 237) 17.9%,
+			rgb(145, 165, 198) 164.13%
+		);
+	}
+</style>
