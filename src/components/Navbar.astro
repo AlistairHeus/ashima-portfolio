@@ -1,0 +1,88 @@
+---
+/**
+ * Site navigation matching Figma "navbar work" (node 277:1076).
+ * Transparent background, brand left, links right, active tab highlight, bottom rule.
+ */
+interface NavItem {
+	readonly label: string;
+	readonly href: string;
+}
+
+interface Props {
+	readonly brandHref?: string;
+	readonly brandLabel?: string;
+	readonly items?: readonly NavItem[];
+	readonly currentPath?: string;
+	readonly showDivider?: boolean;
+	readonly class?: string;
+}
+
+const {
+	brandHref = '/',
+	brandLabel = 'Ashima Kaushik',
+	items = [
+		{ label: 'Work', href: '/work' },
+		{ label: 'Resume', href: '/resume' },
+		{ label: 'Contact', href: '/contact' },
+	],
+	currentPath = Astro.url.pathname,
+	showDivider = true,
+	class: className,
+} = Astro.props;
+
+const normalizePath = (path: string) => {
+	if (path.length > 1 && path.endsWith('/')) {
+		return path.slice(0, -1);
+	}
+	return path;
+};
+
+const activePath = normalizePath(currentPath);
+---
+
+<header class:list={['w-full bg-transparent', className]}>
+	<div class="mx-auto max-w-[75rem]">
+		<div
+			class:list={[
+				'flex min-h-14 flex-col items-stretch justify-between gap-0 px-[clamp(1rem,3vw,2rem)] sm:min-h-[60px] sm:flex-row sm:items-stretch sm:gap-[clamp(1rem,3vw,2rem)]',
+				showDivider && 'border-b-2 border-on-surface/35',
+			]}
+		>
+			<a
+				href={brandHref}
+				class="inline-flex shrink-0 items-center self-stretch py-3 font-display text-[clamp(1.25rem,2.8vw+0.5rem,2.5rem)] font-light leading-tight tracking-[0.00625rem] whitespace-nowrap text-on-surface uppercase no-underline transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:py-2"
+			>
+				{brandLabel}
+			</a>
+
+			<nav class="flex min-w-0 items-stretch self-stretch sm:w-auto" aria-label="Primary">
+				<ul
+					class="m-0 flex h-full list-none flex-wrap items-stretch justify-start gap-y-1 p-0 sm:justify-end"
+				>
+					{
+						items.map((item) => {
+							const isActive = activePath === normalizePath(item.href);
+							return (
+								<li class="flex items-stretch">
+									<a
+										href={item.href}
+										aria-current={isActive ? 'page' : undefined}
+										class:list={[
+											/* Figma tab: 200 wide; height fills row so active bg meets the rule */
+											'inline-flex h-full min-h-10 w-[6.5rem] items-center justify-center font-display text-[clamp(0.875rem,1.2vw+0.5rem,1.5rem)] font-light leading-tight tracking-[0.00625rem] whitespace-nowrap uppercase no-underline transition-[color,background-color,opacity] duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-[60px] sm:w-[200px]',
+											isActive
+												? 'bg-on-surface-state text-on-surface'
+												: 'bg-transparent text-primary hover:opacity-75',
+										]}
+									>
+										{item.label}
+									</a>
+								</li>
+							);
+						})
+					}
+				</ul>
+			</nav>
+		</div>
+	</div>
+</header>

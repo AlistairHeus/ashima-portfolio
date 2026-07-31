@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Amarna:wght@100..700&family=Betania+Patmos&family=Lato:wght@300;400;700&family=Mukta:wght@400;500;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+	--font-display: 'Amarna', sans-serif;
+	--font-body: 'Mukta', sans-serif;
+	--font-label: 'Lato', sans-serif;
+	--font-hand: 'Betania Patmos', cursive;
+
+	--color-canvas: #f7f1ec;
+	--color-ink: #181818;
+	--color-ink-strong: #111111;
+	--color-on-surface: #1d1b20;
+	--color-on-surface-state: rgb(29 27 32 / 0.08);
+	--color-heading: #4c4c4c;
+	--color-footer-ink: #2e2f38;
+	--color-primary: #60728c;
+	--color-primary-soft: #aad0f1;
+	--color-muted: #636363;
+	--color-outline: #9ba1a5;
+	--color-on-surface-variant: #49454f;
+	--color-surface-muted: #eeeeee;
+	--color-project-green: #002a0f;
+	--color-project-green-bright: #005929;
+	--color-project-purple: #4b0556;
+}
+
+/*
+ * Page top inset before navbar.
+ * Kept outside @theme so spacing-* scale machinery cannot alter the value.
+ */
+:root {
+	--spacing-page-top: 64px;
+}
+
+@layer base {
+	* {
+		box-sizing: border-box;
+	}
+
+	html {
+		background: var(--color-canvas);
+		color: var(--color-ink);
+		font-family: var(--font-body);
+	}
+
+	body {
+		margin: 0;
+		min-width: 320px;
+		min-height: 100vh;
+	}
+
+	/* Shared page chrome — use on every page shell */
+	.page {
+		padding-top: var(--spacing-page-top);
+	}
+
+	@media (max-width: 48rem) {
+		:root {
+			--spacing-page-top: 40px;
+		}
+	}
+
+	@media (max-width: 30rem) {
+		:root {
+			--spacing-page-top: 24px;
+		}
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p {
+		margin: 0;
+	}
+}
+
+@utility type-h1 {
+	font-family: var(--font-display);
+	font-size: 3.5rem;
+	font-weight: 400;
+	line-height: 4.0625rem;
+}
+
+@utility type-h2 {
+	font-family: var(--font-display);
+	font-size: 3rem;
+	font-weight: 400;
+	letter-spacing: -0.12rem;
+	line-height: 3.5rem;
+}
+
+@utility type-h3 {
+	font-family: var(--font-display);
+	font-size: 2.5rem;
+	font-weight: 400;
+	line-height: 3rem;
+}
+
+@utility type-h4 {
+	font-family: var(--font-display);
+	font-size: 2.25rem;
+	font-weight: 700;
+	letter-spacing: 0.405rem;
+	line-height: 2.75rem;
+	text-transform: uppercase;
+}
+
+@utility type-h5 {
+	font-family: var(--font-display);
+	font-size: 2rem;
+	font-weight: 400;
+	line-height: 2.5rem;
+}
+
+@utility type-h6 {
+	font-family: var(--font-display);
+	font-size: 1.75rem;
+	font-weight: 700;
+	line-height: 2.125rem;
+}
+
+@utility type-body-lg {
+	font-family: var(--font-body);
+	font-size: 1.5rem;
+	font-weight: 400;
+	line-height: 2rem;
+}
+
+@utility type-body-md {
+	font-family: var(--font-body);
+	font-size: 1.25rem;
+	font-weight: 400;
+	line-height: 1.6875rem;
+}
+
+@utility type-body {
+	font-family: var(--font-body);
+	font-size: 1.125rem;
+	font-weight: 400;
+	line-height: 1.5625rem;
+}
+
+@utility type-label-lg {
+	font-family: var(--font-label);
+	font-size: 1.5rem;
+	font-weight: 700;
+	letter-spacing: 0.27rem;
+	line-height: 2rem;
+	text-transform: uppercase;
+}
+
+@utility type-label-md {
+	font-family: var(--font-label);
+	font-size: 1rem;
+	font-weight: 700;
+	letter-spacing: 0.16rem;
+	line-height: 1.5rem;
+	text-transform: uppercase;
+}
+
+@utility type-chip {
+	font-family: var(--font-body);
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.00625rem;
+	line-height: 1.25rem;
+}
