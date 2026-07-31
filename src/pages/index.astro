@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
 
 const colors = [
 	{
@@ -124,25 +125,34 @@ const bodyStyles = [
 						00 — Components
 					</p>
 					<h2 id="components-title" class="type-h3 text-footer-ink">
-						Navbar
+						Site shell
 					</h2>
 				</div>
 
 				<p class="type-body mb-8 max-w-2xl text-muted">
-					Shared via Layout with a 64px page-top inset
-					(<code class="text-ink">--spacing-page-top</code>). Active
-					tab uses on-surface @ 8%. Nested demos below omit the page
-					offset.
+					Navbar and Footer are shared via Layout. Page-top inset is
+					<code class="text-ink">--spacing-page-top</code> (64px). Live
+					chrome is at the top and bottom of this page; demos below are
+					isolated.
 				</p>
 
-				<article class="overflow-hidden rounded-2xl border border-outline/45">
-					<p class="type-chip border-b border-outline/45 px-5 py-3 text-muted">
-						Work page — active “Work”
-					</p>
-					<div class="bg-canvas py-2">
-						<Navbar currentPath="/work" />
-					</div>
-				</article>
+				<div class="space-y-6">
+					<article class="overflow-hidden rounded-2xl border border-outline/45">
+						<p class="type-chip border-b border-outline/45 px-5 py-3 text-muted">
+							Navbar — active “Work”
+						</p>
+						<div class="bg-canvas py-2">
+							<Navbar currentPath="/work" />
+						</div>
+					</article>
+
+					<article class="overflow-hidden rounded-2xl border border-outline/45">
+						<p class="type-chip border-b border-outline/45 px-5 py-3 text-muted">
+							Footer
+						</p>
+						<Footer />
+					</article>
+				</div>
 			</section>
 
 			<section aria-labelledby="fonts-title" class="mb-24">

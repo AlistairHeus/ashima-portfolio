@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
 	readonly title?: string;
@@ -9,6 +10,8 @@ interface Props {
 	readonly currentPath?: string;
 	/** Hide the shared navbar (e.g. rare standalone surfaces). */
 	readonly showNavbar?: boolean;
+	/** Hide the shared footer. */
+	readonly showFooter?: boolean;
 }
 
 const {
@@ -16,6 +19,7 @@ const {
 	description = "Ashima Kaushik's portfolio — visual communication design.",
 	currentPath = Astro.url.pathname,
 	showNavbar = true,
+	showFooter = true,
 } = Astro.props;
 ---
 
@@ -31,9 +35,12 @@ const {
 		<title>{title}</title>
 	</head>
 	<body>
-		<div class="page">
+		<div class="page flex min-h-screen flex-col">
 			{showNavbar && <Navbar currentPath={currentPath} />}
-			<slot />
+			<div class="flex-1">
+				<slot />
+			</div>
+			{showFooter && <Footer />}
 		</div>
 	</body>
 </html>
