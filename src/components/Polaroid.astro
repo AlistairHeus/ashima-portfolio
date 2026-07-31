@@ -1,0 +1,138 @@
+---
+/**
+ * Reusable Polaroid frame (Figma groups 149:894, 226:1631, 246:380).
+ *
+ * White matte + media + optional handwritten caption.
+ * Pass `imageSrc` for a photo, or use the default slot for custom media (logos, etc.).
+ */
+interface Props {
+	readonly imageSrc?: string;
+	readonly imageAlt?: string;
+	readonly caption?: string;
+	/** Rotation in degrees. Figma defaults around −2 / +2 / +4. */
+	readonly rotate?: number;
+	/**
+	 * Frame proportions:
+	 * - classic — thick bottom chin (hero / stacked photos)
+	 * - caption — room for handwritten caption
+	 * - sticker — tighter matte with deeper shadow (logo cards)
+	 */
+	readonly variant?: 'classic' | 'caption' | 'sticker';
+	/** Outer corner radius in px. Caption/sticker use 14 in Figma. */
+	readonly radius?: number;
+	readonly href?: string;
+	readonly class?: string;
+	/** Aspect ratio of the media well, e.g. "341 / 493". */
+	readonly aspectRatio?: string;
+}
+
+const {
+	imageSrc,
+	imageAlt = '',
+	caption,
+	rotate = -2,
+	variant = caption ? 'caption' : 'classic',
+	radius = variant === 'classic' ? 0 : 14,
+	href,
+	class: className,
+	aspectRatio,
+} = Astro.props;
+
+const Wrapper = href ? 'a' : 'div';
+const hasSlot = Astro.slots.has('default');
+---
+
+<div class:list={['polaroid-wrap inline-block w-full max-w-[417px]', className]}>
+	<Wrapper
+		href={href}
+		class:list={[
+			'polaroid relative block w-full bg-white',
+			`polaroid--${variant}`,
+			href &&
+				'no-underline outline-offset-4 focus-visible:outline-2 focus-visible:outline-primary',
+		]}
+		style={`transform: rotate(${rotate}deg); border-radius: ${radius}px;`}
+	>
+		<div
+			class="polaroid__media relative w-full overflow-hidden"
+			style={aspectRatio ? `aspect-ratio: ${aspectRatio}` : undefined}
+		>
+			{
+				hasSlot ? (
+					<slot />
+				) : imageSrc ? (
+					<img
+						src={imageSrc}
+						alt={imageAlt}
+						class="block size-full object-cover"
+						loading="lazy"
+						decoding="async"
+					/>
+				) : null
+			}
+			{/* Figma inset on photo well */}
+			<div
+				class="pointer-events-none absolute inset-0 shadow-[inset_-1px_-1px_3.5px_0_rgba(0,0,0,0.25)]"
+				aria-hidden="true"
+			/>
+		</div>
+
+		{
+			caption ? (
+				<p class="polaroid__caption font-hand text-center text-[clamp(0.875rem,2.5vw,1.125rem)] leading-6 text-primary">
+					{caption}
+				</p>
+			) : (
+				<div class="polaroid__chin" aria-hidden="true" />
+			)
+		}
+	</Wrapper>
+</div>
+
+<style>
+	.polaroid {
+		box-shadow: 0 1px 5.5px rgb(0 0 0 / 0.25);
+	}
+
+	.polaroid--sticker {
+		box-shadow: 0 4px 4px rgb(0 0 0 / 0.25);
+	}
+
+	/* Padding % is relative to width — keeps the matte proportional when scaling */
+	.polaroid--classic {
+		padding: 9.1% 9.1% 0;
+	}
+
+	.polaroid--caption {
+		padding: 3.2% 3.2% 0;
+	}
+
+	.polaroid--sticker {
+		padding: 3% 3% 0;
+	}
+
+	.polaroid__media :global(img),
+	.polaroid__media :global(svg),
+	.polaroid__media :global(picture) {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.polaroid--classic .polaroid__chin {
+		padding-bottom: 20.4%;
+	}
+
+	.polaroid--caption .polaroid__caption {
+		padding: 5% 6% 8%;
+	}
+
+	.polaroid--sticker .polaroid__chin {
+		padding-bottom: 14%;
+	}
+
+	.polaroid--sticker .polaroid__caption {
+		padding: 4% 5% 7%;
+	}
+</style>

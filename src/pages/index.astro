@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import ProjectFolder from "../components/ProjectFolder.astro";
+import Polaroid from "../components/Polaroid.astro";
 
 const colors = [
 	{
@@ -165,6 +166,49 @@ const bodyStyles = [
 								imageAlt="Air India brand extension project thumbnail"
 								href="/work"
 							/>
+						</div>
+					</article>
+
+					<article class="overflow-hidden rounded-2xl border border-outline/45">
+						<p class="type-chip border-b border-outline/45 px-5 py-3 text-muted">
+							Polaroid — classic / caption / sticker
+						</p>
+						<div
+							class="grid gap-10 bg-canvas p-8 sm:grid-cols-2 lg:grid-cols-3 lg:items-start"
+						>
+							<div>
+								<p class="type-chip mb-4 text-muted">classic · −2°</p>
+								<Polaroid
+									imageSrc="/images/polaroid-hero-demo.png"
+									imageAlt="Portrait photo in a classic Polaroid frame"
+									variant="classic"
+									rotate={-2}
+									aspectRatio="341 / 493"
+								/>
+							</div>
+							<div>
+								<p class="type-chip mb-4 text-muted">caption · −2°</p>
+								<Polaroid
+									imageSrc="/images/polaroid-caption-demo.png"
+									imageAlt="Workshop photo with handwritten caption"
+									variant="caption"
+									rotate={-2}
+									caption="Co-creation & iterations with artists to improve letterforms"
+									aspectRatio="412 / 300"
+									class="max-w-[440px]"
+								/>
+							</div>
+							<div>
+								<p class="type-chip mb-4 text-muted">sticker · +2°</p>
+								<Polaroid
+									imageSrc="/images/polaroid-logo-demo.png"
+									imageAlt="IGL logo mark in a sticker Polaroid frame"
+									variant="sticker"
+									rotate={2}
+									aspectRatio="424 / 332"
+									class="max-w-[451px]"
+								/>
+							</div>
 						</div>
 					</article>
 				</div>
