@@ -20,6 +20,10 @@ const initial = images[0];
 			data-mythila-apps
 			style="--mythila-apps-gap: clamp(0.35rem, 0.8vw, 0.6rem);"
 		>
+			<p class="type-label-md mb-3 text-ink/70 md:mb-4">
+				Select a specimen to enlarge
+			</p>
+
 			<div
 				class="grid grid-cols-1 gap-[var(--mythila-apps-gap)] md:grid-cols-[minmax(0,1fr)_minmax(6.5rem,18%)] md:grid-rows-4"
 			>
@@ -42,23 +46,18 @@ const initial = images[0];
 				<div
 					class="grid grid-cols-4 gap-[var(--mythila-apps-gap)] md:contents"
 					role="listbox"
-					aria-label="Application previews"
+					aria-label="Application specimens"
 				>
 					{images.map((image, index) => (
 						<button
 							type="button"
 							role="option"
 							aria-selected={index === 0 ? 'true' : 'false'}
-							aria-label={`Show application ${index + 1}`}
+							aria-label={`View specimen ${index + 1} of ${images.length}`}
 							data-mythila-apps-thumb
 							data-src={image.src}
 							data-alt={image.alt}
-							class:list={[
-								'mythila-apps__thumb relative aspect-square overflow-hidden bg-[#e8e4de] p-0',
-								'cursor-pointer border-0 outline-offset-2 transition-opacity duration-150',
-								'focus-visible:outline-2 focus-visible:outline-primary',
-								index === 0 ? 'opacity-100' : 'opacity-55 hover:opacity-80',
-							]}
+							class="mythila-apps__thumb relative aspect-square overflow-hidden bg-[#e8e4de] p-0"
 						>
 							<img
 								src={image.src}
@@ -69,6 +68,7 @@ const initial = images[0];
 								loading="lazy"
 								decoding="async"
 							/>
+							<span class="mythila-apps__thumb-frame" aria-hidden="true" />
 						</button>
 					))}
 				</div>
@@ -76,6 +76,67 @@ const initial = images[0];
 		</div>
 	)
 }
+
+<style>
+	.mythila-apps__thumb {
+		cursor: pointer;
+		border: 0;
+		outline-offset: 3px;
+		isolation: isolate;
+		transition:
+			transform 160ms ease,
+			filter 160ms ease;
+	}
+
+	.mythila-apps__thumb:focus-visible {
+		outline: 2px solid var(--color-primary);
+	}
+
+	.mythila-apps__thumb img {
+		transition: filter 160ms ease;
+		filter: brightness(0.72) saturate(0.85);
+	}
+
+	.mythila-apps__thumb-frame {
+		pointer-events: none;
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		box-shadow: inset 0 0 0 0 transparent;
+		transition:
+			box-shadow 160ms ease,
+			background-color 160ms ease;
+		background-color: rgb(0 0 0 / 0.12);
+	}
+
+	.mythila-apps__thumb:hover img {
+		filter: brightness(0.88) saturate(0.95);
+	}
+
+	.mythila-apps__thumb:hover .mythila-apps__thumb-frame {
+		background-color: rgb(0 0 0 / 0.04);
+	}
+
+	.mythila-apps__thumb:hover {
+		transform: scale(1.02);
+	}
+
+	.mythila-apps__thumb[aria-selected='true'] {
+		transform: none;
+		z-index: 1;
+	}
+
+	.mythila-apps__thumb[aria-selected='true'] img {
+		filter: none;
+	}
+
+	.mythila-apps__thumb[aria-selected='true'] .mythila-apps__thumb-frame {
+		background-color: transparent;
+		box-shadow:
+			inset 0 0 0 2px #f7f1ec,
+			inset 0 0 0 4px #1a1a1a;
+	}
+</style>
 
 <script>
 	const initMythilaApps = () => {
@@ -86,13 +147,13 @@ const initial = images[0];
 			root.dataset.ready = 'true';
 
 			const preview = root.querySelector<HTMLImageElement>('[data-mythila-apps-preview]');
-			const thumbs = root.querySelectorAll<HTMLButtonElement>('[data-mythila-apps-thumb]');
+			const thumbs = [...root.querySelectorAll<HTMLButtonElement>('[data-mythila-apps-thumb]')];
 			if (!preview || thumbs.length === 0) return;
 
 			const activate = (thumb: HTMLButtonElement) => {
 				const src = thumb.dataset.src;
 				const alt = thumb.dataset.alt ?? '';
-				if (!src) return;
+				if (!src || thumb.getAttribute('aria-selected') === 'true') return;
 
 				preview.style.opacity = '0';
 				window.setTimeout(() => {
@@ -102,16 +163,23 @@ const initial = images[0];
 				}, 120);
 
 				thumbs.forEach((item) => {
-					const selected = item === thumb;
-					item.setAttribute('aria-selected', selected ? 'true' : 'false');
-					item.classList.toggle('opacity-100', selected);
-					item.classList.toggle('opacity-55', !selected);
-					item.classList.toggle('hover:opacity-80', !selected);
+					item.setAttribute('aria-selected', item === thumb ? 'true' : 'false');
 				});
 			};
 
-			thumbs.forEach((thumb) => {
+			thumbs.forEach((thumb, index) => {
 				thumb.addEventListener('click', () => activate(thumb));
+				thumb.addEventListener('keydown', (event) => {
+					if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
+						return;
+					}
+					event.preventDefault();
+					const delta =
+						event.key === 'ArrowDown' || event.key === 'ArrowRight' ? 1 : -1;
+					const next = thumbs[(index + delta + thumbs.length) % thumbs.length];
+					next?.focus();
+					if (next) activate(next);
+				});
 			});
 		});
 	};
