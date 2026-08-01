@@ -38,6 +38,18 @@ const normalizePath = (path: string) => {
 };
 
 const activePath = normalizePath(currentPath);
+
+/** Exact match, or prefix match for nested routes (e.g. /work/himalayan-book → Work). */
+const isNavItemActive = (href: string) => {
+	const itemPath = normalizePath(href);
+	if (activePath === itemPath) {
+		return true;
+	}
+	if (itemPath !== '/' && activePath.startsWith(`${itemPath}/`)) {
+		return true;
+	}
+	return false;
+};
 ---
 
 <header class:list={['w-full bg-transparent', className]}>
@@ -61,7 +73,7 @@ const activePath = normalizePath(currentPath);
 				>
 					{
 						items.map((item) => {
-							const isActive = activePath === normalizePath(item.href);
+							const isActive = isNavItemActive(item.href);
 							return (
 								<li class="flex items-stretch">
 									<a

@@ -1,0 +1,144 @@
+---
+/**
+ * Previous / next projects — Figma Group 214:289.
+ *
+ * Wider than the 75rem page column (~1440px) so long titles stay on one line
+ * and descriptions wrap to ~two lines. Arrows share the folder row only so
+ * they center on the folder, not the copy below.
+ */
+import Chip from '../Chip.astro';
+import ProjectFolder from '../ProjectFolder.astro';
+import type { WorkProject } from '../../data/work';
+
+interface Props {
+	readonly previous?: WorkProject;
+	readonly next?: WorkProject;
+}
+
+const { previous, next } = Astro.props;
+
+const arrowLinkClass =
+	'hidden items-center justify-center no-underline transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:flex';
+---
+
+{
+	(previous || next) && (
+		<nav
+			class="case-study-nav mx-auto mt-20 w-full max-w-[90rem] px-[clamp(1rem,3vw,2rem)] pb-16 md:mt-28 md:pb-24"
+			aria-label="More projects"
+		>
+			{/*
+			  Desktop: 4 columns × 2 rows
+			  Row 1 — arrow | folder | folder | arrow
+			  Row 2 —       | copy   | copy   |
+			  Card columns share remaining width (1fr) so copy can breathe.
+			*/}
+			<div
+				class="grid grid-cols-1 gap-y-6 md:grid-cols-[2.75rem_minmax(0,1fr)_minmax(0,1fr)_2.75rem] md:items-center md:gap-x-8 md:gap-y-6 lg:gap-x-12 xl:gap-x-16"
+			>
+				{previous ? (
+					<a
+						href={previous.href ?? '/work'}
+						class:list={[arrowLinkClass, 'md:col-start-1 md:row-start-1']}
+						aria-label={`Previous project: ${previous.title}`}
+					>
+						{/* Figma 189:2135 — asset faces right; flip for previous */}
+						<img
+							src="/icons/arrow-left.svg"
+							alt=""
+							width="59"
+							height="64"
+							class="h-11 w-auto rotate-180 lg:h-12"
+							aria-hidden="true"
+						/>
+					</a>
+				) : (
+					<span
+						class="hidden md:col-start-1 md:row-start-1 md:block"
+						aria-hidden="true"
+					/>
+				)}
+
+				{previous && (
+					<>
+						<div class="w-full md:col-start-2 md:row-start-1">
+							<p class="sr-only">Previous project</p>
+							<ProjectFolder
+								number={previous.number}
+								imageSrc={previous.imageSrc}
+								imageAlt={previous.imageAlt}
+								linkLabel={previous.title}
+								href={previous.href}
+								class="mx-auto max-w-none"
+							/>
+						</div>
+						<div class="flex w-full flex-col items-center gap-3 text-center md:col-start-2 md:row-start-2">
+							<h3 class="type-h6 w-full text-heading text-balance">
+								{previous.title}
+							</h3>
+							<p class="type-body w-full text-ink text-pretty">
+								{previous.description}
+							</p>
+							<div class="mt-1 flex flex-wrap justify-center gap-2">
+								{previous.chips.map((chip) => (
+									<Chip label={chip} class="border-outline" />
+								))}
+							</div>
+						</div>
+					</>
+				)}
+
+				{next && (
+					<>
+						<div class="w-full md:col-start-3 md:row-start-1">
+							<p class="sr-only">Next project</p>
+							<ProjectFolder
+								number={next.number}
+								imageSrc={next.imageSrc}
+								imageAlt={next.imageAlt}
+								linkLabel={next.title}
+								href={next.href}
+								class="mx-auto max-w-none"
+							/>
+						</div>
+						<div class="flex w-full flex-col items-center gap-3 text-center md:col-start-3 md:row-start-2">
+							<h3 class="type-h6 w-full text-heading text-balance">
+								{next.title}
+							</h3>
+							<p class="type-body w-full text-ink text-pretty">
+								{next.description}
+							</p>
+							<div class="mt-1 flex flex-wrap justify-center gap-2">
+								{next.chips.map((chip) => (
+									<Chip label={chip} class="border-outline" />
+								))}
+							</div>
+						</div>
+					</>
+				)}
+
+				{next ? (
+					<a
+						href={next.href ?? '/work'}
+						class:list={[arrowLinkClass, 'md:col-start-4 md:row-start-1']}
+						aria-label={`Next project: ${next.title}`}
+					>
+						<img
+							src="/icons/arrow-right.svg"
+							alt=""
+							width="59"
+							height="64"
+							class="h-11 w-auto lg:h-12"
+							aria-hidden="true"
+						/>
+					</a>
+				) : (
+					<span
+						class="hidden md:col-start-4 md:row-start-1 md:block"
+						aria-hidden="true"
+					/>
+				)}
+			</div>
+		</nav>
+	)
+}

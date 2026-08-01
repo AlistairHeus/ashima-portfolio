@@ -1,0 +1,24 @@
+---
+/**
+ * Section title with hairline rules above and below (Figma Work tabs header).
+ * Single responsibility: labeled section divider typography.
+ */
+interface Props {
+	readonly id?: string;
+	readonly title: string;
+	readonly class?: string;
+}
+
+const { id, title, class: className } = Astro.props;
+---
+
+<div class:list={['section-heading w-full', className]}>
+	<div class="border-t border-ink/35" aria-hidden="true"></div>
+	<h2
+		id={id}
+		class="type-h5 py-4 text-center text-ink uppercase md:py-5"
+	>
+		{title}
+	</h2>
+	<div class="border-t border-ink/35" aria-hidden="true"></div>
+</div>

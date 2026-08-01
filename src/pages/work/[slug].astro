@@ -1,0 +1,54 @@
+---
+/**
+ * Case study detail page — shared shell for per-project narratives.
+ * Landing (nav/hero/intro) is identical across studies; body content varies.
+ */
+import Layout from '../../layouts/Layout.astro';
+import CaseStudyLanding from '../../components/case-study/CaseStudyLanding.astro';
+import CaseStudyGallery from '../../components/case-study/CaseStudyGallery.astro';
+import CaseStudyNav from '../../components/case-study/CaseStudyNav.astro';
+import {
+	caseStudyDetails,
+	getAdjacentProjects,
+	getCaseStudyById,
+	allWorkProjects,
+} from '../../data/case-studies';
+
+export function getStaticPaths() {
+	return caseStudyDetails.map((study) => ({
+		params: { slug: study.id },
+	}));
+}
+
+const { slug } = Astro.params;
+const study = getCaseStudyById(slug ?? '');
+
+if (!study) {
+	throw new Error(`Unknown case study slug: ${slug}`);
+}
+
+const catalogueProject = allWorkProjects.find((project) => project.id === study.id);
+const { previous, next } = getAdjacentProjects(study.id);
+
+const pageTitle = `${study.title} — Ashima Kaushik`;
+const pageDescription = study.description[0] ?? study.title;
+---
+
+<Layout
+	title={pageTitle}
+	description={pageDescription}
+	currentPath="/work"
+	showNavbar={false}
+>
+	<main class="bg-canvas">
+		<CaseStudyLanding
+			study={study}
+			number={catalogueProject?.number ?? ''}
+			currentPath="/work"
+		/>
+
+		<CaseStudyGallery gallery={study.gallery} feature={study.feature} />
+
+		<CaseStudyNav previous={previous} next={next} />
+	</main>
+</Layout>

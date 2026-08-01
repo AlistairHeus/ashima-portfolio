@@ -15,6 +15,8 @@ interface Props {
 	readonly number: string;
 	readonly imageSrc: string;
 	readonly imageAlt: string;
+	/** Accessible name when `href` is set (defaults to imageAlt). */
+	readonly linkLabel?: string;
 	readonly href?: string;
 	readonly folderSrc?: string;
 	readonly paperclipSrc?: string;
@@ -25,6 +27,7 @@ const {
 	number,
 	imageSrc,
 	imageAlt,
+	linkLabel,
 	href,
 	folderSrc = '/images/folder-shape.svg',
 	paperclipSrc = '/icons/paperclip.png',
@@ -36,9 +39,10 @@ const Wrapper = href ? 'a' : 'div';
 const innerShadowId = `pf-inner-${crypto.randomUUID()}`;
 ---
 
-<div class:list={['relative w-full max-w-[510px]', className]}>
+<div class:list={['group/folder relative w-full max-w-[510px]', className]}>
 	<Wrapper
 		href={href}
+		aria-label={href ? (linkLabel ?? imageAlt) : undefined}
 		class:list={[
 			'project-folder relative block w-full overflow-visible',
 			href &&
@@ -125,7 +129,7 @@ const innerShadowId = `pf-inner-${crypto.randomUUID()}`;
 				class="absolute top-[23.55%] left-[9.06%] z-[3] flex h-[71.65%] w-[81.9%] items-center justify-center"
 			>
 				<div
-					class="relative aspect-[402/238] w-[96.3%] -rotate-4 overflow-hidden rounded-xl shadow-[0px_1px_5.5px_0px_rgba(0,0,0,0.25)]"
+					class="project-folder__photo relative aspect-[402/238] w-[96.3%] -rotate-4 overflow-hidden rounded-xl shadow-[0px_1px_5.5px_0px_rgba(0,0,0,0.25)] transition-transform duration-300 ease-out group-hover/folder:rotate-0 group-hover/card:rotate-0 motion-reduce:transition-none"
 				>
 					<img
 						src={imageSrc}

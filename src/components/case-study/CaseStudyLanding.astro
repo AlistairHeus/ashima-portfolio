@@ -1,0 +1,39 @@
+---
+/**
+ * Full case study landing — the reusable top-of-page composition:
+ * Navbar (on band) → title stack → hero image (band/canvas break) → intro.
+ *
+ * Use with `<Layout showNavbar={false}>`. Pass a different `bandColor` per project.
+ */
+import CaseStudyHero from './CaseStudyHero.astro';
+import CaseStudyIntro from './CaseStudyIntro.astro';
+import type { CaseStudy } from '../../data/case-studies';
+
+interface Props {
+	readonly study: CaseStudy;
+	readonly number: string;
+	readonly currentPath?: string;
+}
+
+const { study, number, currentPath = '/work' } = Astro.props;
+---
+
+<div class="case-study-landing">
+	<CaseStudyHero
+		number={number}
+		category={study.category}
+		title={study.title}
+		client={study.client}
+		imageSrc={study.hero.src}
+		imageAlt={study.hero.alt}
+		bandColor={study.heroBandColor}
+		currentPath={currentPath}
+		overlayNavbar
+	/>
+
+	<CaseStudyIntro
+		description={study.description}
+		skills={study.skills}
+		tools={study.tools}
+	/>
+</div>

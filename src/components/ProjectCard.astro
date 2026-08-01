@@ -1,0 +1,57 @@
+---
+/**
+ * Work grid card: folder visual + title, description, chips.
+ * Composes ProjectFolder + Chip — no page-specific layout.
+ */
+import Chip from './Chip.astro';
+import ProjectFolder from './ProjectFolder.astro';
+import type { WorkProject } from '../data/work';
+
+interface Props {
+	readonly project: WorkProject;
+	/** Text + chips alignment under the folder. Work grid = start; case-study nav = center. */
+	readonly align?: 'start' | 'center';
+	readonly class?: string;
+}
+
+const { project, align = 'start', class: className } = Astro.props;
+const isCentered = align === 'center';
+---
+
+<article class:list={['project-card group/card flex w-full flex-col', className]}>
+	<ProjectFolder
+		number={project.number}
+		imageSrc={project.imageSrc}
+		imageAlt={project.imageAlt}
+		linkLabel={project.title}
+		href={project.href}
+		class:list={['max-w-none', isCentered && 'mx-auto']}
+	/>
+
+	<div
+		class:list={[
+			'mt-6 flex flex-col gap-3',
+			isCentered && 'items-center text-center',
+		]}
+	>
+		<h3 class="type-h6 text-heading">{project.title}</h3>
+		<p
+			class:list={[
+				'type-body text-ink',
+				isCentered ? 'max-w-[30rem]' : 'max-w-[32rem]',
+			]}
+		>
+			{project.description}
+		</p>
+		<div
+			class:list={[
+				'mt-1 flex flex-wrap gap-2',
+				isCentered && 'justify-center',
+			]}
+		>
+			{project.chips.map((chip) => (
+				<Chip label={chip} class="border-outline" />
+			))}
+		</div>
+	</div>
+</article>

@@ -1,0 +1,76 @@
+---
+/**
+ * Case study overview — narrative + skills / tools.
+ * Shared meta block under the hero for every case study.
+ */
+import type { CaseStudyTool } from '../../data/case-studies';
+
+interface Props {
+	readonly description: readonly string[];
+	readonly skills: readonly string[];
+	readonly tools: readonly CaseStudyTool[];
+}
+
+const { description, skills, tools } = Astro.props;
+---
+
+<section
+	class="case-study-intro mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pt-[clamp(2.5rem,4vw,3.75rem)]"
+	aria-label="Project overview"
+>
+	<div class="border-y border-outline/45 py-8 md:py-10">
+		<div
+			class="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(15rem,22rem)] md:items-start md:gap-12 lg:gap-16"
+		>
+			<div class="flex flex-col gap-5">
+				{
+					description.map((paragraph) => (
+						<p class="type-body max-w-[36.5rem] text-ink-strong">{paragraph}</p>
+					))
+				}
+			</div>
+
+			<div class="flex flex-col gap-7">
+				<div class="grid grid-cols-[auto_1fr] items-start gap-x-5 gap-y-1 sm:gap-x-6">
+					<p class="type-label-md text-primary">Skills</p>
+					<ul
+						class="m-0 list-none space-y-0.5 p-0 font-hand text-lg leading-6 text-primary"
+					>
+						{
+							skills.map((skill) => (
+								<li>
+									<span aria-hidden="true">→ </span>
+									{skill}
+								</li>
+							))
+						}
+					</ul>
+				</div>
+
+				{
+					tools.length > 0 && (
+						<div class="grid grid-cols-[auto_1fr] items-center gap-x-5 sm:gap-x-6">
+							<p class="type-label-md text-primary">Tools</p>
+							<ul class="m-0 flex list-none flex-wrap items-center gap-3 p-0">
+								{tools.map((tool) => (
+									<li>
+										<img
+											src={tool.iconSrc}
+											alt={tool.name}
+											title={tool.name}
+											width="44"
+											height="44"
+											class="size-11 object-cover"
+											loading="lazy"
+											decoding="async"
+										/>
+									</li>
+								))}
+							</ul>
+						</div>
+					)
+				}
+			</div>
+		</div>
+	</div>
+</section>

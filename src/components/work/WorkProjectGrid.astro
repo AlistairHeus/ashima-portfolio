@@ -1,0 +1,30 @@
+---
+/**
+ * Responsive 2-column work project grid.
+ * Single responsibility: lay out ProjectCards — no data ownership.
+ */
+import ProjectCard from '../ProjectCard.astro';
+import type { WorkProject } from '../../data/work';
+
+interface Props {
+	readonly projects: readonly WorkProject[];
+	readonly class?: string;
+}
+
+const { projects, class: className } = Astro.props;
+---
+
+<ul
+	class:list={[
+		'm-0 grid list-none grid-cols-1 gap-x-10 gap-y-14 p-0 md:grid-cols-2 md:gap-x-12 md:gap-y-16 lg:gap-x-16',
+		className,
+	]}
+>
+	{
+		projects.map((project) => (
+			<li class="min-w-0">
+				<ProjectCard project={project} />
+			</li>
+		))
+	}
+</ul>

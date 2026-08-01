@@ -1,0 +1,48 @@
+---
+/**
+ * Case study image gallery — 2×2 grid plus a full-width feature image.
+ */
+import type { CaseStudyImage } from '../../data/case-studies';
+
+interface Props {
+	readonly gallery: readonly CaseStudyImage[];
+	readonly feature: CaseStudyImage;
+}
+
+const { gallery, feature } = Astro.props;
+---
+
+<section
+	class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+	aria-label="Project visuals"
+>
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:gap-6">
+		{
+			gallery.map((image) => (
+				<figure class="m-0 overflow-hidden">
+					<img
+						src={image.src}
+						alt={image.alt}
+						class="aspect-[588/370] w-full object-cover"
+						width="588"
+						height="370"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			))
+		}
+	</div>
+
+	<figure class="mt-4 m-0 overflow-hidden sm:mt-5 md:mt-6">
+		<img
+			src={feature.src}
+			alt={feature.alt}
+			class="aspect-[1197/815] w-full object-cover"
+			width="1197"
+			height="815"
+			loading="lazy"
+			decoding="async"
+		/>
+	</figure>
+</section>
