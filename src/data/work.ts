@@ -52,7 +52,7 @@ export const caseStudies: readonly WorkProject[] = [
 			'Cultural Design',
 			'Digitization',
 		],
-		href: '/work',
+		href: '/work/mythila',
 	},
 	{
 		id: 'akshar-chitra',

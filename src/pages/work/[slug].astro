@@ -6,6 +6,7 @@
 import Layout from '../../layouts/Layout.astro';
 import CaseStudyLanding from '../../components/case-study/CaseStudyLanding.astro';
 import CaseStudyGallery from '../../components/case-study/CaseStudyGallery.astro';
+import MythilaCaseStudyBody from '../../components/case-study/MythilaCaseStudyBody.astro';
 import CaseStudyNav from '../../components/case-study/CaseStudyNav.astro';
 import {
 	caseStudyDetails,
@@ -32,6 +33,7 @@ const { previous, next } = getAdjacentProjects(study.id);
 
 const pageTitle = `${study.title} — Ashima Kaushik`;
 const pageDescription = study.description[0] ?? study.title;
+const body = study.body ?? 'gallery';
 ---
 
 <Layout
@@ -47,7 +49,16 @@ const pageDescription = study.description[0] ?? study.title;
 			currentPath="/work"
 		/>
 
-		<CaseStudyGallery gallery={study.gallery} feature={study.feature} />
+		{
+			body === 'mythila' && study.mythila ? (
+				<MythilaCaseStudyBody content={study.mythila} />
+			) : (
+				study.gallery &&
+				study.feature && (
+					<CaseStudyGallery gallery={study.gallery} feature={study.feature} />
+				)
+			)
+		}
 
 		<CaseStudyNav previous={previous} next={next} />
 	</main>

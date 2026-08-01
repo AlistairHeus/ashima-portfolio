@@ -2,13 +2,19 @@
 /**
  * Case study header chrome — shared by every case study page.
  *
- * Structure (Figma Project 07 / reusable landing):
- * 1. Full-bleed band behind page-top inset + Navbar + title stack
- * 2. Hero image whose vertical midpoint is the band → canvas break
+ * Structure (CSS grid):
+ *  Row 1 — navbar + title stack
+ *  Row 2 — top of hero image (band color + watermark), height = bandBreakPercent
+ *  Row 3 — bottom of hero image (canvas), height = remainder
+ *
+ * Watermark lives in an atmosphere layer spanning rows 1–2 and is
+ * bottom-aligned to the band→canvas break (halfway mark of the image).
+ * Title row stays empty band color near the navbar.
  *
  * Layout navbar must be off (`showNavbar={false}`) when `overlayNavbar` is true.
  */
 import Navbar from '../Navbar.astro';
+import type { CaseStudyHeroLayer } from '../../data/case-studies';
 
 interface Props {
 	readonly number: string;
@@ -17,17 +23,11 @@ interface Props {
 	readonly client: string;
 	readonly imageSrc: string;
 	readonly imageAlt: string;
-	/**
-	 * Landing band color. Per-project accent (e.g. taupe, lavender).
-	 * @default '#e2e0d9'
-	 */
 	readonly bandColor?: string;
-	/**
-	 * Where the band yields to canvas, as % of hero image height.
-	 * Figma mid-image break ≈ 50–60.
-	 * @default 50
-	 */
 	readonly bandBreakPercent?: number;
+	readonly watermarkSrc?: string;
+	readonly heroBackdrop?: string;
+	readonly heroLayers?: readonly CaseStudyHeroLayer[];
 	readonly currentPath?: string;
 	readonly overlayNavbar?: boolean;
 }
@@ -39,22 +39,53 @@ const {
 	client,
 	imageSrc,
 	imageAlt,
-	bandColor = '#e2e0d9',
+	bandColor = '#efe8e0',
 	bandBreakPercent = 50,
+	watermarkSrc,
+	heroBackdrop,
+	heroLayers,
 	currentPath = '/work',
 	overlayNavbar = true,
 } = Astro.props;
 
 const breakPercent = Math.min(100, Math.max(0, bandBreakPercent));
+const remainPercent = 100 - breakPercent;
+const useLayers = Boolean(heroLayers && heroLayers.length > 0);
 ---
 
 <header
-	class="case-study-hero relative -mt-[var(--spacing-page-top)]"
+	class="case-study-hero relative -mt-[var(--spacing-page-top)] grid grid-cols-1 overflow-hidden bg-[var(--case-study-band)]"
 	aria-labelledby="case-study-title"
-	style={`--case-study-band: ${bandColor}; --case-study-band-break: ${breakPercent}%;`}
+	style={`--case-study-band: ${bandColor}; --case-study-band-break: ${breakPercent}%; grid-template-rows: auto minmax(0, ${breakPercent}fr) minmax(0, ${remainPercent}fr);`}
 >
-	{/* Band: page inset + navbar + title stack + gap above image */}
-	<div class="case-study-hero__band bg-[var(--case-study-band)] pt-[var(--spacing-page-top)]">
+	{/*
+	  Atmosphere: title row + top slice of the hero image.
+	  Watermark pins to the bottom of this layer (= band break).
+	*/}
+	<div
+		class="pointer-events-none relative col-start-1 row-start-1 row-end-3 z-0 overflow-hidden"
+		aria-hidden="true"
+	>
+		{
+			watermarkSrc && (
+				<img
+					src={watermarkSrc}
+					alt=""
+					class="absolute inset-x-0 -bottom-15  w-full object-cover object-bottom select-none opacity-90"
+				/>
+			)
+		}
+	</div>
+
+	{/* Canvas fill for the lower slice of the hero image */}
+	<div
+		class="pointer-events-none col-start-1 row-start-3 z-0 bg-[var(--color-canvas)]"
+		aria-hidden="true"
+	>
+	</div>
+
+	{/* Titles — transparent over the atmosphere */}
+	<div class="case-study-hero__band relative z-[1] col-start-1 row-start-1 pt-[var(--spacing-page-top)]">
 		{overlayNavbar && <Navbar currentPath={currentPath} />}
 
 		<div
@@ -80,30 +111,39 @@ const breakPercent = Math.min(100, Math.max(0, bandBreakPercent));
 		</div>
 	</div>
 
-	{/*
-	  Media block height === image height, so the gradient break lands
-	  exactly at bandBreakPercent of the hero image — no margin collapse.
-	*/}
-	<div
-		class="case-study-hero__media"
-		style={`background: linear-gradient(
-			to bottom,
-			var(--case-study-band) 0%,
-			var(--case-study-band) var(--case-study-band-break),
-			var(--color-canvas) var(--case-study-band-break),
-			var(--color-canvas) 100%
-		)`}
-	>
-		<figure class="mx-auto m-0 max-w-[75rem] px-[clamp(1rem,3vw,2rem)]">
-			<img
-				src={imageSrc}
-				alt={imageAlt}
-				class="mx-auto block h-auto w-full"
-				width="1200"
-				height="420"
-				fetchpriority="high"
-				decoding="async"
-			/>
+	{/* Hero media spans the band-break split (rows 2–3) */}
+	<div class="case-study-hero__media relative z-[1] col-start-1 row-start-2 row-end-4">
+		<figure class="relative mx-auto m-0 max-w-[75rem] px-[clamp(1rem,3vw,2rem)]">
+			{
+				useLayers ? (
+					<div
+						class="relative aspect-[1200/420] w-full overflow-hidden"
+						style={heroBackdrop ? `background-color: ${heroBackdrop}` : undefined}
+						role="img"
+						aria-label={imageAlt}
+					>
+						{heroLayers!.map((layer) => (
+							<img
+								src={layer.src}
+								alt={layer.alt}
+								class={layer.className}
+								decoding="async"
+								fetchpriority="high"
+							/>
+						))}
+					</div>
+				) : (
+					<img
+						src={imageSrc}
+						alt={imageAlt}
+						class="mx-auto block h-auto w-full"
+						width="1200"
+						height="420"
+						fetchpriority="high"
+						decoding="async"
+					/>
+				)
+			}
 		</figure>
 	</div>
 </header>

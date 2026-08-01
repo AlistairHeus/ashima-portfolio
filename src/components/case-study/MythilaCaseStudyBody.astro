@@ -1,0 +1,211 @@
+---
+/**
+ * Mythila Devanagari body — sketches, process, features, applications, purchase.
+ * Landing (hero + intro) stays in CaseStudyLanding; prev/next in CaseStudyNav.
+ */
+import type { MythilaCaseStudyContent } from '../../data/case-studies';
+import MythilaApplications from './MythilaApplications.astro';
+
+interface Props {
+	readonly content: MythilaCaseStudyContent;
+}
+
+const { content } = Astro.props;
+---
+
+<div class="mythila-body">
+	{/*
+	  Sketches sit above; watermark2 tucks under their bottom edge and
+	  carries the tagline — bridging the two sections like Figma.
+	*/}
+	<div class="relative">
+		<section
+			class="relative z-[1] mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+			aria-label="Letterform studies"
+		>
+			<div class="grid grid-cols-1 md:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)]">
+				<figure class="m-0 overflow-hidden">
+					<img
+						src={content.sketches.src}
+						alt={content.sketches.alt}
+						class="h-auto w-full"
+						width="481"
+						height="740"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+				<figure class="m-0 overflow-hidden">
+					<img
+						src={content.quote.src}
+						alt={content.quote.alt}
+						class="h-auto w-full"
+						width="714"
+						height="740"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			</div>
+		</section>
+
+		<section
+			class="relative -mt-[clamp(2.75rem,7vw,5.5rem)] aspect-[1920/587] w-full max-md:aspect-auto max-md:min-h-[18rem]"
+			aria-label="Project tagline"
+		>
+			{
+				content.bandWatermarkSrc && (
+					<img
+						src={content.bandWatermarkSrc}
+						alt=""
+						aria-hidden="true"
+						class="pointer-events-none -top-10 absolute inset-0 z-0 h-full w-full select-none object-cover object-top opacity-80"
+						width="1920"
+						height="587"
+						loading="lazy"
+						decoding="async"
+					/>
+				)
+			}
+			<div
+				class="absolute inset-0 z-[1] flex items-center justify-center px-[clamp(1rem,3vw,2rem)] pt-[clamp(2.75rem,7vw,5.5rem)] text-center"
+			>
+				<p
+					class="mx-auto max-w-[55rem] text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.25] tracking-wide uppercase"
+				>
+					{
+						content.tagline.map((part) => (
+							<span class={part.className}>{part.text}</span>
+						))
+					}
+				</p>
+			</div>
+		</section>
+	</div>
+
+	{/* Process flowchart */}
+	<section
+		class="relative z-[1] pt-5 mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)]"
+		aria-label="Process"
+	>
+		<figure class="m-0 overflow-hidden">
+			<img
+				src={content.process.src}
+				alt={content.process.alt}
+				class="h-auto w-full"
+				width="1200"
+				height="400"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+	</section>
+
+	{/* Process documentation photos */}
+	<section
+		class="mx-auto mt-10 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-14"
+		aria-label="Making of"
+	>
+		<figure class="m-0 overflow-hidden">
+			<img
+				src={content.processPhotos.src}
+				alt={content.processPhotos.alt}
+				class="h-auto w-full"
+				width="1222"
+				height="434"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+
+		<div class="mt-4 grid grid-cols-1 gap-4 md:mt-5 md:grid-cols-[minmax(0,0.37fr)_minmax(0,0.63fr)] md:gap-5">
+			<figure class="m-0 overflow-hidden">
+				<img
+					src={content.glyphsApp.src}
+					alt={content.glyphsApp.alt}
+					class="h-auto w-full"
+					width="458"
+					height="378"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+			<figure class="m-0 overflow-hidden">
+				<img
+					src={content.workshop.src}
+					alt={content.workshop.alt}
+					class="h-auto w-full"
+					width="797"
+					height="424"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+		</div>
+	</section>
+
+	{/* Font features */}
+	<section
+		class="mx-auto mt-16 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-20"
+		aria-label="Features of the font"
+	>
+		<figure class="m-0 overflow-hidden">
+			<img
+				src={content.features.src}
+				alt={content.features.alt}
+				class="h-auto w-full"
+				width="1200"
+				height="849"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+	</section>
+
+	{/* Applications gallery */}
+	<section
+		class="mx-auto mt-16 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-20"
+		aria-label="Type in use"
+	>
+		<MythilaApplications images={content.applications} />
+	</section>
+
+	{/* Purchase / type tester */}
+	<section
+		class="mx-auto mt-10 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pb-4 md:mt-14"
+		aria-label="Purchase license"
+	>
+		{
+			content.purchaseHref ? (
+				<a
+					href={content.purchaseHref}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="block no-underline outline-offset-4 transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-primary"
+				>
+					<img
+						src={content.purchase.src}
+						alt={content.purchase.alt}
+						class="h-auto w-full"
+						width="1499"
+						height="671"
+						loading="lazy"
+						decoding="async"
+					/>
+				</a>
+			) : (
+				<figure class="m-0 overflow-hidden">
+					<img
+						src={content.purchase.src}
+						alt={content.purchase.alt}
+						class="h-auto w-full"
+						width="1499"
+						height="671"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			)
+		}
+	</section>
+</div>

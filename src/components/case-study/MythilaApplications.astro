@@ -1,0 +1,121 @@
+---
+/**
+ * Mythila applications gallery — large active preview + four thumbnails.
+ * Click / keyboard on a thumb swaps the left preview.
+ */
+import type { CaseStudyImage } from '../../data/case-studies';
+
+interface Props {
+	readonly images: readonly CaseStudyImage[];
+}
+
+const { images } = Astro.props;
+const initial = images[0];
+---
+
+{
+	images.length > 0 && initial && (
+		<div
+			class="mythila-apps"
+			data-mythila-apps
+			style="--mythila-apps-gap: clamp(0.35rem, 0.8vw, 0.6rem);"
+		>
+			<div
+				class="grid grid-cols-1 gap-[var(--mythila-apps-gap)] md:grid-cols-[minmax(0,1fr)_minmax(6.5rem,18%)] md:grid-rows-4"
+			>
+				{/* Active preview — spans all thumbnail rows on desktop */}
+				<div
+					class="relative aspect-square overflow-hidden bg-[#e8e4de] md:row-span-4 md:aspect-auto md:min-h-0"
+				>
+					<img
+						data-mythila-apps-preview
+						src={initial.src}
+						alt={initial.alt}
+						class="absolute inset-0 size-full object-cover transition-opacity duration-200"
+						width="1130"
+						height="797"
+						decoding="async"
+					/>
+				</div>
+
+				{/* Thumbnails — row on mobile, column on desktop via md:contents */}
+				<div
+					class="grid grid-cols-4 gap-[var(--mythila-apps-gap)] md:contents"
+					role="listbox"
+					aria-label="Application previews"
+				>
+					{images.map((image, index) => (
+						<button
+							type="button"
+							role="option"
+							aria-selected={index === 0 ? 'true' : 'false'}
+							aria-label={`Show application ${index + 1}`}
+							data-mythila-apps-thumb
+							data-src={image.src}
+							data-alt={image.alt}
+							class:list={[
+								'mythila-apps__thumb relative aspect-square overflow-hidden bg-[#e8e4de] p-0',
+								'cursor-pointer border-0 outline-offset-2 transition-opacity duration-150',
+								'focus-visible:outline-2 focus-visible:outline-primary',
+								index === 0 ? 'opacity-100' : 'opacity-55 hover:opacity-80',
+							]}
+						>
+							<img
+								src={image.src}
+								alt=""
+								class="absolute inset-0 size-full object-cover"
+								width="797"
+								height="797"
+								loading="lazy"
+								decoding="async"
+							/>
+						</button>
+					))}
+				</div>
+			</div>
+		</div>
+	)
+}
+
+<script>
+	const initMythilaApps = () => {
+		const roots = document.querySelectorAll<HTMLElement>('[data-mythila-apps]');
+
+		roots.forEach((root) => {
+			if (root.dataset.ready === 'true') return;
+			root.dataset.ready = 'true';
+
+			const preview = root.querySelector<HTMLImageElement>('[data-mythila-apps-preview]');
+			const thumbs = root.querySelectorAll<HTMLButtonElement>('[data-mythila-apps-thumb]');
+			if (!preview || thumbs.length === 0) return;
+
+			const activate = (thumb: HTMLButtonElement) => {
+				const src = thumb.dataset.src;
+				const alt = thumb.dataset.alt ?? '';
+				if (!src) return;
+
+				preview.style.opacity = '0';
+				window.setTimeout(() => {
+					preview.src = src;
+					preview.alt = alt;
+					preview.style.opacity = '1';
+				}, 120);
+
+				thumbs.forEach((item) => {
+					const selected = item === thumb;
+					item.setAttribute('aria-selected', selected ? 'true' : 'false');
+					item.classList.toggle('opacity-100', selected);
+					item.classList.toggle('opacity-55', !selected);
+					item.classList.toggle('hover:opacity-80', !selected);
+				});
+			};
+
+			thumbs.forEach((thumb) => {
+				thumb.addEventListener('click', () => activate(thumb));
+			});
+		});
+	};
+
+	initMythilaApps();
+	document.addEventListener('astro:page-load', initMythilaApps);
+</script>
