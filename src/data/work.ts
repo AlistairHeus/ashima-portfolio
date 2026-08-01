@@ -36,7 +36,7 @@ export const caseStudies: readonly WorkProject[] = [
 		imageSrc: '/images/work/02-igl.png',
 		imageAlt: 'Indraprastha Gas Limited rebrand visual',
 		chips: ['Brand Strategy', 'Visual Identity', 'Brand Systems'],
-		href: '/work',
+		href: '/work/igl',
 	},
 	{
 		id: 'mythila',
@@ -67,7 +67,7 @@ export const caseStudies: readonly WorkProject[] = [
 	},
 ] as const;
 
-/** Other projects — second grid (05–10). */
+/** Other projects — second grid (05–11). */
 export const otherWorkProjects: readonly WorkProject[] = [
 	{
 		id: 'maahi',
@@ -119,7 +119,7 @@ export const otherWorkProjects: readonly WorkProject[] = [
 		imageSrc: '/images/work/08-vivan.png',
 		imageAlt: 'Vivan Hospital print and digital applications',
 		chips: ['Brand Translation', 'Print Media', 'Digitization'],
-		href: '/work',
+		href: '/work/vivan',
 	},
 	{
 		id: 'reconnect',
@@ -142,5 +142,16 @@ export const otherWorkProjects: readonly WorkProject[] = [
 		imageAlt: 'Collection of logo design marks',
 		chips: ['Logo Design', 'Visual Storytelling', 'Concept Development'],
 		href: '/work',
+	},
+	{
+		id: 'convergence',
+		number: '11',
+		title: 'Convergence',
+		description:
+			'A publication documenting 150 years of shared photographic history between France and India through rare archival works.',
+		imageSrc: '/images/case-studies/convergence/convergence_cover.gif',
+		imageAlt: 'Convergence book cover with photographic letterforms',
+		chips: ['Editorial Design', 'Layout & Composition', 'Book Design'],
+		href: '/work/convergence',
 	},
 ] as const;

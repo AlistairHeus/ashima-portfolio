@@ -107,7 +107,7 @@ const useLayers = Boolean(heroLayers && heroLayers.length > 0);
 				{title}
 			</h1>
 
-			<p class="type-label-lg mt-3 font-normal text-ink md:mt-4">{client}</p>
+			{client ? <p class="type-label-lg mt-3 font-normal text-ink md:mt-4">{client}</p> : null}
 		</div>
 	</div>
 

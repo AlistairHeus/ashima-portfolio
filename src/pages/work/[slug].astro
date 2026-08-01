@@ -7,6 +7,9 @@ import Layout from '../../layouts/Layout.astro';
 import CaseStudyLanding from '../../components/case-study/CaseStudyLanding.astro';
 import CaseStudyGallery from '../../components/case-study/CaseStudyGallery.astro';
 import MythilaCaseStudyBody from '../../components/case-study/MythilaCaseStudyBody.astro';
+import VivanCaseStudyBody from '../../components/case-study/VivanCaseStudyBody.astro';
+import IglCaseStudyBody from '../../components/case-study/IglCaseStudyBody.astro';
+import ConvergenceCaseStudyBody from '../../components/case-study/ConvergenceCaseStudyBody.astro';
 import CaseStudyNav from '../../components/case-study/CaseStudyNav.astro';
 import {
 	caseStudyDetails,
@@ -34,6 +37,7 @@ const { previous, next } = getAdjacentProjects(study.id);
 const pageTitle = `${study.title} — Ashima Kaushik`;
 const pageDescription = study.description[0] ?? study.title;
 const body = study.body ?? 'gallery';
+const displayNumber = catalogueProject?.number ?? study.number ?? '';
 ---
 
 <Layout
@@ -45,13 +49,19 @@ const body = study.body ?? 'gallery';
 	<main class="bg-canvas">
 		<CaseStudyLanding
 			study={study}
-			number={catalogueProject?.number ?? ''}
+			number={displayNumber}
 			currentPath="/work"
 		/>
 
 		{
 			body === 'mythila' && study.mythila ? (
 				<MythilaCaseStudyBody content={study.mythila} />
+			) : body === 'vivan' && study.vivan ? (
+				<VivanCaseStudyBody content={study.vivan} />
+			) : body === 'igl' && study.igl ? (
+				<IglCaseStudyBody content={study.igl} />
+			) : body === 'convergence' && study.convergence ? (
+				<ConvergenceCaseStudyBody content={study.convergence} />
 			) : (
 				study.gallery &&
 				study.feature && (

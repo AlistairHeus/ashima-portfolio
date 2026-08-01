@@ -1,0 +1,120 @@
+---
+/**
+ * Convergence book design body — cover, caption, and photo gallery.
+ * Landing (hero + intro) stays in CaseStudyLanding; prev/next in CaseStudyNav.
+ *
+ * Layout (content width 1200, Figma Project 9):
+ * 1. Cover (full width)
+ * 2. Slipcase caption (HTML text with bold emphasis)
+ * 3. Spread pairs (2 + 2)
+ * 4. Full-width feature spread
+ * 5. Final spread pair
+ */
+import type { ConvergenceCaseStudyContent } from '../../data/case-studies';
+
+interface Props {
+	readonly content: ConvergenceCaseStudyContent;
+}
+
+const { content } = Astro.props;
+const gap = 'gap-[clamp(0.75rem,1.5vw,1.5rem)]';
+const rowGap = 'mt-[clamp(0.75rem,1.5vw,1.5rem)]';
+---
+
+<div class="convergence-body mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16">
+	<section aria-label="Book cover">
+		<figure class="m-0 overflow-hidden">
+			<img
+				src={content.cover.src}
+				alt={content.cover.alt}
+				class="block h-auto w-full"
+				width="1197"
+				height="898"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+
+		<p
+			class="type-body mx-auto mt-4 max-w-[46rem] text-center text-[#73571a] md:mt-4 md:mb-16"
+		>
+			{
+				content.caption.map((part) =>
+					part.bold ? (
+						<strong class="font-bold">{part.text}</strong>
+					) : (
+						part.text
+					),
+				)
+			}
+		</p>
+	</section>
+
+	<section class={`${rowGap} grid grid-cols-1 ${gap} sm:grid-cols-2`} aria-label="Book spreads">
+		{
+			content.spreads.slice(0, 2).map((image) => (
+				<figure class="m-0 overflow-hidden">
+					<img
+						src={image.src}
+						alt={image.alt}
+						class="block h-auto w-full"
+						width="588"
+						height="441"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			))
+		}
+	</section>
+
+	<section class={`${rowGap} grid grid-cols-1 ${gap} sm:grid-cols-2`} aria-label="Book spreads continued">
+		{
+			content.spreads.slice(2, 4).map((image) => (
+				<figure class="m-0 overflow-hidden">
+					<img
+						src={image.src}
+						alt={image.alt}
+						class="block h-auto w-full"
+						width="588"
+						height="441"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			))
+		}
+	</section>
+
+	<section class={rowGap} aria-label="Feature spread">
+		<figure class="m-0 overflow-hidden">
+			<img
+				src={content.feature.src}
+				alt={content.feature.alt}
+				class="block h-auto w-full"
+				width="1200"
+				height="900"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+	</section>
+
+	<section class={`${rowGap} grid grid-cols-1 ${gap} sm:grid-cols-2`} aria-label="Closing spreads">
+		{
+			content.spreads.slice(4, 6).map((image) => (
+				<figure class="m-0 overflow-hidden">
+					<img
+						src={image.src}
+						alt={image.alt}
+						class="block h-auto w-full"
+						width="588"
+						height="441"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			))
+		}
+	</section>
+</div>

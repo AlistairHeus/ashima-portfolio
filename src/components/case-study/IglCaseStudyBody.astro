@@ -1,0 +1,677 @@
+---
+/**
+ * IGL rebrand body — narrative sections after the shared landing.
+ * Built section-by-section to match Figma Project 02.
+ *
+ * Brand Today + Problem Statement share one composition: the framed
+ * logo straddles the cream → mint band seam (same bridge idea as Mythila).
+ */
+import type { IglCaseStudyContent } from "../../data/case-studies";
+import IglWhiteboardFrame from "./IglWhiteboardFrame.astro";
+
+interface Props {
+	readonly content: IglCaseStudyContent;
+}
+
+const { content } = Astro.props;
+const {
+	brandToday,
+	problemStatement,
+	workshop,
+	bigInsights,
+	brandCode,
+	archetypes,
+	directions,
+	concepts,
+	finalDirection,
+	closing,
+} = content;
+---
+
+<div class="igl-body">
+	{
+		/*
+	  Brand Today sits above; mint problem band tucks under the logo’s
+	  bottom edge so the card bridges both sections like Figma.
+	*/
+	}
+	<div class="relative mt-10 md:mt-14">
+		<section
+			class="relative z-[1] mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)]"
+			aria-labelledby="igl-brand-today-title"
+		>
+			{/* Extra inset vs hero/intro — Figma pulls this block inward */}
+			<div class="px-6 md:px-20">
+				<div
+					class="grid grid-cols-1 items-start gap-8 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)] md:gap-10 lg:gap-12"
+				>
+					<div
+						class="relative z-[1] flex flex-col gap-4 bg-canvas pb-6 md:max-w-[24rem] md:pt-2 md:pb-8"
+					>
+						<h2
+							id="igl-brand-today-title"
+							class="type-label-lg text-project-green"
+						>
+							{brandToday.title}
+						</h2>
+
+						<p class="type-body text-ink">
+							{brandToday.lead}
+							<strong class="font-bold"
+								>{brandToday.emphasis}</strong
+							>
+						</p>
+
+						<ul
+							class="m-0 mt-2 list-none space-y-1 p-0 font-hand text-lg leading-6 text-[#197300]"
+						>
+							{
+								brandToday.critiques.map((critique) => (
+									<li>
+										<span aria-hidden="true">→ </span>
+										{critique}
+									</li>
+								))
+							}
+						</ul>
+					</div>
+
+					<figure
+						class="relative z-[2] m-0 mx-auto w-full max-w-[29.5rem] md:mx-0 md:justify-self-end"
+					>
+						<img
+							src={brandToday.logoCard.src}
+							alt={brandToday.logoCard.alt}
+							class="block h-auto w-full"
+							width="471"
+							height="383"
+							loading="lazy"
+							decoding="async"
+						/>
+					</figure>
+				</div>
+			</div>
+		</section>
+
+		{
+			/*
+		  Figma: band starts just below Brand Today copy; only the logo’s
+		  bottom ~65px straddles mint. Keep -mt modest so text stays on canvas.
+		*/
+		}
+		<section
+			class="relative z-0 -mt-4 bg-[#d9e7dd] md:-mt-[clamp(2.75rem,5vw,4.25rem)]"
+			aria-labelledby="igl-problem-title"
+		>
+			<div
+				class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,4vw,3.25rem)] md:py-[clamp(3rem,5vw,4.5rem)]"
+			>
+				<div class="px-6 md:px-20">
+					<h2
+						id="igl-problem-title"
+						class="type-label-lg text-project-green"
+					>
+						{problemStatement.title}
+					</h2>
+
+					<p
+						class="mt-3 max-w-[49.5rem] font-body text-[clamp(1.125rem,1.5vw,1.5rem)] leading-[1.35] text-[#377c34] md:mt-4"
+					>
+						{
+							problemStatement.body.map((part) =>
+								part.bold ? (
+									<strong class="font-bold">
+										{part.text}
+									</strong>
+								) : (
+									part.text
+								),
+							)
+						}
+					</p>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	{/* Section 4 — Stakeholder Workshop (HTML text + precomposed collage) */}
+	<section
+		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		aria-labelledby="igl-workshop-title"
+	>
+		<IglWhiteboardFrame label="Stakeholder workshop whiteboard">
+			{
+				/*
+			  Shared 88% stage so copy + collage share Figma coordinates —
+			  text sits in the collage’s clear top-left, not flush to the frame.
+			*/
+			}
+			<div class="relative size-full min-h-0 flex-1 bg-white">
+				<div
+					class="absolute left-1/2 top-1/2 h-[88%] w-[88%] -translate-x-1/2 -translate-y-1/2"
+				>
+					<img
+						src={workshop.collage.src}
+						alt={workshop.collage.alt}
+						class="pointer-events-none absolute inset-0 size-full object-contain object-center"
+						width="865"
+						height="720"
+						loading="lazy"
+						decoding="async"
+					/>
+
+					<div
+						class="relative z-[1] max-w-[min(100%,30rem)] pt-1 ml-20 pr-4 md:pt-2"
+					>
+						<h2
+							id="igl-workshop-title"
+							class="font-display whitespace-nowrap text-[clamp(1.35rem,2.4vw,2.5rem)] font-normal leading-tight text-ink"
+						>
+							{workshop.title}
+						</h2>
+
+						<p class="type-body mt-3 text-ink">{workshop.lead}</p>
+
+						<ul
+							class="m-0 mt-3 list-disc space-y-0.5 pl-5 type-body text-ink marker:text-[#186616]"
+						>
+							{
+								workshop.activities.map((activity) => (
+									<li>
+										<strong class="font-bold text-[#186616]">
+											{activity.label}
+										</strong>{" "}
+										{activity.detail}
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</IglWhiteboardFrame>
+	</section>
+
+	{
+		/* Section 5 — Big Insights (mint band; HTML titles/captions + photo panels) */
+	}
+	<section
+		class="mt-12 bg-[#d9e7dd] md:mt-16"
+		aria-labelledby="igl-big-insights-title"
+	>
+		<div
+			class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,4vw,3.25rem)] md:py-[clamp(2.75rem,5vw,4rem)]"
+		>
+			{
+				/*
+			  Figma (1200 content): title @180, lead @486 (w534), equal ~180 side
+			  margins — not justify-between. Title + lead share a vertical center.
+			*/
+			}
+			<div
+				class="flex flex-col gap-4 px-6 md:flex-row md:items-center md:gap-[6.5rem] md:px-[11.25rem]"
+			>
+				<h2
+					id="igl-big-insights-title"
+					class="type-label-lg shrink-0 text-project-green"
+				>
+					{bigInsights.title}
+				</h2>
+
+				<p
+					class="max-w-[33.375rem] font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-ink"
+				>
+					{
+						bigInsights.lead.map((part) =>
+							part.bold ? (
+								<strong class="font-bold">{part.text}</strong>
+							) : (
+								part.text
+							),
+						)
+					}
+				</p>
+			</div>
+
+			{/* Cards span full content width (Figma Frame 6 @ x≈360) */}
+			<ul
+				class="m-0 mt-8 grid list-none grid-cols-1 gap-x-6 gap-y-10 p-0 sm:grid-cols-2 md:mt-10 md:gap-x-6 md:gap-y-10"
+			>
+				{
+					bigInsights.cards.map((card) => (
+						<li class="flex flex-col gap-3">
+							<figure class="m-0 aspect-[588/246] overflow-hidden">
+								<img
+									src={card.image.src}
+									alt={card.image.alt}
+									class="size-full object-cover"
+									width="888"
+									height="337"
+									loading="lazy"
+									decoding="async"
+								/>
+							</figure>
+
+							<div class="text-center">
+								<h3 class="font-label text-[clamp(1.125rem,1.8vw,1.625rem)] font-bold uppercase leading-tight tracking-[0.18em] text-project-green-bright">
+									{card.title}
+								</h3>
+								<p class="mt-1.5 font-body text-[clamp(1rem,1.4vw,1.25rem)] leading-8 text-ink">
+									{card.caption}
+								</p>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	{
+		/* Section 6 — Brand Code / Core concept (HTML panels over field texture) */
+	}
+	<section class="mt-12 md:mt-16" aria-labelledby="igl-brand-code-title">
+		<div class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)]">
+			<p
+				id="igl-brand-code-title"
+				class="mx-auto max-w-[49.25rem] px-6 text-center font-body text-[clamp(1.125rem,1.5vw,1.5rem)] leading-[1.35] text-ink md:px-0"
+			>
+				{
+					brandCode.intro.map((part) =>
+						part.bold ? (
+							<strong class="font-bold text-project-green">
+								{part.text}
+							</strong>
+						) : (
+							<span class="text-[#377c34]">{part.text}</span>
+						),
+					)
+				}
+			</p>
+		</div>
+
+		{
+			/* Full-bleed field; cream core bar + mint panels (narrow | wide | wide | narrow) */
+		}
+		<div class="relative mt-8 overflow-hidden md:mt-10">
+			<img
+				src={brandCode.background.src}
+				alt=""
+				aria-hidden="true"
+				class="pointer-events-none absolute inset-0 size-full object-cover"
+				width="1920"
+				height="538"
+				loading="lazy"
+				decoding="async"
+			/>
+
+			<div
+				class="relative mx-auto max-w-[83.375rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,4vw,3.5rem)]"
+			>
+				<div
+					class="flex flex-col items-center gap-2 bg-canvas px-5 py-4 sm:flex-row sm:justify-center sm:gap-6 md:gap-8 md:px-10 md:py-5"
+				>
+					<p class="type-label-lg shrink-0 text-project-green">
+						{brandCode.coreLabel}
+					</p>
+					<p
+						class="font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-medium uppercase leading-tight text-project-green-bright"
+					>
+						{brandCode.coreConcept}
+					</p>
+				</div>
+
+				<ul
+					class="m-0 mt-3 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2 lg:grid-cols-[minmax(0,12.4rem)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,12.4rem)] lg:gap-[1.5rem]"
+				>
+					{
+						brandCode.panels.map((panel) => (
+							<li class="flex min-h-[15.625rem] flex-col bg-[#edffed]/90 px-4 py-5 text-center md:px-5 md:py-6">
+								<h3 class="font-label text-[clamp(0.9375rem,1.2vw,1.25rem)] font-bold uppercase tracking-[0.14em] text-project-green">
+									{panel.title}
+								</h3>
+
+								{panel.kind === "list" && panel.items ? (
+									<ul class="m-0 mt-4 list-none space-y-1.5 p-0 font-body text-[clamp(1rem,1.2vw,1.125rem)] leading-[1.65] text-ink">
+										{panel.items.map((item) => (
+											<li>{item}</li>
+										))}
+									</ul>
+								) : (
+									<p class="mt-4 text-left font-body text-[clamp(0.9375rem,1.1vw,1.125rem)] leading-[1.35] text-ink md:text-center">
+										{panel.body}
+									</p>
+								)}
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	{/* Section 7 — Archetypes (icon + label stack | bullets) */}
+	<section
+		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		aria-label="Brand archetypes"
+	>
+		<div class="px-6 md:px-12 lg:px-16">
+			<div
+				class="grid grid-cols-1 items-center gap-6 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] md:gap-10 lg:gap-16"
+			>
+				<div class="flex items-center gap-4 md:gap-5">
+					<img
+						src={archetypes.primary.icon.src}
+						alt=""
+						aria-hidden="true"
+						class="size-[clamp(4rem,7vw,5.5rem)] shrink-0 object-contain"
+						width="100"
+						height="100"
+						loading="lazy"
+						decoding="async"
+					/>
+					<div>
+						<p
+							class="font-label text-[clamp(0.875rem,1.1vw,1.125rem)] uppercase tracking-[0.14em] text-[#377c34]"
+						>
+							{archetypes.primary.label}
+						</p>
+						<h2
+							class="mt-1 font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-bold uppercase leading-tight text-project-green-bright"
+						>
+							{archetypes.primary.name}
+						</h2>
+					</div>
+				</div>
+
+				<ul
+					class="m-0 list-disc space-y-2 pl-5 font-body text-[clamp(1rem,1.2vw,1.125rem)] leading-[1.4] text-ink marker:text-ink"
+				>
+					{archetypes.primary.points.map((point) => <li>{point}</li>)}
+				</ul>
+			</div>
+
+			<div
+				class="my-8 border-t border-outline/45 md:my-10"
+				role="presentation"
+			>
+			</div>
+
+			<div
+				class="grid grid-cols-1 items-center gap-6 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] md:gap-10 lg:gap-16"
+			>
+				<div class="flex items-center gap-4 md:gap-5">
+					<img
+						src={archetypes.secondary.icon.src}
+						alt=""
+						aria-hidden="true"
+						class="size-[clamp(4rem,7vw,5.5rem)] shrink-0 object-contain"
+						width="114"
+						height="114"
+						loading="lazy"
+						decoding="async"
+					/>
+					<div>
+						<p
+							class="font-label text-[clamp(0.875rem,1.1vw,1.125rem)] uppercase tracking-[0.14em] text-[#377c34]"
+						>
+							{archetypes.secondary.label}
+						</p>
+						<h2
+							class="mt-1 font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-bold uppercase leading-tight text-project-green-bright"
+						>
+							{archetypes.secondary.name}
+						</h2>
+					</div>
+				</div>
+
+				<ul
+					class="m-0 list-disc space-y-2 pl-5 font-body text-[clamp(1rem,1.2vw,1.125rem)] leading-[1.4] text-ink marker:text-ink"
+				>
+					{
+						archetypes.secondary.points.map((point) => (
+							<li>{point}</li>
+						))
+					}
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	{/* Section 8 — From Strategy to Design (mint band) + logo strip */}
+	<section class="mt-12 md:mt-16" aria-labelledby="igl-directions-title">
+		<div class="bg-[#d9e7dd]">
+			<div
+				class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(1.75rem,3.5vw,2.75rem)]"
+			>
+				<div
+					class="flex flex-col gap-4 px-6 md:flex-row md:items-center md:justify-between md:gap-10 md:px-12 lg:px-20"
+				>
+					<h2
+						id="igl-directions-title"
+						class="type-label-lg shrink-0 text-project-green"
+					>
+						{directions.title}
+					</h2>
+					<p
+						class="max-w-[30.375rem] font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-project-green"
+					>
+						{directions.lead}
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<figure class="mx-auto w-full bg-white">
+			<img
+				src={directions.strip.src}
+				alt={directions.strip.alt}
+				class="block mx-auto px-6 py-6 md:px-20 md:py-8"
+				width="1200"
+				height="523"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+	</section>
+
+	{/* Sections 9–12 — Concepts 1–4 */}
+	{
+		concepts.map((concept, index) => (
+			<section
+				class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+				aria-labelledby={`igl-concept-${index + 1}-title`}
+			>
+				<div class="border-t border-outline/45 pt-8 md:pt-10">
+					<div class="grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,1fr)_minmax(12rem,22rem)] md:gap-8 lg:gap-10">
+						<div class="px-1 md:px-2">
+							<p class="font-label text-[clamp(0.875rem,1.1vw,1.25rem)] font-black uppercase tracking-[0.14em] text-[#79b477]">
+								{concept.eyebrow}
+							</p>
+							<h2
+								id={`igl-concept-${index + 1}-title`}
+								class="mt-2 font-display text-[clamp(1.75rem,3vw,2.75rem)] font-normal leading-tight text-ink"
+							>
+								{concept.title}
+							</h2>
+							<p class="mt-4 max-w-[36.75rem] font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-ink">
+								{concept.description}
+							</p>
+						</div>
+
+						<figure class="m-0 mx-auto w-full max-w-[22rem] md:mx-0 md:justify-self-end">
+							<img
+								src={concept.sticky.src}
+								alt={concept.sticky.alt}
+								class="block h-auto w-full"
+								width="375"
+								height="204"
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+					</div>
+
+					<figure class="m-0 mt-8 md:mt-10">
+						<img
+							src={concept.gallery.src}
+							alt={concept.gallery.alt}
+							class="block h-auto w-full"
+							width="1200"
+							height="740"
+							loading="lazy"
+							decoding="async"
+						/>
+					</figure>
+				</div>
+			</section>
+		))
+	}
+
+	{/* Section 13 — Final direction */}
+	<section class="mt-12 md:mt-16" aria-labelledby="igl-final-title">
+		<div class="bg-[#d9e7dd]">
+			<div
+				class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(1.75rem,3.5vw,2.75rem)]"
+			>
+				<div
+					class="flex flex-col gap-4 px-6 md:flex-row md:items-center md:justify-between md:gap-10 md:px-12 lg:px-20"
+				>
+					<h2
+						id="igl-final-title"
+						class="type-label-lg shrink-0 text-project-green"
+					>
+						{finalDirection.title}
+					</h2>
+					<p
+						class="max-w-[30.375rem] font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-project-green"
+					>
+						{finalDirection.lead}
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div
+			class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pt-10 pb-4 md:pt-12"
+		>
+			<div
+				class="grid grid-cols-1 items-start gap-8 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_minmax(12rem,22rem)] md:items-center md:gap-6 lg:gap-8"
+			>
+				<div class="flex flex-col items-center text-center">
+					<p
+						class="font-label text-[clamp(0.875rem,1.1vw,1.25rem)] uppercase tracking-[0.14em] text-project-green"
+					>
+						{finalDirection.beforeLabel}
+					</p>
+					<figure class="m-0 mt-3 w-full max-w-[21rem]">
+						<img
+							src={finalDirection.before.src}
+							alt={finalDirection.before.alt}
+							class="mx-auto block h-auto w-full"
+							width="339"
+							height="311"
+							loading="lazy"
+							decoding="async"
+						/>
+					</figure>
+				</div>
+
+				<p
+					class="hidden self-center text-center font-display text-[clamp(2rem,4vw,3.5rem)] leading-none text-project-green md:block"
+					aria-hidden="true"
+				>
+					→
+				</p>
+
+				<div class="flex flex-col items-center text-center">
+					<p
+						class="font-label text-[clamp(0.875rem,1.1vw,1.25rem)] uppercase tracking-[0.14em] text-project-green"
+					>
+						{finalDirection.afterLabel}
+					</p>
+					<figure class="m-0 mt-3 w-full max-w-[22rem]">
+						<img
+							src={finalDirection.after.src}
+							alt={finalDirection.after.alt}
+							class="mx-auto block h-auto w-full"
+							width="378"
+							height="332"
+							loading="lazy"
+							decoding="async"
+						/>
+					</figure>
+				</div>
+
+				<figure
+					class="m-0 mx-auto w-full max-w-[22rem] self-center md:mx-0 md:justify-self-end"
+				>
+					<img
+						src={finalDirection.sticky.src}
+						alt={finalDirection.sticky.alt}
+						class="block h-auto w-full"
+						width="379"
+						height="239"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			</div>
+		</div>
+	</section>
+
+	{/* Section 14 — Brand Guidelines closing */}
+	<section
+		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pb-4 md:mt-16 md:pb-8"
+		aria-labelledby="igl-closing-title"
+	>
+		<div
+			class="grid grid-cols-1 items-start gap-10 md:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] md:gap-12 lg:gap-16"
+		>
+			<div>
+				<h2
+					id="igl-closing-title"
+					class="type-label-lg text-project-green"
+				>
+					{closing.title}
+				</h2>
+
+				<p
+					class="mt-5 font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-ink"
+				>
+					{closing.lead}
+				</p>
+
+				<p
+					class="mt-5 font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-ink"
+				>
+					{closing.subtext}
+				</p>
+
+				<p
+					class="mt-6 font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-medium uppercase leading-tight text-project-green-bright"
+				>
+					{closing.brandIdea}
+				</p>
+
+				<p
+					class="mt-6 font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-ink"
+				>
+					{closing.followUp}
+				</p>
+			</div>
+
+			<figure class="m-0 w-full">
+				<img
+					src={closing.visual.src}
+					alt={closing.visual.alt}
+					class="block h-auto w-full"
+					width="767"
+					height="594"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+		</div>
+	</section>
+</div>

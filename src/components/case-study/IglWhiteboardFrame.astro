@@ -1,0 +1,27 @@
+---
+/**
+ * IGL workshop whiteboard — Tailwind beveled frame (no SVG).
+ * Outer size matches Figma: 1200 × 850.
+ */
+interface Props {
+	readonly class?: string;
+	readonly label?: string;
+}
+
+const { class: className = '', label = 'Whiteboard' } = Astro.props;
+---
+
+<figure
+	class:list={[
+		'm-0 box-border flex w-full flex-col overflow-hidden bg-white',
+		'aspect-[1200/850]',
+		/* Black bevel: lit top/left, shaded right/bottom */
+		'border-[14px] border-solid md:border-[20px] lg:border-[28px]',
+		'border-t-[#3a3a3a] border-l-[#2f2f2f] border-r-[#1a1a1a] border-b-[#111111]',
+		'shadow-[inset_0_1px_0_rgb(255_255_255/0.12),inset_0_-1px_2px_rgb(0_0_0/0.35),0_12px_40px_rgb(0_0_0/0.35),0_4px_12px_rgb(0_0_0/0.2)]',
+		className,
+	]}
+	aria-label={label}
+>
+	<slot />
+</figure>
