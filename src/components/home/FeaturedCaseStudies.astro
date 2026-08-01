@@ -98,21 +98,26 @@ const tabSlots = [
 >
 	{/* Tall track creates scroll distance; stage sticks while folders stack */}
 	<div class="featured__track relative h-[400vh]" data-featured-track>
-		{/* overflow-hidden clips folders rising from below the viewport */}
+		{/*
+		  Overflow clips folders rising from below the viewport.
+		  Heading sits in a top band; folder centers in the remaining space so
+		  top/bottom gaps around the folder stay balanced.
+		*/}
 		<div
-			class="featured__sticky sticky top-0 flex min-h-svh flex-col justify-center overflow-hidden px-[clamp(1rem,3vw,2rem)] py-16 md:py-24"
+			class="featured__sticky sticky top-0 flex min-h-svh flex-col overflow-hidden px-[clamp(1rem,3vw,2rem)] pt-6 pb-8 md:pt-8 md:pb-10"
 			data-featured-pin
 		>
-			<div class="mx-auto w-full max-w-[75rem]">
+			<div class="mx-auto flex w-full max-w-[75rem] min-h-0 flex-1 flex-col">
 				<h2
 					id="featured-heading"
-					class="type-h5 text-center text-ink uppercase"
+					class="type-h5 shrink-0 text-center text-ink uppercase"
 				>
 					Featured case studies
 				</h2>
 
+				<div class="flex min-h-0 flex-1 flex-col justify-center py-4 md:py-5">
 				<div
-					class="featured__stage relative mx-auto mt-10 max-w-[92.5rem] md:mt-14"
+					class="featured__stage relative mx-auto w-full max-w-[92.5rem]"
 					data-featured-stage
 				>
 					{/* overflow-visible so cards aren’t clipped inside the folder frame */}
@@ -227,6 +232,7 @@ const tabSlots = [
 							))
 						}
 					</div>
+				</div>
 				</div>
 			</div>
 		</div>
