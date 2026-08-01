@@ -1,0 +1,123 @@
+---
+/**
+ * Other projects — list + stacked Polaroids (Figma home, ~149:921).
+ * Background continues #FDFBF9 from Featured (no dots).
+ */
+import Chip from '../Chip.astro';
+import Polaroid from '../Polaroid.astro';
+
+interface OtherProject {
+	readonly title: string;
+	readonly chips: readonly string[];
+	readonly href?: string;
+	readonly muted?: boolean;
+}
+
+const projects: readonly OtherProject[] = [
+	{
+		title: 'Maahi: Logo Design',
+		chips: ['Logo Design', 'Narrative-driven design', 'Brand identity development'],
+		href: '/work',
+	},
+	{
+		title: 'Air India: Customer Experience',
+		chips: ['Systems thinking', 'Information Hierarchy', 'Brand Translation'],
+		href: '/work',
+		muted: true,
+	},
+	{
+		title: 'Royal Enfield TGHE Book',
+		chips: ['Editorial design', 'Information hierarchy', 'Visual storytelling'],
+		href: '/work',
+		muted: true,
+	},
+	{
+		title: 'Vivan Hospital: Print & Digital Design',
+		chips: ['Brand Translation', 'Print Media', 'Digitization'],
+		href: '/work',
+		muted: true,
+	},
+	{
+		title: 'Reconnect: Researching Inclusive Play',
+		chips: ['Design Research', 'Inclusive Design', 'User Research'],
+		href: '/work',
+		muted: true,
+	},
+	{
+		title: 'Logofolio',
+		chips: ['Logo Design', 'Visual Storytelling', 'Concept Development'],
+		href: '/work',
+		muted: true,
+	},
+];
+
+const stack = [
+	{ rotate: -6, className: 'left-[8%] top-[12%] z-[1] w-[78%]' },
+	{ rotate: 4, className: 'left-[14%] top-[6%] z-[2] w-[78%]' },
+	{ rotate: -2, className: 'left-[4%] top-[18%] z-[3] w-[82%]' },
+	{ rotate: 3, className: 'left-[18%] top-[10%] z-[4] w-[80%]' },
+	{ rotate: -1, className: 'left-[10%] top-[14%] z-[5] w-[84%]' },
+] as const;
+---
+
+<section
+	class="other-projects bg-surface-warm px-[clamp(1rem,3vw,2rem)] pb-20 pt-6 md:pb-28 md:pt-10"
+	aria-labelledby="other-projects-heading"
+>
+	<div class="mx-auto max-w-[75rem]">
+		<h2
+			id="other-projects-heading"
+			class="type-h5 text-center text-ink uppercase"
+		>
+			Other projects
+		</h2>
+
+		<div
+			class="mt-10 grid items-center gap-12 lg:mt-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-16"
+		>
+			<ul class="m-0 list-none divide-y divide-muted/30 border-y border-muted/30 p-0">
+				{
+					projects.map((project) => (
+						<li class:list={['py-5', project.muted && 'opacity-60']}>
+							{project.href ? (
+								<a
+									href={project.href}
+									class="block text-heading no-underline transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+								>
+									<p class="type-h6">{project.title}</p>
+								</a>
+							) : (
+								<p class="type-h6 text-heading">{project.title}</p>
+							)}
+							<div class="mt-3 flex flex-wrap gap-2">
+								{project.chips.map((chip) => (
+									<Chip label={chip} muted={project.muted} />
+								))}
+							</div>
+						</li>
+					))
+				}
+			</ul>
+
+			<div
+				class="relative mx-auto aspect-[4/5] w-full max-w-[34rem]"
+				aria-hidden="true"
+			>
+				{
+					stack.map((card) => (
+						<div class:list={['absolute', card.className]}>
+							<Polaroid
+								imageSrc="/images/home/polaroid-stack-1.png"
+								imageAlt=""
+								variant="classic"
+								rotate={card.rotate}
+								aspectRatio="442 / 408"
+								class="max-w-none w-full"
+							/>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</section>

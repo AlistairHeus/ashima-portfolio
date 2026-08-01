@@ -1,0 +1,255 @@
+---
+/**
+ * Featured case studies — sticky scroll folder stack.
+ * Each folder carries its own tab label + content; tabs jump scroll to that step.
+ * Figma Group 149:898. Folder assets: /images/home/folder-{1..4}.svg
+ */
+import Chip from '../Chip.astro';
+
+interface FeaturedProject {
+	readonly id: string;
+	readonly label: string;
+	readonly folderSrc: string;
+	readonly labelColor: string;
+	readonly titleColor: string;
+	readonly title: string;
+	readonly description: string;
+	readonly imageSrc: string;
+	readonly imageAlt: string;
+	readonly chips: readonly string[];
+	readonly href: string;
+}
+
+const projects: readonly FeaturedProject[] = [
+	{
+		id: '1',
+		label: 'PROJECT 1',
+		folderSrc: '/images/home/folder-1.svg',
+		labelColor: '#3b576e',
+		titleColor: '#4a3a06',
+		title: 'Rebranding Indraprastha Gas Limited',
+		description:
+			'Reimagining a legacy energy brand through strategy-led identity design, balancing familiarity with a vision for sustainable growth.',
+		imageSrc: '/images/home/featured-igl.png',
+		imageAlt: 'Indraprastha Gas Limited station with new brand identity',
+		chips: ['Brand Strategy', 'Visual Identity', 'Brand Systems'],
+		href: '/work',
+	},
+	{
+		id: '2',
+		label: 'PROJECT 2',
+		folderSrc: '/images/home/folder-2.svg',
+		labelColor: '#7c340a',
+		titleColor: '#7c340a',
+		title: 'Featured case study',
+		description:
+			'Additional featured work will live here — tap through the folders to explore.',
+		imageSrc: '/images/home/featured-igl.png',
+		imageAlt: '',
+		chips: ['Brand Strategy', 'Visual Identity'],
+		href: '/work',
+	},
+	{
+		id: '3',
+		label: 'PROJECT 3',
+		folderSrc: '/images/home/folder-3.svg',
+		labelColor: '#4a3a06',
+		titleColor: '#4a3a06',
+		title: 'Featured case study',
+		description:
+			'Additional featured work will live here — tap through the folders to explore.',
+		imageSrc: '/images/home/featured-igl.png',
+		imageAlt: '',
+		chips: ['Editorial Design', 'Typography'],
+		href: '/work',
+	},
+	{
+		id: '4',
+		label: 'PROJECT 4',
+		folderSrc: '/images/home/folder-4.svg',
+		labelColor: '#2e3716',
+		titleColor: '#2e3716',
+		title: 'Featured case study',
+		description:
+			'Additional featured work will live here — tap through the folders to explore.',
+		imageSrc: '/images/home/featured-igl.png',
+		imageAlt: '',
+		chips: ['Design Research', 'Systems'],
+		href: '/work',
+	},
+];
+
+/**
+ * Tab hit-areas aligned to each folder SVG tab (viewBox width 1495).
+ * Vertically: tab strip is ~0.8%–6.6% of folder height.
+ */
+const tabSlots = [
+	{ left: '1.9%', width: '22.3%' },
+	{ left: '23.8%', width: '23.1%' },
+	{ left: '47.2%', width: '23.2%' },
+	{ left: '70.6%', width: '23.1%' },
+] as const;
+---
+
+<section
+	class="featured bg-surface-warm"
+	aria-labelledby="featured-heading"
+	data-featured
+>
+	{/* Tall track creates scroll distance; stage sticks while folders stack */}
+	<div class="featured__track relative h-[400vh]" data-featured-track>
+		{/* overflow-hidden clips folders rising from below the viewport */}
+		<div
+			class="featured__sticky sticky top-0 flex min-h-svh flex-col justify-center overflow-hidden px-[clamp(1rem,3vw,2rem)] py-16 md:py-24"
+			data-featured-pin
+		>
+			<div class="mx-auto w-full max-w-[75rem]">
+				<h2
+					id="featured-heading"
+					class="type-h5 text-center text-ink uppercase"
+				>
+					Featured case studies
+				</h2>
+
+				<div
+					class="featured__stage relative mx-auto mt-10 max-w-[92.5rem] md:mt-14"
+					data-featured-stage
+				>
+					{/* overflow-visible so cards aren’t clipped inside the folder frame */}
+					<div class="relative w-full overflow-visible pt-[61%]">
+						{
+							projects.map((project, index) => (
+								<article
+									id={`featured-card-${project.id}`}
+									data-featured-card={project.id}
+									data-featured-index={index}
+									class="featured__card absolute inset-0 size-full"
+									style={`z-index: ${index + 1}; transform: translate3d(0, ${index === 0 ? 0 : 100}vh, 0);`}
+									aria-hidden={index === 0 ? 'false' : 'true'}
+								>
+									<img
+										src={project.folderSrc}
+										alt=""
+										aria-hidden="true"
+										class="pointer-events-none absolute inset-0 size-full object-fill select-none"
+									/>
+
+									{/* Visual tab label — travels with this folder (not the click target) */}
+									<span
+										aria-hidden="true"
+										data-featured-tab-label={project.id}
+										class="featured__tab pointer-events-none absolute top-[0.85%] z-20 flex h-[5.7%] items-center justify-center truncate px-1 font-label font-bold leading-none tracking-[0.18em] uppercase"
+										style={`left: ${tabSlots[index].left}; width: ${tabSlots[index].width}; color: ${project.labelColor}`}
+									>
+										{project.label}
+									</span>
+
+									<div class="absolute top-[14%] right-[6%] bottom-[6%] left-[6%] overflow-visible md:top-[16%] md:right-[8%] md:bottom-[8%] md:left-[8%]">
+										<div class="grid h-full items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12 xl:gap-16">
+											<div class="relative z-10 mx-auto w-full max-w-[43rem]">
+												<div class="overflow-hidden rounded-xl shadow-[0px_1px_6.6px_0_rgba(0,0,0,0.25)]">
+													<img
+														src={project.imageSrc}
+														alt={project.imageAlt}
+														class="aspect-square size-full object-cover"
+														loading={index === 0 ? 'eager' : 'lazy'}
+														decoding="async"
+													/>
+												</div>
+												<img
+													src="/images/home/kraft-tape.png"
+													alt=""
+													aria-hidden="true"
+													class="pointer-events-none absolute -top-6 -right-4 z-20 w-[28%] max-w-[10rem] -rotate-[140deg] select-none md:-top-5 md:-right-10"
+												/>
+												<img
+													src="/images/home/kraft-tape.png"
+													alt=""
+													aria-hidden="true"
+													class="pointer-events-none absolute -bottom-4 -left-4 z-20 w-[28%] max-w-[10rem] rotate-[40deg] select-none md:-bottom-5 md:-left-10"
+												/>
+											</div>
+
+											<div class="min-w-0 px-1 pb-4 lg:px-0 lg:pb-0">
+												<h3
+													class="font-display text-[clamp(1.75rem,3vw+0.5rem,3.5rem)] font-bold leading-[1.15] tracking-normal"
+													style={`color: ${project.titleColor}`}
+												>
+													{project.title}
+												</h3>
+												<p class="type-body mt-5 max-w-md text-ink">
+													{project.description}
+												</p>
+												<div class="mt-7 flex flex-wrap gap-2">
+													{project.chips.map((chip) => (
+														<Chip label={chip} />
+													))}
+												</div>
+												<a href={project.href} class="sr-only">
+													View {project.title} case study
+												</a>
+											</div>
+										</div>
+									</div>
+								</article>
+							))
+						}
+					</div>
+
+					{/*
+					  Invisible hit targets over tab slots. Enabled only after that folder
+					  has landed — visible titles live on each card and travel with it.
+					*/}
+					<div
+						class="pointer-events-none absolute top-[0.85%] right-0 left-0 z-40 h-[5.7%]"
+						role="tablist"
+						aria-label="Featured projects"
+					>
+						{
+							projects.map((project, index) => (
+								<button
+									type="button"
+									role="tab"
+									id={`featured-tab-${project.id}`}
+									aria-selected={index === 0 ? 'true' : 'false'}
+									aria-controls={`featured-card-${project.id}`}
+									aria-label={project.label}
+									aria-disabled={index === 0 ? 'false' : 'true'}
+									data-featured-tab={project.id}
+									data-featured-tab-index={index}
+									tabindex={index === 0 ? 0 : -1}
+									class="featured__tab absolute top-0 h-full cursor-pointer truncate px-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-default"
+									style={`left: ${tabSlots[index].left}; width: ${tabSlots[index].width}; pointer-events: ${index === 0 ? 'auto' : 'none'}`}
+									disabled={index !== 0}
+								>
+									<span class="sr-only">{project.label}</span>
+								</button>
+							))
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.featured__stage {
+		container-type: inline-size;
+	}
+
+	/* Figma: Lato Bold 24 / tracking 4.32 on a ~1480px folder */
+	.featured__tab {
+		font-size: clamp(0.5625rem, 1.62cqi, 1.5rem);
+	}
+
+	.featured__card {
+		will-change: transform;
+	}
+</style>
+
+<script>
+	import { initFeaturedScroll } from '../../scripts/featured-scroll';
+
+	initFeaturedScroll();
+</script>
