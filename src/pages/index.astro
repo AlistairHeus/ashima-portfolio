@@ -12,7 +12,10 @@ import OtherProjects from '../components/home/OtherProjects.astro';
 >
 	<main>
 		<Hero />
-		<FeaturedCaseStudies />
-		<OtherProjects />
+		{/* Opaque panels slide over the fixed hero */}
+		<div class="relative z-10">
+			<FeaturedCaseStudies />
+			<OtherProjects />
+		</div>
 	</main>
 </Layout>

@@ -1,6 +1,8 @@
 ---
 /**
- * Home hero — static full-viewport cream section with grid + name lockup.
+ * Home hero — fixed full-viewport cream section with grid + name lockup.
+ * Fixed (not sticky) so it never moves; a spacer keeps scroll height.
+ * Following sections sit above and slide over it.
  * Name letters use a magnetic cursor effect (push + weight) inspired by
  * https://www.nithinmwarrier.com/
  */
@@ -26,7 +28,7 @@ const wordRanges = nameLines.map((line, lineIndex) => {
 ---
 
 <section
-	class="hero relative -mt-[var(--spacing-page-top)] flex h-screen w-full flex-col overflow-hidden bg-canvas"
+	class="hero fixed inset-0 z-0 flex h-svh w-full flex-col overflow-hidden bg-canvas"
 	aria-labelledby="hero-heading"
 >
 	<div
@@ -101,7 +103,24 @@ const wordRanges = nameLines.map((line, lineIndex) => {
 			<div class="h-px flex-1 origin-right bg-[#c4bbb4]"></div>
 		</div>
 	</div>
+
+	{/* Scroll-linked dim — ramps up as following sections slide over */}
+	<div
+		class="hero-dim pointer-events-none absolute inset-0 z-20 bg-black"
+		data-hero-dim
+		aria-hidden="true"
+	></div>
 </section>
+
+{/*
+  Scroll stand-in for the fixed hero. Cancels page top inset so the first
+  viewport is exactly one screen; pointer-events none so the name stays interactive.
+*/}
+<div
+	class="pointer-events-none relative -mt-[var(--spacing-page-top)] h-svh w-full"
+	data-hero-spacer
+	aria-hidden="true"
+></div>
 
 <style>
 	.hero-name-line {
@@ -117,7 +136,42 @@ const wordRanges = nameLines.map((line, lineIndex) => {
 		text-align: center;
 		will-change: transform, font-variation-settings;
 	}
+
+	.hero-dim {
+		opacity: 0;
+		will-change: opacity;
+	}
 </style>
+
+<script>
+	(() => {
+		/** Fade a black veil over the fixed hero as its spacer scrolls away. */
+		const dim = document.querySelector('[data-hero-dim]');
+		const spacer = document.querySelector('[data-hero-spacer]');
+		if (!(dim instanceof HTMLElement) || !(spacer instanceof HTMLElement)) return;
+
+		const MAX_OPACITY = 0.55;
+		let ticking = false;
+
+		const update = () => {
+			ticking = false;
+			const rect = spacer.getBoundingClientRect();
+			const height = rect.height || window.innerHeight;
+			const progress = Math.min(1, Math.max(0, -rect.top / height));
+			dim.style.opacity = String(progress * MAX_OPACITY);
+		};
+
+		const onScroll = () => {
+			if (ticking) return;
+			ticking = true;
+			requestAnimationFrame(update);
+		};
+
+		update();
+		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('resize', onScroll, { passive: true });
+	})();
+</script>
 
 <script
 	define:vars={{
