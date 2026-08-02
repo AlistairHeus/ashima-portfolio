@@ -4,6 +4,7 @@
  * Matches Figma Project 04; text stays HTML, composed visuals are images.
  */
 import type { AksharChitraCaseStudyContent } from '../../data/case-studies';
+import IglWhiteboardFrame from './IglWhiteboardFrame.astro';
 
 interface Props {
 	readonly content: AksharChitraCaseStudyContent;
@@ -17,6 +18,7 @@ const {
 	insight,
 	process,
 	logics,
+	whiteboard,
 	pedagogy,
 	constraints,
 	impact,
@@ -349,6 +351,39 @@ const stepTitle =
 			</div>
 		</section>
 	</div>
+
+	{/* Letter-study whiteboard — after Process, before Illustration Logic */}
+	<section
+		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		aria-label="Letterform studies on the whiteboard"
+	>
+		<IglWhiteboardFrame label="Akshar Chitra letterform studies whiteboard">
+			<div class="relative size-full min-h-0 flex-1 overflow-hidden bg-[#ebe4da]">
+				<img
+					src={whiteboard.background.src}
+					alt=""
+					aria-hidden="true"
+					class="pointer-events-none absolute inset-0 size-full object-cover object-center select-none"
+					width="1145"
+					height="794"
+					loading="lazy"
+					decoding="async"
+				/>
+				{
+					whiteboard.overlays.map((overlay) => (
+						<img
+							src={overlay.image.src}
+							alt={overlay.image.alt}
+							class="pointer-events-none absolute z-[1] h-auto max-w-none object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.28)]"
+							style={`left: ${overlay.left}; top: ${overlay.top}; width: ${overlay.width};${overlay.rotate ? ` transform: rotate(${overlay.rotate});` : ''}`}
+							loading="lazy"
+							decoding="async"
+						/>
+					))
+				}
+			</div>
+		</IglWhiteboardFrame>
+	</section>
 
 	{/* Illustration logics */}
 	<section

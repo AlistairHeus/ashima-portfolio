@@ -195,6 +195,21 @@ export interface AksharChitraCaseStudyContent {
 			readonly image: CaseStudyImage;
 		}[];
 	};
+	/**
+	 * Letter-study whiteboard after Process — black beveled frame
+	 * (IglWhiteboardFrame) + sketch background + three overlay photos.
+	 */
+	readonly whiteboard: {
+		readonly background: CaseStudyImage;
+		readonly overlays: readonly {
+			readonly image: CaseStudyImage;
+			/** Percent of the board face (Figma 296:316). */
+			readonly left: string;
+			readonly top: string;
+			readonly width: string;
+			readonly rotate?: string;
+		}[];
+	};
 	readonly pedagogy: {
 		readonly photo: CaseStudyImage;
 		readonly practice: CaseStudyImage;
@@ -1239,10 +1254,12 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 						title: 'Repetition & Arrangement',
 						body: [
 							{
-								text: 'Repeating or arranging an object to construct the letterform.\n',
+								text: 'Objects repeated and arranged to create the letter.\n',
 							},
 							{ text: 'Example: ', bold: true },
-							{ text: 'अजगर (python) or हड्डी (bone)' },
+							{
+								text: 'आम (mango) or चींटी (ants) — multiple objects lined up or stacked to spell out the letter.',
+							},
 						],
 						image: {
 							src: '/images/case-studies/akshar-chitra/logic-repetition.png',
@@ -1269,10 +1286,10 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 						title: 'Abstraction & Bending',
 						body: [
 							{
-								text: 'Controlled abstraction of an object to align with letter anatomy.\n',
+								text: 'Objects abstracted and bent to fit the letterform.\n',
 							},
 							{ text: 'Example: ', bold: true },
-							{ text: 'forms bent toward letter structure while staying recognizable' },
+							{ text: 'अजगर (python) or हड्डी (bone)' },
 						],
 						image: {
 							src: '/images/case-studies/akshar-chitra/logic-abstraction.png',
@@ -1283,7 +1300,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 						title: 'Hybrid Approach',
 						body: [
 							{
-								text: 'Combination of techniques to ensure optimal legibility and visual interest.\n',
+								text: 'Combination of techniques to ensure optimal legibility and visual interest. ',
 							},
 							{ text: 'Example: ', bold: true },
 							{ text: 'घड़ी (watch/clock) or गिरगिट (chameleon)' },
@@ -1292,6 +1309,44 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 							src: '/images/case-studies/akshar-chitra/logic-hybrid.png',
 							alt: 'Hybrid approach letterform examples',
 						},
+					},
+				],
+			},
+			whiteboard: {
+				background: {
+					src: '/images/case-studies/akshar-chitra/white-board-bg.png',
+					alt: '',
+				},
+				overlays: [
+					{
+						image: {
+							src: '/images/case-studies/akshar-chitra/whiteboard-overlay-center.png',
+							alt: 'Pinned letterform study sheets with peacock and animal motifs',
+						},
+						left: '23.5%',
+						top: '31%',
+						width: '30.5%',
+						rotate: '-2deg',
+					},
+					{
+						image: {
+							src: '/images/case-studies/akshar-chitra/whiteboard-overlay-top.png',
+							alt: 'Polaroid of a painted fish and peacock letterform',
+						},
+						left: '59.3%',
+						top: '21%',
+						width: '15.3%',
+						rotate: '2deg',
+					},
+					{
+						image: {
+							src: '/images/case-studies/akshar-chitra/whiteboard-overlay-bottom.png',
+							alt: 'Polaroid of a line-drawn Devanagari letter study',
+						},
+						left: '61.4%',
+						top: '51.6%',
+						width: '15.1%',
+						rotate: '1deg',
 					},
 				],
 			},
