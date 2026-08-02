@@ -10,6 +10,7 @@ import MythilaCaseStudyBody from '../../components/case-study/MythilaCaseStudyBo
 import VivanCaseStudyBody from '../../components/case-study/VivanCaseStudyBody.astro';
 import IglCaseStudyBody from '../../components/case-study/IglCaseStudyBody.astro';
 import ConvergenceCaseStudyBody from '../../components/case-study/ConvergenceCaseStudyBody.astro';
+import AksharChitraCaseStudyBody from '../../components/case-study/AksharChitraCaseStudyBody.astro';
 import CaseStudyNav from '../../components/case-study/CaseStudyNav.astro';
 import {
 	caseStudyDetails,
@@ -62,6 +63,8 @@ const displayNumber = catalogueProject?.number ?? study.number ?? '';
 				<IglCaseStudyBody content={study.igl} />
 			) : body === 'convergence' && study.convergence ? (
 				<ConvergenceCaseStudyBody content={study.convergence} />
+			) : body === 'akshar-chitra' && study.aksharChitra ? (
+				<AksharChitraCaseStudyBody content={study.aksharChitra} />
 			) : (
 				study.gallery &&
 				study.feature && (

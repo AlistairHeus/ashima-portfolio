@@ -63,7 +63,7 @@ export const caseStudies: readonly WorkProject[] = [
 		imageSrc: '/images/work/04-akshar-chitra.png',
 		imageAlt: 'Akshar Chitra Hindi primer design',
 		chips: ['Research', 'Educational Design', 'Typography', 'Illustration'],
-		href: '/work',
+		href: '/work/akshar-chitra',
 	},
 ] as const;
 

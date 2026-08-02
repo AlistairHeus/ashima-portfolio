@@ -24,7 +24,13 @@ export interface CaseStudyHeroLayer {
 /** Default landing band when a study does not set its own accent. */
 export const DEFAULT_CASE_STUDY_BAND = '#e2e0d9';
 
-export type CaseStudyBody = 'gallery' | 'mythila' | 'vivan' | 'igl' | 'convergence';
+export type CaseStudyBody =
+	| 'gallery'
+	| 'mythila'
+	| 'vivan'
+	| 'igl'
+	| 'convergence'
+	| 'akshar-chitra';
 
 export interface CaseStudy {
 	readonly id: string;
@@ -63,6 +69,8 @@ export interface CaseStudy {
 	readonly igl?: IglCaseStudyContent;
 	/** Convergence book gallery + cover caption. */
 	readonly convergence?: ConvergenceCaseStudyContent;
+	/** Akshar Chitra narrative sections (filled as body sections are built). */
+	readonly aksharChitra?: AksharChitraCaseStudyContent;
 }
 
 export interface MythilaCaseStudyContent {
@@ -111,6 +119,107 @@ export interface ConvergenceCaseStudyContent {
 	/** Six spread photos in display order (two rows of two, then a closing pair). */
 	readonly spreads: readonly CaseStudyImage[];
 	readonly feature: CaseStudyImage;
+}
+
+/**
+ * Akshar Chitra body content.
+ * Landing (hero + intro) uses shared CaseStudy fields; body sections live here.
+ */
+export interface AksharChitraPerson {
+	readonly name: string;
+	readonly image: CaseStudyImage;
+}
+
+export interface AksharChitraCaseStudyContent {
+	readonly typecraft: {
+		readonly title: string;
+		readonly body: readonly CaseStudyTextPart[];
+		readonly logo: CaseStudyImage;
+	};
+	readonly collaborators: {
+		readonly title: string;
+		readonly artists: {
+			readonly label: string;
+			readonly people: readonly AksharChitraPerson[];
+		};
+		readonly teams: readonly {
+			readonly label: string;
+			readonly people: readonly AksharChitraPerson[];
+		}[];
+	};
+	readonly landscape: {
+		readonly title: string;
+		readonly lead: readonly CaseStudyTextPart[];
+		readonly primers: CaseStudyImage;
+		readonly critiques: readonly {
+			readonly title: string;
+			readonly body: string;
+		}[];
+		readonly diagramTitle: string;
+		readonly diagram: CaseStudyImage;
+		/** Devanagari line-art spanning Landscape through Process on the right edge. */
+		readonly watermark: CaseStudyImage;
+	};
+	readonly insight: {
+		readonly quotes: readonly CaseStudyTextPart[][];
+		readonly processors: readonly {
+			readonly label: string;
+			readonly detail: string;
+			readonly barColor: string;
+			readonly labelColor: string;
+		}[];
+	};
+	readonly process: {
+		readonly title: string;
+		/** Devanagari line-art on the left edge of this section. */
+		readonly watermarkLeft: CaseStudyImage;
+		readonly steps: readonly {
+			readonly title: string;
+			readonly titleColor: string;
+			/** One or more body paragraphs (steps 1–3 use two). */
+			readonly paragraphs: readonly (readonly CaseStudyTextPart[])[];
+			/** Letter-creature glyph beside the step copy. */
+			readonly glyph: CaseStudyImage;
+			readonly photo: CaseStudyImage & {
+				readonly width: number;
+				readonly height: number;
+			};
+		}[];
+	};
+	readonly logics: {
+		readonly title: string;
+		readonly lead: string;
+		readonly cards: readonly {
+			readonly title: string;
+			readonly body: readonly CaseStudyTextPart[];
+			readonly image: CaseStudyImage;
+		}[];
+	};
+	readonly pedagogy: {
+		readonly photo: CaseStudyImage;
+		readonly practice: CaseStudyImage;
+	};
+	readonly constraints: {
+		readonly title: string;
+		readonly items: readonly {
+			readonly title: string;
+			readonly body: readonly CaseStudyTextPart[];
+		}[];
+		readonly bhuttaProcess: CaseStudyImage;
+		readonly mockups: CaseStudyImage;
+	};
+	readonly impact: {
+		readonly title: string;
+		readonly lead: readonly CaseStudyTextPart[];
+		readonly cards: readonly {
+			readonly title: string;
+			readonly body: string;
+			readonly background: string;
+			readonly titleColor: string;
+			readonly bodyColor: string;
+		}[];
+		readonly finale: CaseStudyImage;
+	};
 }
 
 /**
@@ -795,6 +904,506 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			feature: {
 				src: '/images/case-studies/convergence/feature.png',
 				alt: 'Large Convergence spread with a monochrome portrait of a woman',
+			},
+		},
+	},
+	{
+		id: 'akshar-chitra',
+		category: 'Redefining a Hindi Primer',
+		title: 'Akshar Chitra',
+		client: 'With Typecraft Initiative',
+		description: [
+			"Most children’s primers treat letters and images as neighbors: an 'A' stands next to an Apple. But children recognize objects long before they decode abstract scripts. Akshar-Chitra collapses this distance.",
+			'Developed with The Typecraft Initiative, Akshar-Chitra merges Hindi letters with Mithila art illustrations to create a single, intuitive visual unit, culturally grounded and enduring learning experience.',
+		],
+		skills: [
+			'Research-driven design',
+			'Illustration & Lettering',
+			'Visual learning aid',
+		],
+		tools: [
+			{
+				name: 'Adobe Illustrator',
+				iconSrc: '/icons/tools/illustrator.png',
+			},
+			{
+				name: 'Adobe Photoshop',
+				iconSrc: '/icons/tools/photoshop.png',
+			},
+		],
+		hero: {
+			src: '/images/case-studies/akshar-chitra/hero.png',
+			alt: 'Akshar Chitra letterform postcards arranged on a warm surface',
+		},
+		/** Figma Project 04 hero band */
+		heroBandColor: '#f1cdc1',
+		body: 'akshar-chitra',
+		aksharChitra: {
+			typecraft: {
+				title: 'The Typecraft Initiative',
+				body: [
+					{
+						text: 'Founded by Ishan Khosla, the Typecraft Initiative develops typefaces rooted in craft traditions, translating indigenous visual practices into contemporary design systems.',
+					},
+					{ text: '\n\n' },
+					{
+						text: "Typecraft’s concept of ‘Akshar Chitra’ extends this approach into early education, ",
+					},
+					{ text: 'bridging typography, craft and learning.', bold: true },
+				],
+				logo: {
+					src: '/images/case-studies/akshar-chitra/typecraft-logo.png',
+					alt: 'Typecraft Initiative wordmark on a dark brown field',
+				},
+			},
+			collaborators: {
+				title: 'Collaborators & Contributors',
+				artists: {
+					label: 'Mithila/Madhubani Artists',
+					people: [
+						{
+							name: 'Pradyumna Kumar',
+							image: {
+								src: '/images/case-studies/akshar-chitra/artist-pradyumna.png',
+								alt: 'Portrait of Pradyumna Kumar',
+							},
+						},
+						{
+							name: 'Pushpa Kumari',
+							image: {
+								src: '/images/case-studies/akshar-chitra/artist-pushpa.png',
+								alt: 'Portrait of Pushpa Kumari',
+							},
+						},
+						{
+							name: 'Hira Kant',
+							image: {
+								src: '/images/case-studies/akshar-chitra/artist-hira.png',
+								alt: 'Portrait of Hira Kant',
+							},
+						},
+						{
+							name: 'Rekha Rani',
+							image: {
+								src: '/images/case-studies/akshar-chitra/artist-rekha.png',
+								alt: 'Portrait of Rekha Rani',
+							},
+						},
+					],
+				},
+				teams: [
+					{
+						label: 'Design, Research\n& Development',
+						people: [
+							{
+								name: 'Ashima Kaushik (me)',
+								image: {
+									src: '/images/case-studies/akshar-chitra/advisory-ashima.png',
+									alt: 'Portrait of Ashima Kaushik',
+								},
+							},
+						],
+					},
+					{
+						label: 'Design Advisory\n(Typecraft)',
+						people: [
+							{
+								name: 'Ishan Khosla',
+								image: {
+									src: '/images/case-studies/akshar-chitra/advisory-ishan.png',
+									alt: 'Portrait of Ishan Khosla',
+								},
+							},
+							{
+								name: 'Shirley Bhatnagar',
+								image: {
+									src: '/images/case-studies/akshar-chitra/advisory-shirley.png',
+									alt: 'Portrait of Shirley Bhatnagar',
+								},
+							},
+						],
+					},
+				],
+			},
+			landscape: {
+				title: 'The Landscape of Existing Tools',
+				lead: [
+					{ text: 'Reading requires the synchronization of ' },
+					{ text: 'four neural processors.', bold: true },
+					{
+						text: ' Traditional Hindi tools often address these in isolation, forcing the child to perform the heavy lifting of integration.',
+					},
+				],
+				primers: {
+					src: '/images/case-studies/akshar-chitra/primers.png',
+					alt: 'Stack of traditional Hindi varnamala primers and charts',
+				},
+				critiques: [
+					{
+						title: 'Flashcards & Rote Charts',
+						body: 'Prioritize the Orthographic Processor (Letter Memory). Letters remain abstract shapes, often failing to trigger meaningful conceptual links.',
+					},
+					{
+						title: 'Picture Books',
+						body: 'Stimulate the Meaning Processor (Vocabulary) but separate the image from the letter, creating a "split-attention effect" that weakens phonemic connection.',
+					},
+					{
+						title: 'Rhymes & Drills',
+						body: 'Engage the Phonological Processor (Speech-Sound) but lack a stable visual anchor.',
+					},
+				],
+				diagramTitle: '4-Step Learning Process',
+				diagram: {
+					src: '/images/case-studies/akshar-chitra/learning-diagram.png',
+					alt: 'Diagram of four neural processors in the reading process',
+				},
+				watermark: {
+					src: '/images/case-studies/akshar-chitra/watermark-right.png',
+					alt: '',
+				},
+			},
+			insight: {
+				quotes: [
+					[
+						{
+							text: 'Children recognise images before they read letters. ',
+						},
+						{
+							text: 'What if letters looked like what children already recognize?',
+							bold: true,
+						},
+					],
+					[
+						{ text: 'By using ' },
+						{ text: 'Integrated Picture Mnemonics ', bold: true },
+						{
+							text: 'in Akshar Chitra, we create a simultaneous fire across all neural processors.',
+						},
+					],
+				],
+				processors: [
+					{
+						label: 'Context & Meaning',
+						detail: "They recognize the familiar 'Machhli' (Fish)",
+						barColor: '#efb7a4',
+						labelColor: '#d48e76',
+					},
+					{
+						label: 'Orthographic',
+						detail: "The child sees the skeleton of the letter 'म'",
+						barColor: '#c3d8d1',
+						labelColor: '#799f9b',
+					},
+					{
+						label: 'Phonological',
+						detail: "The visual of the fish triggers the sound 'म /Ma' instantly",
+						barColor: '#89aca8',
+						labelColor: '#62807d',
+					},
+				],
+			},
+			process: {
+				title: 'Process and Project Approach',
+				watermarkLeft: {
+					src: '/images/case-studies/akshar-chitra/watermark-left.png',
+					alt: '',
+				},
+				steps: [
+					{
+						title: 'Vocabulary Mapping & Research',
+						titleColor: '#4c8187',
+						paragraphs: [
+							[
+								{ text: 'Audited standard ' },
+								{ text: 'varnamala primers', bold: true },
+								{ text: ' to identify a filtered ' },
+								{ text: 'list of familiar, concrete nouns.', bold: true },
+							],
+							[
+								{
+									text: 'Through informal testing, I confirmed which objects children recognized, ensuring the vocabulary was grounded in their daily environment.',
+								},
+							],
+						],
+						glyph: {
+							src: '/images/case-studies/akshar-chitra/1.png',
+							alt: 'Mithila-style snake letterform study',
+						},
+						photo: {
+							src: '/images/case-studies/akshar-chitra/process-photo-1.png',
+							alt: 'Whiteboard of letter-object vocabulary mapping',
+							width: 338,
+							height: 207,
+						},
+					},
+					{
+						title: 'Establishing Illustration Logic',
+						titleColor: '#92ae82',
+						paragraphs: [
+							[
+								{
+									text: 'The challenge was merging object shapes with letterforms without ',
+								},
+								{ text: 'compromising legibility.', bold: true },
+								{ text: ' We established a rule: ' },
+								{ text: 'letterform clarity always came first.', bold: true },
+							],
+							[
+								{ text: 'This led to the construction logics: ' },
+								{
+									text: 'Repetition, Shape-based, Controlled Abstraction and Hybrid.',
+									bold: true,
+								},
+							],
+						],
+						glyph: {
+							src: '/images/case-studies/akshar-chitra/2.png',
+							alt: 'Mithila-style fish letterform study',
+						},
+						photo: {
+							src: '/images/case-studies/akshar-chitra/process-photo-2.png',
+							alt: 'Letterform sketches with sticky note about illustration logic',
+							width: 463,
+							height: 183,
+						},
+					},
+					{
+						title: 'Artisan Collaboration',
+						titleColor: '#d6a545',
+						paragraphs: [
+							[
+								{ text: 'Working with ' },
+								{ text: 'Mithila artists', bold: true },
+								{
+									text: ' required aligning two distinct visual systems: ',
+								},
+								{ text: 'Letterform proportions', bold: true },
+								{ text: ' and ' },
+								{ text: 'Madhubani art style.', bold: true },
+							],
+							[
+								{
+									text: 'I provided rough sketches, proportion guides and letter skeletons to help the artists maintain the ',
+								},
+								{ text: 'functional integrity', bold: true },
+								{ text: ' of the letters while ' },
+								{ text: 'preserving authenticity.', bold: true },
+							],
+						],
+						glyph: {
+							src: '/images/case-studies/akshar-chitra/3.png',
+							alt: 'Mithila-style numeral letterform study',
+						},
+						photo: {
+							src: '/images/case-studies/akshar-chitra/process-photo-3.png',
+							alt: 'Artists collaborating on Mithila letterform drawings',
+							width: 450,
+							height: 162,
+						},
+					},
+					{
+						title: 'Classroom Validation',
+						titleColor: '#c97f47',
+						paragraphs: [
+							[
+								{
+									text: 'As the system evolved, we returned to the classroom. ',
+								},
+								{
+									text: 'Feedback from educators and primary learners',
+									bold: true,
+								},
+								{
+									text: ' helped us refine ambiguous illustrations to ensure recognition worked effectively in monochrome, urban and rural contexts.',
+								},
+							],
+						],
+						glyph: {
+							src: '/images/case-studies/akshar-chitra/4.png',
+							alt: 'Mithila-style twin fish letterform study',
+						},
+						photo: {
+							src: '/images/case-studies/akshar-chitra/process-photo-4.png',
+							alt: 'Classroom testing of Akshar Chitra with children',
+							width: 450,
+							height: 162,
+						},
+					},
+				],
+			},
+			logics: {
+				title: 'Establishing Illustration Logic',
+				lead: 'There was no universal formula for building the letters. Even though four broad approaches were defined, each letter became its own puzzle with a new set of decisions.',
+				cards: [
+					{
+						title: 'Repetition & Arrangement',
+						body: [
+							{
+								text: 'Repeating or arranging an object to construct the letterform.\n',
+							},
+							{ text: 'Example: ', bold: true },
+							{ text: 'अजगर (python) or हड्डी (bone)' },
+						],
+						image: {
+							src: '/images/case-studies/akshar-chitra/logic-repetition.png',
+							alt: 'Repetition approach letterform examples',
+						},
+					},
+					{
+						title: 'Object Shaping',
+						body: [
+							{
+								text: "Single/multiple objects shaped to naturally form the letter.\n",
+							},
+							{ text: 'Example: ', bold: true },
+							{
+								text: "केला (banana) or नल (tap) — the object's form with very little abstraction suggests the letter.",
+							},
+						],
+						image: {
+							src: '/images/case-studies/akshar-chitra/logic-object.png',
+							alt: 'Object shaping letterform examples with banana and tap',
+						},
+					},
+					{
+						title: 'Abstraction & Bending',
+						body: [
+							{
+								text: 'Controlled abstraction of an object to align with letter anatomy.\n',
+							},
+							{ text: 'Example: ', bold: true },
+							{ text: 'forms bent toward letter structure while staying recognizable' },
+						],
+						image: {
+							src: '/images/case-studies/akshar-chitra/logic-abstraction.png',
+							alt: 'Abstraction approach letterform sketches',
+						},
+					},
+					{
+						title: 'Hybrid Approach',
+						body: [
+							{
+								text: 'Combination of techniques to ensure optimal legibility and visual interest.\n',
+							},
+							{ text: 'Example: ', bold: true },
+							{ text: 'घड़ी (watch/clock) or गिरगिट (chameleon)' },
+						],
+						image: {
+							src: '/images/case-studies/akshar-chitra/logic-hybrid.png',
+							alt: 'Hybrid approach letterform examples',
+						},
+					},
+				],
+			},
+			pedagogy: {
+				photo: {
+					src: '/images/case-studies/akshar-chitra/pedagogy-photo.png',
+					alt: 'Hands reviewing Akshar Chitra sketches and letterform drafts',
+				},
+				practice: {
+					src: '/images/case-studies/akshar-chitra/pedagogy-practice.png',
+					alt: 'Pedagogy in practice panels with classroom insights and positioning',
+				},
+			},
+			constraints: {
+				title: 'Design Constraints & Key Decisions',
+				items: [
+					{
+						title: 'Craft vs. Structure',
+						body: [
+							{
+								text: 'The Mithila artists’ instinct was to prioritize the organic-ness of the art. My role was to act as the typographic anchor by providing proportion guides and letter skeletons to ensure the intricate decorative motifs affect a letter’s legibility.',
+							},
+						],
+					},
+					{
+						title: 'The Maatra Problem',
+						body: [
+							{
+								text: "Integrating illustrations into letters like 'भ' or 'ध' is already complex; adding vowel signs (maatras) often cluttered the illustration into illegibility.\n\nExample: भु से भुट्टा (corn)",
+							},
+						],
+					},
+					{
+						title: 'The Colour Dependency',
+						body: [
+							{
+								text: 'The aid was designed for low-cost, high-contrast photocopying (more accessible). But in a monochrome, line-art system, objects like a गाजर (carrot) and a मूली (radish) are visually identical. So we had to ',
+							},
+							{
+								text: 'eliminate vocabulary that relied on colour for recognition.',
+								bold: true,
+							},
+						],
+					},
+					{
+						title: 'Ensuring Accessibility Across Classroom Conditions',
+						body: [
+							{ text: 'Exploring formats like ' },
+							{
+								text: 'tearaway sheets, perforated pages, and wall charts',
+								bold: true,
+							},
+							{
+								text: ' helped understand how the teaching aid might function in different settings.',
+							},
+						],
+					},
+				],
+				bhuttaProcess: {
+					src: '/images/case-studies/akshar-chitra/craft-bhutta-process.png',
+					alt: 'Reference drawing, artist interpretation, and tracing paper for भुट्टा',
+				},
+				mockups: {
+					src: '/images/case-studies/akshar-chitra/craft-mockups.png',
+					alt: 'Accordion book and wall chart mockups of Akshar Chitra',
+				},
+			},
+			impact: {
+				title: 'Why This Matters?',
+				lead: [
+					{
+						text: "Akshar-Chitra isn't just a teaching aid. It's a case study in how design can bridge multiple disciplines like ",
+					},
+					{
+						text: 'typography, pedagogy, anthropology, craft and social impact.',
+						bold: true,
+					},
+					{
+						text: '\n\nIt demonstrates that the most meaningful design work happens at the ',
+					},
+					{
+						text: 'intersection of research, culture and real-world problems.',
+						bold: true,
+					},
+				],
+				cards: [
+					{
+						title: 'For Craftspeople',
+						body: 'Increased awareness of how traditional crafts can be transformed through design. Gaining exposure to new markets and new ways of thinking about their work.',
+						background: '#d6a545',
+						titleColor: '#3d2e00',
+						bodyColor: '#fff7dc',
+					},
+					{
+						title: 'For Educators & Students',
+						body: 'Teachers discovered a tool that sparks conversation and engagement, with children. Older students found creative challenge in drawing letters from objects.',
+						background: '#c76e3a',
+						titleColor: '#552001',
+						bodyColor: '#ffece1',
+					},
+					{
+						title: 'For Designers',
+						body: 'This project demonstrates that graphic design can operate at the intersection of education, culture, craft and social impact.',
+						background: '#7e846e',
+						titleColor: '#273209',
+						bodyColor: '#eef5dc',
+					},
+				],
+				finale: {
+					src: '/images/case-studies/akshar-chitra/section-banner.png',
+					alt: 'Akshar Chitra letterform specimens and teaching aid applications',
+				},
 			},
 		},
 	},

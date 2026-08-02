@@ -1,0 +1,546 @@
+---
+/**
+ * Akshar Chitra body — narrative sections after the shared landing.
+ * Matches Figma Project 04; text stays HTML, composed visuals are images.
+ */
+import type { AksharChitraCaseStudyContent } from '../../data/case-studies';
+
+interface Props {
+	readonly content: AksharChitraCaseStudyContent;
+}
+
+const { content } = Astro.props;
+const {
+	typecraft,
+	collaborators,
+	landscape,
+	insight,
+	process,
+	logics,
+	pedagogy,
+	constraints,
+	impact,
+} = content;
+
+const panel = 'bg-[#f3d8ce] px-5 py-5 md:px-6 md:py-6';
+const sectionTitle = 'type-label-lg text-ink';
+const accentTitle = 'type-label-lg text-[#984c3e]';
+const stepTitle =
+	'font-label text-[clamp(1rem,1.4vw,1.25rem)] font-bold uppercase tracking-[0.18em]';
+---
+
+<div class="akshar-chitra-body">
+	{/* Typecraft + Collaborators */}
+	<section
+		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		aria-labelledby="akshar-typecraft-title"
+	>
+		<div
+			class="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] lg:gap-12"
+		>
+			<div>
+				<h2 id="akshar-typecraft-title" class={sectionTitle}>
+					{typecraft.title}
+				</h2>
+				<p class="type-body mt-5 whitespace-pre-line text-ink">
+					{
+						typecraft.body.map((part) =>
+							part.bold ? (
+								<strong class="font-bold">{part.text}</strong>
+							) : (
+								part.text
+							),
+						)
+					}
+				</p>
+				<figure class="mt-8 m-0 overflow-hidden bg-[#483332]">
+					<img
+						src={typecraft.logo.src}
+						alt={typecraft.logo.alt}
+						class="block h-auto w-full"
+						width="486"
+						height="347"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			</div>
+
+			<div>
+				<h2 class={`${sectionTitle} mb-5`}>{collaborators.title}</h2>
+
+				<div class={`${panel} mb-4`}>
+					<p
+						class="text-center font-label text-[clamp(0.9375rem,1.2vw,1.125rem)] uppercase tracking-[0.18em] text-[#9f3824]"
+					>
+						{collaborators.artists.label}
+					</p>
+					<ul
+						class="m-0 mt-5 grid list-none grid-cols-2 gap-x-4 gap-y-5 p-0 sm:grid-cols-4"
+					>
+						{
+							collaborators.artists.people.map((person) => (
+								<li class="flex flex-col items-center text-center">
+									<img
+										src={person.image.src}
+										alt={person.image.alt}
+										class="size-[clamp(4.5rem,8vw,7.5rem)] rounded-full object-cover"
+										width="120"
+										height="120"
+										loading="lazy"
+										decoding="async"
+									/>
+									<p class="mt-3 font-label text-[clamp(0.875rem,1.1vw,1.125rem)] text-[#483332]">
+										{person.name}
+									</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+
+				<div class={`${panel} grid grid-cols-1 gap-8 sm:grid-cols-2`}>
+					{
+						collaborators.teams.map((team) => (
+							<div class="text-center">
+								<p class="whitespace-pre-line font-label text-[clamp(0.9375rem,1.2vw,1.125rem)] uppercase tracking-[0.18em] text-[#9f3824]">
+									{team.label}
+								</p>
+								<ul class="m-0 mt-5 flex list-none justify-center gap-6 p-0">
+									{team.people.map((person) => (
+										<li class="flex flex-col items-center">
+											<img
+												src={person.image.src}
+												alt={person.image.alt}
+												class="size-[clamp(4.5rem,8vw,7.5rem)] rounded-full object-cover"
+												width="120"
+												height="120"
+												loading="lazy"
+												decoding="async"
+											/>
+											<p class="mt-3 font-label text-[clamp(0.875rem,1.1vw,1.125rem)] text-[#483332]">
+												{person.name}
+											</p>
+										</li>
+									))}
+								</ul>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{/*
+	  Watermark spans Landscape → Process on the right edge.
+	  Full-width canvas band at top = Ka’s shirorekha extended edge-to-edge,
+	  flush against Typecraft above (no gap).
+	*/}
+	<div class="relative overflow-hidden">
+		<div
+			class="pointer-events-none absolute inset-x-0 top-0 z-[3] h-[14px] bg-canvas"
+			aria-hidden="true"
+		>
+		</div>
+		<img
+			src={landscape.watermark.src}
+			alt=""
+			aria-hidden="true"
+			class="pointer-events-none absolute inset-y-0 right-0 z-[2] h-full w-[min(100%,42rem)] select-none object-cover object-right-top"
+			width="1920"
+			height="2226"
+			loading="lazy"
+			decoding="async"
+		/>
+
+		{/* Landscape of Existing Tools + 4-step diagram */}
+		<section
+			class="relative z-[1] bg-white pt-[calc(14px+clamp(2rem,4vw,3.25rem))] pb-[clamp(2rem,4vw,3.25rem)]"
+			aria-labelledby="akshar-landscape-title"
+		>
+			<div class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)]">
+				<div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12">
+					<div>
+						<h2 id="akshar-landscape-title" class={sectionTitle}>
+							{landscape.title}
+						</h2>
+						<p class="type-body mt-5 text-ink">
+							{
+								landscape.lead.map((part) =>
+									part.bold ? (
+										<strong class="font-bold">{part.text}</strong>
+									) : (
+										part.text
+									),
+								)
+							}
+						</p>
+						<figure class="mt-8 m-0">
+							<img
+								src={landscape.primers.src}
+								alt={landscape.primers.alt}
+								class="block h-auto w-full max-w-[20rem]"
+								width="312"
+								height="213"
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+						<ul class="m-0 mt-8 list-disc space-y-5 pl-5 type-body text-ink">
+							{
+								landscape.critiques.map((item) => (
+									<li>
+										<strong class="font-bold">{item.title}</strong>
+										<br />
+										{item.body}
+									</li>
+								))
+							}
+						</ul>
+					</div>
+
+					<div>
+						<h3 class={`${sectionTitle} mb-5`}>{landscape.diagramTitle}</h3>
+						<figure class="m-0">
+							<img
+								src={landscape.diagram.src}
+								alt={landscape.diagram.alt}
+								class="block h-auto w-full"
+								width="900"
+								height="700"
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{/* Insight quotes + processors — canvas band below Landscape */}
+		<section
+			class="relative z-[1] mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,4vw,3.25rem)]"
+			aria-label="Design insight"
+		>
+			<div
+				class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center lg:gap-12"
+			>
+				<div class="space-y-6">
+					{
+						insight.quotes.map((quote) => (
+							<p class="font-body text-[clamp(1.25rem,2vw,1.5rem)] leading-[1.35] text-[#da6a55]">
+								{quote.map((part) =>
+									part.bold ? (
+										<strong class="font-bold text-[#984c3e]">{part.text}</strong>
+									) : (
+										part.text
+									),
+								)}
+							</p>
+						))
+					}
+				</div>
+
+				<ul class="m-0 list-none space-y-5 p-0">
+					{
+						insight.processors.map((item) => (
+							<li class="flex gap-4">
+								<span
+									class="mt-0.5 w-[0.8125rem] shrink-0 self-stretch"
+									style={`background-color: ${item.barColor}`}
+									aria-hidden="true"
+								/>
+								<div>
+									<p
+										class="font-label text-[clamp(0.9375rem,1.2vw,1.125rem)] font-bold uppercase tracking-[0.18em]"
+										style={`color: ${item.labelColor}`}
+									>
+										{item.label}
+									</p>
+									<p class="type-body mt-1 text-ink">{item.detail}</p>
+								</div>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+
+		{/* Process — left watermark + letter glyphs beside each step */}
+		<section
+			class="relative z-[1] overflow-hidden bg-white pt-[calc(14px+clamp(2rem,4vw,3.25rem))] pb-[clamp(2rem,4vw,3.25rem)]"
+			aria-labelledby="akshar-process-title"
+		>
+			{/* Full-width shirorekha band — Ka’s top stroke extended edge-to-edge */}
+			<div
+				class="pointer-events-none absolute inset-x-0 top-0 z-[3] h-[14px] bg-canvas"
+				aria-hidden="true"
+			>
+			</div>
+			<img
+				src={process.watermarkLeft.src}
+				alt=""
+				aria-hidden="true"
+				class="pointer-events-none absolute inset-y-0 left-0 z-[2] h-full w-[min(100%,42rem)] select-none object-cover object-left-top"
+				width="1920"
+				height="1007"
+				loading="lazy"
+				decoding="async"
+			/>
+			<div class="relative z-[1] mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)]">
+				<h2 id="akshar-process-title" class={sectionTitle}>
+					{process.title}
+				</h2>
+
+				<ul class="m-0 mt-10 list-none space-y-10 p-0 md:mt-12 md:space-y-12">
+					{
+						process.steps.map((step) => (
+							<li class="grid grid-cols-1 items-start gap-5 sm:grid-cols-[auto_minmax(0,1fr)] lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:gap-8">
+								<figure class="m-0 w-[clamp(4.5rem,8vw,8rem)] shrink-0 justify-self-start sm:pt-1">
+									<img
+										src={step.glyph.src}
+										alt={step.glyph.alt}
+										class="block h-auto w-full"
+										width="128"
+										height="186"
+										loading="lazy"
+										decoding="async"
+									/>
+								</figure>
+								<div class="min-w-0 max-w-[31.875rem]">
+									<h3 class={stepTitle} style={`color: ${step.titleColor}`}>
+										{step.title}
+									</h3>
+									<div class="mt-3 space-y-3">
+										{
+											step.paragraphs.map((paragraph) => (
+												<p class="type-body text-ink">
+													{paragraph.map((part) =>
+														part.bold ? (
+															<strong class="font-bold">{part.text}</strong>
+														) : (
+															part.text
+														),
+													)}
+												</p>
+											))
+										}
+									</div>
+								</div>
+								<figure
+									class="m-0 w-full justify-self-start overflow-hidden sm:col-span-2 lg:col-span-1 lg:justify-self-end"
+									style={`max-width: ${step.photo.width}px`}
+								>
+									<img
+										src={step.photo.src}
+										alt={step.photo.alt}
+										class="block h-auto w-full"
+										width={step.photo.width}
+										height={step.photo.height}
+										loading="lazy"
+										decoding="async"
+									/>
+								</figure>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+	</div>
+
+	{/* Illustration logics */}
+	<section
+		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		aria-labelledby="akshar-logics-title"
+	>
+		<div
+			class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-10"
+		>
+			<h2 id="akshar-logics-title" class={`${accentTitle} shrink-0`}>
+				{logics.title}
+			</h2>
+			<p class="type-body max-w-[30.375rem] text-ink">{logics.lead}</p>
+		</div>
+
+		<ul
+			class="m-0 mt-10 grid list-none grid-cols-1 gap-x-8 gap-y-12 p-0 sm:grid-cols-2"
+		>
+			{
+				logics.cards.map((card) => (
+					<li class="flex flex-col">
+						<figure class="m-0 overflow-hidden bg-white">
+							<img
+								src={card.image.src}
+								alt={card.image.alt}
+								class="block h-auto w-full"
+								width="514"
+								height="246"
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+						<h3 class={`${stepTitle} mt-4 text-center text-[#da6a55]`}>
+							{card.title}
+						</h3>
+						<p class="type-body mt-2 whitespace-pre-line text-center text-[#53160b]">
+							{card.body.map((part) =>
+								part.bold ? (
+									<strong class="font-bold">{part.text}</strong>
+								) : (
+									part.text
+								),
+							)}
+						</p>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	{/* Pedagogy visuals */}
+	<section
+		class="mx-auto mt-12 max-w-[75rem] space-y-8 px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		aria-label="Pedagogy in practice"
+	>
+		<figure class="m-0 overflow-hidden">
+			<img
+				src={pedagogy.photo.src}
+				alt={pedagogy.photo.alt}
+				class="block h-auto w-full"
+				width="1200"
+				height="600"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+		<figure class="m-0 overflow-hidden">
+			<img
+				src={pedagogy.practice.src}
+				alt={pedagogy.practice.alt}
+				class="block h-auto w-full"
+				width="1200"
+				height="800"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+	</section>
+
+	{/* Constraints */}
+	<section
+		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		aria-labelledby="akshar-constraints-title"
+	>
+		<h2 id="akshar-constraints-title" class={`${accentTitle} text-center`}>
+			{constraints.title}
+		</h2>
+
+		<ul
+			class="m-0 mt-10 grid list-none grid-cols-1 gap-x-10 gap-y-10 p-0 md:grid-cols-2"
+		>
+			{
+				constraints.items.map((item) => (
+					<li>
+						<h3 class={`${stepTitle} text-[#da6a55]`}>{item.title}</h3>
+						<p class="type-body mt-3 whitespace-pre-line text-ink">
+							{item.body.map((part) =>
+								part.bold ? (
+									<strong class="font-bold">{part.text}</strong>
+								) : (
+									part.text
+								),
+							)}
+						</p>
+					</li>
+				))
+			}
+		</ul>
+
+		<figure class="mt-10 m-0 overflow-hidden md:mt-12">
+			<img
+				src={constraints.bhuttaProcess.src}
+				alt={constraints.bhuttaProcess.alt}
+				class="block h-auto w-full"
+				width="1200"
+				height="400"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+		<figure class="mt-6 m-0 overflow-hidden">
+			<img
+				src={constraints.mockups.src}
+				alt={constraints.mockups.alt}
+				class="block h-auto w-full"
+				width="1200"
+				height="455"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+	</section>
+
+	{/* Impact */}
+	<section
+		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pb-4 md:mt-16 md:pb-8"
+		aria-labelledby="akshar-impact-title"
+	>
+		<h2 id="akshar-impact-title" class={accentTitle}>
+			{impact.title}
+		</h2>
+		<p class="type-body mt-5 max-w-[36rem] whitespace-pre-line text-ink">
+			{
+				impact.lead.map((part) =>
+					part.bold ? (
+						<strong class="font-bold">{part.text}</strong>
+					) : (
+						part.text
+					),
+				)
+			}
+		</p>
+
+		<ul
+			class="m-0 mt-10 grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-3 md:mt-12"
+		>
+			{
+				impact.cards.map((card) => (
+					<li
+						class="flex min-h-[14rem] flex-col px-5 py-8 text-center md:px-6"
+						style={`background-color: ${card.background}`}
+					>
+						<h3
+							class="font-display text-[clamp(1.25rem,1.8vw,1.5rem)] font-bold uppercase tracking-[0.18em]"
+							style={`color: ${card.titleColor}`}
+						>
+							{card.title}
+						</h3>
+						<p
+							class="mt-4 font-body text-[clamp(1rem,1.3vw,1.25rem)] leading-6"
+							style={`color: ${card.bodyColor}`}
+						>
+							{card.body}
+						</p>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	{/* Finale banner */}
+	<section class="mt-12 md:mt-16" aria-label="Akshar Chitra applications">
+		<figure class="m-0">
+			<img
+				src={impact.finale.src}
+				alt={impact.finale.alt}
+				class="block h-auto w-full"
+				width="1920"
+				height="800"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+	</section>
+</div>
