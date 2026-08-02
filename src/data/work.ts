@@ -67,7 +67,7 @@ export const caseStudies: readonly WorkProject[] = [
 	},
 ] as const;
 
-/** Other projects — second grid (05–11). */
+/** Other projects — second grid (05–08). */
 export const otherWorkProjects: readonly WorkProject[] = [
 	{
 		id: 'maahi',
@@ -85,19 +85,8 @@ export const otherWorkProjects: readonly WorkProject[] = [
 		href: '/work',
 	},
 	{
-		id: 'air-india-cx',
-		number: '06',
-		title: 'Air India: Customer Experience',
-		description:
-			'Ensuring seamless brand experience by mapping the new visual identity across every major passenger touchpoint.',
-		imageSrc: '/images/work/06-air-india-cx.png',
-		imageAlt: 'Air India customer experience brand mapping',
-		chips: ['Systems thinking', 'Information Hierarchy', 'Brand Translation'],
-		href: '/work',
-	},
-	{
 		id: 'himalayan-book',
-		number: '07',
+		number: '06',
 		title: 'The Great Himalayan Exploration Book',
 		description:
 			'Shaping a long-format publication through layout and editorial refinement',
@@ -112,7 +101,7 @@ export const otherWorkProjects: readonly WorkProject[] = [
 	},
 	{
 		id: 'vivan',
-		number: '08',
+		number: '07',
 		title: 'Vivan Hospital: Print & Digital Design',
 		description:
 			'Translating a cohesive visual identity into consistent brand applications across print, digital, and environmental touchpoints.',
@@ -122,30 +111,8 @@ export const otherWorkProjects: readonly WorkProject[] = [
 		href: '/work/vivan',
 	},
 	{
-		id: 'reconnect',
-		number: '09',
-		title: 'Reconnect: Researching Inclusive Play',
-		description:
-			'Research that informed the design of an inclusive game, uncovering insights to foster meaningful interaction and accessibility.',
-		imageSrc: '/images/work/09-reconnect.png',
-		imageAlt: 'Reconnect inclusive play research materials',
-		chips: ['Design Research', 'Inclusive Design', 'User Research'],
-		href: '/work',
-	},
-	{
-		id: 'logofolio',
-		number: '10',
-		title: 'Logofolio',
-		description:
-			'A curated collection of logos crafted to capture unique brand stories through simple, memorable identities.',
-		imageSrc: '/images/work/10-logofolio.png',
-		imageAlt: 'Collection of logo design marks',
-		chips: ['Logo Design', 'Visual Storytelling', 'Concept Development'],
-		href: '/work',
-	},
-	{
 		id: 'convergence',
-		number: '11',
+		number: '08',
 		title: 'Convergence',
 		description:
 			'A publication documenting 150 years of shared photographic history between France and India through rare archival works.',

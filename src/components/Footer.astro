@@ -25,8 +25,8 @@ const {
 	nextHeading = "What's next?",
 	nextBody = 'Hopefully, something we build together.',
 	contactHeading = 'Contact',
-	email = 'ashimak1709@gmail.com',
-	emailHref = 'mailto:ashimak1709@gmail.com',
+	email = 'ashimakaushik.design@gmail.com',
+	emailHref = 'mailto:ashimakaushik.design@gmail.com',
 	socialsHeading = 'Socials',
 	socials = [
 		{
@@ -46,18 +46,17 @@ const {
 } = Astro.props;
 ---
 
-<footer class:list={['relative z-20 w-full bg-footer', className]}>
+<footer id="contact" class:list={['relative z-20 w-full bg-footer', className]}>
 	<div
 		class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pb-16 pt-[clamp(4rem,8vw,9.125rem)] md:pb-20"
 	>
-		<div class="border-t border-footer-ink/40 pt-5">
-			{/*
-			  Desktop: col1 grows (What's next), cols 2–3 hug content and sit as
-			  a right-hand Contact + Socials group. Shared heading/body rows.
-			*/}
-			<div
-				class="grid grid-cols-1 gap-y-3 md:grid-cols-[1fr_auto_auto] md:grid-rows-[auto_auto] md:gap-x-16 lg:gap-x-24 px-[clamp(1rem,3vw,2rem)]"
-			>
+		{/*
+		  Desktop: col1 grows (What's next), cols 2–3 hug content and sit as
+		  a right-hand Contact + Socials group. Shared heading/body rows.
+		*/}
+		<div
+			class="grid grid-cols-1 gap-y-3 md:grid-cols-[1fr_auto_auto] md:grid-rows-[auto_auto] md:gap-x-16 lg:gap-x-24 px-[clamp(1rem,3vw,2rem)]"
+		>
 				<p
 					class="font-display text-[clamp(1.5rem,2vw+0.75rem,2.25rem)] font-bold uppercase leading-none  text-footer-ink md:col-start-1 md:row-start-1"
 				>
@@ -112,6 +111,5 @@ const {
 					}
 				</ul>
 			</div>
-		</div>
 	</div>
 </footer>

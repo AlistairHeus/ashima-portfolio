@@ -50,12 +50,12 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		mobileShow: true,
 	},
 	{
-		src: '/images/work/03-mythila.png',
+		src: '/images/case-studies/mythila/animation.gif',
 		alt: 'Mythila typeface',
 		top: '4%',
 		left: '78%',
 		width: 'clamp(7rem, 15vw, 11.5rem)',
-		aspectRatio: '4 / 3',
+		aspectRatio: '1 / 1',
 		rotate: 7,
 		mobileShow: true,
 	},
@@ -69,26 +69,26 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		rotate: 11,
 	},
 	{
-		src: '/images/work/07-himalayan.png',
+		src: '/images/case-studies/himalayan/gallery-storyteller.png',
 		alt: 'Himalayan book',
 		top: '18%',
 		left: '86%',
 		width: 'clamp(6rem, 12vw, 9.5rem)',
-		aspectRatio: '3 / 4',
+		aspectRatio: '5 / 4',
 		rotate: -6,
 	},
 	{
-		src: '/images/work/08-vivan.png',
+		src: '/images/case-studies/vivan/brochure.png',
 		alt: 'Vivan Hospital',
 		top: '64%',
 		left: '4%',
 		width: 'clamp(7.5rem, 16vw, 12rem)',
-		aspectRatio: '4 / 5',
+		aspectRatio: '5 / 4',
 		rotate: -12,
 		mobileShow: true,
 	},
 	{
-		src: '/images/work/05-maahi.png',
+		src: '/images/case-studies/igl/final-after.png',
 		alt: 'Maahi logo',
 		top: '52%',
 		left: '82%',
@@ -106,8 +106,8 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		rotate: 5,
 	},
 	{
-		src: '/images/work/10-logofolio.png',
-		alt: 'Logofolio',
+		src: '/images/case-studies/convergence/convergence_cover.gif',
+		alt: 'Convergence',
 		top: '70%',
 		left: '72%',
 		width: 'clamp(6.5rem, 14vw, 10.5rem)',
@@ -154,22 +154,22 @@ const folderStuff: readonly FolderStuffCard[] = [
 		z: 3,
 	},
 	{
-		src: '/images/work/03-mythila.png',
+		src: '/images/case-studies/mythila/animation.gif',
 		alt: '',
 		left: '48%',
 		top: '1%',
 		width: '44%',
-		aspectRatio: '4 / 3',
+		aspectRatio: '1 / 1',
 		rotate: -7,
 		z: 2,
 	},
 	{
-		src: '/images/work/10-logofolio.png',
+		src: '/images/work/04-akshar-chitra.png',
 		alt: '',
 		left: '30%',
 		top: '3%',
 		width: '40%',
-		aspectRatio: '3 / 4',
+		aspectRatio: '5 / 6',
 		rotate: 14,
 		z: 4,
 	},
@@ -288,14 +288,13 @@ const folderStuff: readonly FolderStuffCard[] = [
 		class="hero-title-group relative z-10 flex w-full items-center justify-center"
 		style="margin-top: auto; margin-bottom: 40vh;"
 	>
-		{/* Desktop: left rule + role */}
+		{/* Desktop: role label */}
 		<div
 			class="hero-lines absolute hidden items-center md:flex"
 			style="left: 5%; right: 50%; margin-right: min(25vw, 400px);"
 		>
-			<div class="h-px flex-1 origin-left bg-[#ACACAC]"></div>
 			<span
-				class="hero-subtitle-text whitespace-nowrap pl-5 font-label text-[clamp(0.875rem,1.1vw,1.125rem)] font-bold uppercase leading-none tracking-[0.06em] text-[#242424]"
+				class="hero-subtitle-text ml-auto whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] font-bold uppercase leading-none tracking-[0.06em] text-[#242424]"
 			>
 				{roleLabel}
 			</span>
@@ -329,17 +328,16 @@ const folderStuff: readonly FolderStuffCard[] = [
 			{locationLabel}
 		</p>
 
-		{/* Desktop: location + right rule */}
+		{/* Desktop: location label */}
 		<div
 			class="hero-lines absolute hidden items-center md:flex"
 			style="right: 5%; left: 50%; margin-left: min(25vw, 400px);"
 		>
 			<span
-				class="hero-subtitle-text whitespace-nowrap pr-5 font-label text-[clamp(0.875rem,1.1vw,1.125rem)] font-bold uppercase leading-none tracking-[0.06em] text-[#242424]"
+				class="hero-subtitle-text whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] font-bold uppercase leading-none tracking-[0.06em] text-[#242424]"
 			>
 				{locationLabel}
 			</span>
-			<div class="h-px flex-1 origin-right bg-[#c4bbb4]"></div>
 		</div>
 	</div>
 

@@ -15,7 +15,8 @@
 	--color-on-surface-state: rgb(29 27 32 / 0.08);
 	--color-heading: #4c4c4c;
 	--color-footer-ink: #2e2f38;
-	--color-footer: rgb(96 114 140 / 0.2);
+	/* Opaque mix of primary @ 20% over canvas — covers fixed hero underneath */
+	--color-footer: color-mix(in srgb, rgb(96 114 140) 20%, #f7f1ec);
 	--color-primary: #60728c;
 	--color-primary-soft: #aad0f1;
 	--color-muted: #636363;
@@ -44,6 +45,7 @@
 		background: var(--color-canvas);
 		color: var(--color-ink);
 		font-family: var(--font-body);
+		scroll-behavior: smooth;
 	}
 
 	body {
@@ -52,9 +54,9 @@
 		min-height: 100vh;
 	}
 
-	/* Shared page chrome — use on every page shell */
+	/* Shared page chrome — reserve space for fixed nav (inset + bar height) */
 	.page {
-		padding-top: var(--spacing-page-top);
+		padding-top: calc(var(--spacing-page-top) + 3.75rem);
 	}
 
 	@media (max-width: 48rem) {

@@ -1,7 +1,7 @@
 ---
 /**
  * Site navigation matching Figma "navbar work" (node 277:1076).
- * Transparent background, brand left, links right, active tab highlight, bottom rule.
+ * Fixed to the viewport; hides on scroll down, reveals on scroll up.
  */
 interface NavItem {
 	readonly label: string;
@@ -21,9 +21,10 @@ const {
 	brandHref = '/',
 	brandLabel = 'Ashima Kaushik',
 	items = [
+		{ label: 'Home', href: '/' },
 		{ label: 'Work', href: '/work' },
 		{ label: 'Resume', href: '/resume' },
-		{ label: 'Contact', href: '/contact' },
+		{ label: 'Contact', href: '/#contact' },
 	],
 	currentPath = Astro.url.pathname,
 	showDivider = true,
@@ -41,6 +42,8 @@ const activePath = normalizePath(currentPath);
 
 /** Exact match, or prefix match for nested routes (e.g. /work/himalayan-book → Work). */
 const isNavItemActive = (href: string) => {
+	// In-page anchors (e.g. /#contact) are not route highlights.
+	if (href.includes('#')) return false;
 	const itemPath = normalizePath(href);
 	if (activePath === itemPath) {
 		return true;
@@ -52,11 +55,17 @@ const isNavItemActive = (href: string) => {
 };
 ---
 
-<header class:list={['relative z-50 w-full bg-transparent', className]}>
-	<div class="mx-auto max-w-fit">
+<header
+	class:list={[
+		'site-nav fixed inset-x-0 top-0 z-50 w-full bg-transparent pt-[var(--spacing-page-top)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform',
+		className,
+	]}
+	data-site-nav
+>
+	<div class="mx-auto max-w-fit bg-surface-warm">
 		<div
 			class:list={[
-				'flex min-h-14 flex-col items-stretch justify-between gap-0 px-[clamp(1rem,3vw,2rem)] sm:min-h-[60px] sm:flex-row sm:items-stretch sm:gap-[clamp(1rem,3vw,2rem)]',
+				'flex min-h-14 flex-col items-stretch justify-between gap-0 sm:min-h-[60px] sm:flex-row sm:items-stretch sm:gap-[clamp(1rem,3vw,2rem)]',
 				// showDivider && 'border-b-2 border-on-surface/35',
 			]}
 		>
@@ -98,3 +107,58 @@ const isNavItemActive = (href: string) => {
 		</div>
 	</div>
 </header>
+
+<style>
+	@media (prefers-reduced-motion: reduce) {
+		.site-nav {
+			transition: none;
+		}
+	}
+
+	.site-nav[data-nav-hidden='true'] {
+		transform: translate3d(0, -100%, 0);
+	}
+</style>
+
+<script>
+	(() => {
+		const nav = document.querySelector<HTMLElement>('[data-site-nav]');
+		if (!nav || nav.dataset.navInit === 'true') return;
+		nav.dataset.navInit = 'true';
+
+		const prefersReduced = window.matchMedia(
+			'(prefers-reduced-motion: reduce)',
+		).matches;
+		if (prefersReduced) return;
+
+		const DELTA = 8;
+		let lastY = window.scrollY;
+		let ticking = false;
+
+		const update = () => {
+			ticking = false;
+			const y = window.scrollY;
+			const delta = y - lastY;
+
+			if (y <= 8) {
+				nav.dataset.navHidden = 'false';
+			} else if (delta > DELTA) {
+				nav.dataset.navHidden = 'true';
+			} else if (delta < -DELTA) {
+				nav.dataset.navHidden = 'false';
+			}
+
+			lastY = y;
+		};
+
+		window.addEventListener(
+			'scroll',
+			() => {
+				if (ticking) return;
+				ticking = true;
+				requestAnimationFrame(update);
+			},
+			{ passive: true },
+		);
+	})();
+</script>
