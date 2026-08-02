@@ -53,19 +53,19 @@ const isNavItemActive = (href: string) => {
 ---
 
 <header class:list={['relative z-50 w-full bg-transparent', className]}>
-	<div class="mx-auto max-w-[75rem]">
+	<div class="mx-auto max-w-fit">
 		<div
 			class:list={[
 				'flex min-h-14 flex-col items-stretch justify-between gap-0 px-[clamp(1rem,3vw,2rem)] sm:min-h-[60px] sm:flex-row sm:items-stretch sm:gap-[clamp(1rem,3vw,2rem)]',
-				showDivider && 'border-b-2 border-on-surface/35',
+				// showDivider && 'border-b-2 border-on-surface/35',
 			]}
 		>
-			<a
+			<!-- <a
 				href={brandHref}
 				class="inline-flex shrink-0 items-center self-stretch py-3 font-display text-[clamp(1.25rem,2.8vw+0.5rem,2.5rem)] font-light leading-tight tracking-[0.00625rem] whitespace-nowrap text-on-surface uppercase no-underline transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:py-2"
 			>
 				{brandLabel}
-			</a>
+			</a> -->
 
 			<nav class="flex min-w-0 items-stretch self-stretch sm:w-auto" aria-label="Primary">
 				<ul
