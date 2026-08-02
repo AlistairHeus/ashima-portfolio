@@ -1,83 +1,365 @@
 ---
 /**
- * Home hero — polaroid portrait + intro + experience panel (Figma 149:877).
+ * Home hero — static full-viewport cream section with grid + name lockup.
+ * Name letters use a magnetic cursor effect (push + weight) inspired by
+ * https://www.nithinmwarrier.com/
  */
-import Polaroid from '../Polaroid.astro';
+const nameLine1 = 'ASHIMA';
+const nameLine2 = 'KAUSHIK';
 
-const specialises = [
-	'Brand Identity',
-	'Editorial Design',
-	'Typography',
-	'Design Research',
-];
+/** Left subtitle — stacked on desktop, single line on mobile. */
+const roleLines = ['Visual', 'Designer'] as const;
+
+/** Right subtitle — stacked on desktop, single line on mobile. */
+const locationLines = ['Based in', 'India'] as const;
+
+const gridSrc = '/images/home/grid.webp';
+
+const nameLines = [nameLine1, nameLine2] as const;
+const splitChars = (text: string) => text.split('');
+
+/** Flat char index ranges per word/line — used to smooth horizontal push. */
+const wordRanges = nameLines.map((line, lineIndex) => {
+	const startIdx = nameLines.slice(0, lineIndex).reduce((sum, l) => sum + l.length, 0);
+	return { startIdx, endIdx: startIdx + line.length - 1 };
+});
 ---
 
 <section
-	class="hero mx-auto grid max-w-[75rem] items-center gap-10 px-[clamp(1rem,3vw,2rem)] pb-16 pt-8 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] md:gap-12 md:pb-20 md:pt-12 lg:gap-16"
+	class="hero relative -mt-[var(--spacing-page-top)] flex h-screen w-full flex-col overflow-hidden bg-canvas"
 	aria-labelledby="hero-heading"
 >
-	<div class="flex justify-center md:justify-start">
-		<Polaroid
-			imageSrc="/images/home/polaroid-hero-demo.png"
-			imageAlt="Ashima Kaushik"
-			variant="classic"
-			rotate={-2}
-			aspectRatio="341 / 493"
-			class="w-full max-w-[min(100%,26rem)]"
-		/>
+	<div
+		class="pointer-events-none absolute inset-0 z-0"
+		style={`background-image: url('${gridSrc}'); background-size: 80%; background-position: center center; background-repeat: repeat; mask-image: linear-gradient(black 0%, black 85%, transparent 85%); -webkit-mask-image: linear-gradient(black 0%, black 85%, transparent 85%);`}
+	>
 	</div>
 
-	<div class="min-w-0">
-		<p
-			class="font-label text-2xl font-light tracking-[0.27rem] text-footer-ink"
+	<div
+		class="hero-title-group relative z-10 flex w-full items-center justify-center"
+		style="margin-top: auto; margin-bottom: 40vh;"
+	>
+		{/* Desktop: left rule + role */}
+		<div
+			class="hero-lines absolute hidden items-center md:flex"
+			style="left: 5%; right: 50%; margin-right: min(25vw, 400px);"
 		>
-			HELLO!
-		</p>
-		<h1
-			id="hero-heading"
-			class="type-h2 mt-3 text-footer-ink md:mt-4"
-		>
-			I’m Ashima Kaushik
-		</h1>
-
-		<div class="relative mt-5 max-w-[27.5rem]">
-			<p class="type-body-md text-primary">
-				A <span class="hero__underline">visual communication designer</span> creating
-				thoughtful visual systems through research, strategy, typography and
-				storytelling.
-			</p>
-			<img
-				src="/images/home/underline.svg"
-				alt=""
-				aria-hidden="true"
-				class="pointer-events-none absolute top-[1.55rem] left-1.5 w-[min(100%,16.25rem)] select-none"
-			/>
+			<div class="h-px flex-1 origin-left bg-[#ACACAC]"></div>
+			<div class="overflow-hidden pl-5">
+				{
+					roleLines.map((line) => (
+						<span class="hero-subtitle-text block whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] leading-[1.2] tracking-[-0.02em] text-[#242424]">
+							{line}
+						</span>
+					))
+				}
+			</div>
 		</div>
 
-		<div
-			class="mt-10 grid max-w-[36rem] grid-cols-1 gap-8 border border-primary/40 px-6 py-6 sm:grid-cols-2 sm:gap-0 sm:px-0 sm:py-0"
+		{/* Mobile role */}
+		<p
+			class="hero-mobile-subtitle mb-3 whitespace-nowrap text-center font-label text-sm leading-relaxed tracking-[-0.4px] text-[#242424] md:hidden"
 		>
-			<div class="sm:border-r sm:border-primary/40 sm:px-8 sm:py-7">
-				<p class="type-label-md text-primary">Experience</p>
-				<p class="mt-3 font-hand text-lg leading-6 text-primary">4 years</p>
+			{roleLines.join(' ')}
+		</p>
+
+		<h1 id="hero-heading" class="hero-name cursor-default whitespace-nowrap text-center">
+			{
+				nameLines.map((line) => (
+					<span class="hero-name-line block font-display text-[#242424]">
+						{splitChars(line).map((ch) => (
+							<span class="hero-name-char" data-hero-char>
+								{ch}
+							</span>
+						))}
+					</span>
+				))
+			}
+		</h1>
+
+		{/* Mobile location */}
+		<p
+			class="hero-mobile-subtitle mt-3 whitespace-nowrap text-center font-label text-sm leading-relaxed tracking-[-0.4px] text-[#242424] md:hidden"
+		>
+			{locationLines.join(' ')}
+		</p>
+
+		{/* Desktop: location + right rule */}
+		<div
+			class="hero-lines absolute hidden items-center md:flex"
+			style="right: 5%; left: 50%; margin-left: min(25vw, 400px);"
+		>
+			<div class="overflow-hidden pr-5">
+				{
+					locationLines.map((line) => (
+						<span class="hero-subtitle-text block whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] leading-none tracking-[-0.02em] text-[#242424]">
+							{line}
+						</span>
+					))
+				}
 			</div>
-			<div class="sm:px-8 sm:py-7">
-				<p class="type-label-md text-primary">Specialises in</p>
-				<ul class="mt-3 list-none space-y-0 p-0 font-hand text-lg leading-6 text-primary">
-					{
-						specialises.map((item) => (
-							<li>→ {item}</li>
-						))
-					}
-				</ul>
-			</div>
+			<div class="h-px flex-1 origin-right bg-[#c4bbb4]"></div>
 		</div>
 	</div>
 </section>
 
 <style>
-	.hero__underline {
-		position: relative;
-		z-index: 1;
+	.hero-name-line {
+		font-size: clamp(3.5rem, 10vw, 8rem);
+		line-height: 1;
+		letter-spacing: -0.03em;
+	}
+
+	.hero-name-char {
+		display: inline-block;
+		font-weight: 100;
+		font-variation-settings: 'wght' 100;
+		text-align: center;
+		will-change: transform, font-variation-settings;
 	}
 </style>
+
+<script
+	define:vars={{
+		wordRanges,
+		weightMin: 100,
+		weightMax: 700,
+		minDesktopWidth: 1000,
+	}}
+>
+	(() => {
+		/**
+		 * Magnetic name interaction (desktop).
+		 * Soft exponential easing + mouse damping; char widths locked at bold
+		 * so variable weight doesn't reflow and jitter the line.
+		 */
+		const root = document.getElementById('hero-heading');
+		if (!(root instanceof HTMLElement)) return;
+
+		const prefersReduced = window.matchMedia(
+			'(prefers-reduced-motion: reduce)',
+		).matches;
+		if (prefersReduced) return;
+
+		const chars = Array.from(root.querySelectorAll('[data-hero-char]'));
+		const count = chars.length;
+		if (count === 0) return;
+
+		/** Softer than the reference's 0.3 — keeps motion creamy. */
+		const LERP_ACTIVE = 0.07;
+		const LERP_SETTLE = 0.045;
+		const MOUSE_LERP = 0.1;
+		const EPSILON = 0.02;
+
+		const targetProx = new Float32Array(count);
+		const targetPush = new Float32Array(count);
+		const currentProx = new Float32Array(count);
+		const currentPush = new Float32Array(count);
+
+		let rects = null;
+		let rafId = 0;
+		let pointerInside = false;
+		let rawX = 0;
+		let rawY = 0;
+		let smoothX = 0;
+		let smoothY = 0;
+		let mouseInitialized = false;
+
+		/** Freeze each glyph's advance at bold width to stop reflow jitter. */
+		const lockCharWidths = () => {
+			for (const el of chars) {
+				el.style.fontWeight = String(weightMax);
+				el.style.fontVariationSettings = `'wght' ${weightMax}`;
+			}
+			void root.offsetWidth;
+			for (const el of chars) {
+				el.style.width = `${el.getBoundingClientRect().width}px`;
+			}
+			for (const el of chars) {
+				el.style.fontWeight = String(weightMin);
+				el.style.fontVariationSettings = `'wght' ${weightMin}`;
+			}
+		};
+
+		const captureRects = () => {
+			rects = chars.map((el) => {
+				const r = el.getBoundingClientRect();
+				return {
+					left: r.left,
+					top: r.top,
+					width: r.width,
+					height: r.height,
+					cx: r.left + r.width / 2,
+					cy: r.top + r.height / 2,
+				};
+			});
+		};
+
+		const ensureRects = () => {
+			if (!rects) captureRects();
+			return rects;
+		};
+
+		const smoothPush = (values) => {
+			const out = [...values];
+			const n = out.length;
+			if (n === 0) return out;
+			for (let i = 1; i < n; i++) {
+				if (out[i - 1] > 0 && out[i] < out[i - 1]) out[i] = out[i - 1];
+			}
+			for (let i = n - 2; i >= 0; i--) {
+				if (out[i + 1] < 0 && out[i] > out[i + 1]) out[i] = out[i + 1];
+			}
+			return out;
+		};
+
+		const computeTargets = (clientX, clientY) => {
+			targetProx.fill(0);
+			targetPush.fill(0);
+			const bounds = ensureRects();
+
+			for (const range of wordRanges) {
+				const pushes = [];
+				const proxes = [];
+				const len = range.endIdx - range.startIdx + 1;
+
+				for (let i = range.startIdx; i <= range.endIdx; i++) {
+					const rect = bounds[i];
+					if (!rect) {
+						pushes.push(0);
+						proxes.push(0);
+						continue;
+					}
+					const dx = rect.cx - clientX;
+					const dy = rect.cy - clientY;
+					const dist = Math.sqrt(dx * dx + dy * dy);
+					const radius = 3 * rect.width;
+
+					if (dist < radius && dist > 0) {
+						const proximity = Math.max(0, 1 - dist / radius);
+						const force = proximity * proximity * 3;
+						pushes.push((dx / dist) * force);
+						proxes.push(proximity);
+					} else {
+						pushes.push(0);
+						proxes.push(0);
+					}
+				}
+
+				const smoothed = smoothPush(pushes);
+				for (let e = 0; e < len; e++) {
+					const idx = range.startIdx + e;
+					targetProx[idx] = proxes[e];
+					targetPush[idx] = smoothed[e];
+				}
+			}
+		};
+
+		const applyStyles = () => {
+			for (let i = 0; i < count; i++) {
+				const el = chars[i];
+				const prox = currentProx[i];
+				const push = currentPush[i];
+				const weight = weightMin + (weightMax - weightMin) * prox;
+				el.style.transform = `translate3d(${push.toFixed(2)}px, 0, 0)`;
+				el.style.fontWeight = String(weight);
+				el.style.fontVariationSettings = `'wght' ${weight.toFixed(1)}`;
+			}
+		};
+
+		const stillMoving = () => {
+			if (pointerInside) return true;
+			for (let i = 0; i < count; i++) {
+				if (
+					Math.abs(currentProx[i]) > EPSILON ||
+					Math.abs(currentPush[i]) > EPSILON ||
+					Math.abs(targetProx[i] - currentProx[i]) > EPSILON ||
+					Math.abs(targetPush[i] - currentPush[i]) > EPSILON
+				) {
+					return true;
+				}
+			}
+			return false;
+		};
+
+		const tick = () => {
+			if (pointerInside) {
+				if (!mouseInitialized) {
+					smoothX = rawX;
+					smoothY = rawY;
+					mouseInitialized = true;
+				} else {
+					smoothX += (rawX - smoothX) * MOUSE_LERP;
+					smoothY += (rawY - smoothY) * MOUSE_LERP;
+				}
+				computeTargets(smoothX, smoothY);
+			} else {
+				targetProx.fill(0);
+				targetPush.fill(0);
+			}
+
+			const settling = !pointerInside;
+			const lerp = settling ? LERP_SETTLE : LERP_ACTIVE;
+
+			for (let i = 0; i < count; i++) {
+				currentProx[i] += (targetProx[i] - currentProx[i]) * lerp;
+				currentPush[i] += (targetPush[i] - currentPush[i]) * lerp;
+			}
+
+			applyStyles();
+
+			if (stillMoving()) {
+				rafId = requestAnimationFrame(tick);
+			} else {
+				rafId = 0;
+				currentProx.fill(0);
+				currentPush.fill(0);
+				applyStyles();
+			}
+		};
+
+		const startLoop = () => {
+			if (rafId || prefersReduced) return;
+			rafId = requestAnimationFrame(tick);
+		};
+
+		const onMove = (event) => {
+			if (window.innerWidth < minDesktopWidth) return;
+			rawX = event.clientX;
+			rawY = event.clientY;
+			pointerInside = true;
+			startLoop();
+		};
+
+		const onLeave = () => {
+			pointerInside = false;
+			mouseInitialized = false;
+			startLoop();
+		};
+
+		const onResize = () => {
+			for (const el of chars) {
+				el.style.width = '';
+				el.style.transform = '';
+			}
+			lockCharWidths();
+			rects = null;
+			captureRects();
+		};
+
+		const boot = () => {
+			lockCharWidths();
+			captureRects();
+		};
+
+		if (document.fonts?.ready) {
+			document.fonts.ready.then(boot);
+		} else {
+			boot();
+		}
+
+		root.addEventListener('mousemove', onMove);
+		root.addEventListener('mouseleave', onLeave);
+		window.addEventListener('resize', onResize);
+	})();
+</script>
