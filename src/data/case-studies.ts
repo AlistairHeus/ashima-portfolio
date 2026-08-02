@@ -210,9 +210,44 @@ export interface AksharChitraCaseStudyContent {
 			readonly rotate?: string;
 		}[];
 	};
+	/**
+	 * Pedagogy visuals — banner, insights, Ma decision, practice, and positioning
+	 * (Figma 352:361 + pedagogy-pre band above).
+	 */
 	readonly pedagogy: {
-		readonly photo: CaseStudyImage;
-		readonly practice: CaseStudyImage;
+		/** Full-bleed process banner between Illustration Logics and Insights. */
+		readonly banner: CaseStudyImage;
+		readonly insights: {
+			readonly title: string;
+			readonly body: readonly CaseStudyTextPart[];
+			readonly photo: CaseStudyImage;
+		};
+		readonly decision: {
+			readonly letter: string;
+			readonly options: readonly {
+				readonly label: string;
+				readonly color: string;
+			}[];
+			readonly preface: string;
+			readonly solutionLabel: string;
+			readonly solutionBody: string;
+		};
+		readonly practice: {
+			readonly title: string;
+			readonly lead: readonly CaseStudyTextPart[];
+			readonly listIntro: string;
+			readonly replacements: readonly string[];
+			readonly photo: CaseStudyImage;
+		};
+		readonly positioning: {
+			readonly title: string;
+			readonly photo: CaseStudyImage;
+			readonly columns: readonly {
+				readonly age: string;
+				readonly ageColor: string;
+				readonly usage: string;
+			}[];
+		};
 	};
 	readonly constraints: {
 		readonly title: string;
@@ -1351,13 +1386,90 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 				],
 			},
 			pedagogy: {
-				photo: {
-					src: '/images/case-studies/akshar-chitra/pedagogy-photo.png',
-					alt: 'Hands reviewing Akshar Chitra sketches and letterform drafts',
+				banner: {
+					src: '/images/case-studies/akshar-chitra/pedagogy-pre.png',
+					alt: 'Workshop table covered with Akshar Chitra letterform drawings',
+				},
+				insights: {
+					title: 'Insights from\nTeachers and Learners',
+					body: [
+						{
+							text: 'Teachers emphasized that clarity stems from objects that children see, use or talk about naturally (concrete nouns).\n\nSuch words anchor the letterform better than uncommon or abstract concepts like भगवान (god).',
+						},
+					],
+					photo: {
+						src: '/images/case-studies/akshar-chitra/pedagogy-insights.png',
+						alt: 'Teachers and learners reviewing Akshar Chitra drawings around an outdoor table',
+					},
+				},
+				decision: {
+					letter: 'म',
+					options: [
+						{ label: "से 'मोबाइल'", color: '#da8383' },
+						{ label: "से 'मखाना'", color: '#e0a751' },
+						{ label: "से 'मछली'", color: '#8eb08c' },
+					],
+					preface:
+						'While "Mobile" is universal, it is a transliterated. "Makhana" (Fox Nut) was regionally specific but difficult to identify without color.',
+					solutionLabel: 'The Solution:',
+					solutionBody:
+						' Chose "Machhli" (Fish); it provided the strongest silhouette for monochrome recognition and offered the most scope for storytelling across rural and urban contexts.',
 				},
 				practice: {
-					src: '/images/case-studies/akshar-chitra/pedagogy-practice.png',
-					alt: 'Pedagogy in practice panels with classroom insights and positioning',
+					title: 'Pedagogy in Practice',
+					lead: [
+						{
+							text: 'Beyond simple identification & vocabulary building, educators used the illustrations as ',
+						},
+						{ text: 'narrative prompts. ', bold: true },
+						{
+							text: 'This confirmed that instead of positioning as a children’s book, it should be ',
+						},
+						{ text: 'a teaching aid', bold: true },
+						{ text: '.' },
+					],
+					listIntro: 'Also got insights about which illustrations to replace',
+					replacements: [
+						'where similar line drawings caused confusion (like Sugarcane vs. Bamboo).',
+						'illustrations are not recognizable',
+						'outdated or irrelevant words (like दवात i.e. inkpot)',
+					],
+					photo: {
+						src: '/images/case-studies/akshar-chitra/pedagogy-classroom.png',
+						alt: 'Educator presenting an Akshar Chitra drawing to school children outdoors',
+					},
+				},
+				positioning: {
+					title: 'Updated Positioning',
+					photo: {
+						src: '/images/case-studies/akshar-chitra/pedagogy-portrait.png',
+						alt: 'Teacher holding a letterform drawing of a tap integrated with a bird motif',
+					},
+					columns: [
+						{
+							age: 'Pre-Primary (<5 yrs)',
+							ageColor: '#4c8187',
+							usage: 'Coloring Device for motor-skill development.',
+						},
+						{
+							age: 'Primary (5-7 yrs)',
+							ageColor: '#92af82',
+							usage:
+								'A tool to identify letters and build foundational vocabulary.',
+						},
+						{
+							age: 'Middle School & Secondary (10-15 yrs)',
+							ageColor: '#d5a545',
+							usage:
+								'Used for form integration, where students draw objects of their choice to form their initials.',
+						},
+						{
+							age: 'Senior School/College students (>15 yrs)',
+							ageColor: '#e8a56c',
+							usage:
+								'An experimental framework for vernacular form integration.',
+						},
+					],
 				},
 			},
 			constraints: {

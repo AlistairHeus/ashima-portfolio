@@ -3,8 +3,8 @@
  * Akshar Chitra body — narrative sections after the shared landing.
  * Matches Figma Project 04; text stays HTML, composed visuals are images.
  */
-import type { AksharChitraCaseStudyContent } from '../../data/case-studies';
-import IglWhiteboardFrame from './IglWhiteboardFrame.astro';
+import type { AksharChitraCaseStudyContent } from "../../data/case-studies";
+import IglWhiteboardFrame from "./IglWhiteboardFrame.astro";
 
 interface Props {
 	readonly content: AksharChitraCaseStudyContent;
@@ -24,23 +24,23 @@ const {
 	impact,
 } = content;
 
-const panel = 'bg-[#f3d8ce] px-5 py-5 md:px-6 md:py-6';
-const sectionTitle = 'type-label-lg text-ink';
-const accentTitle = 'type-label-lg text-[#984c3e]';
+const panel = "bg-[#f3d8ce] px-5 py-5 md:px-6 md:py-6";
+const sectionTitle = "type-label-lg text-ink";
+const accentTitle = "type-label-lg text-[#984c3e]";
 const stepTitle =
-	'font-label text-[clamp(1rem,1.4vw,1.25rem)] font-bold uppercase tracking-[0.18em]';
+	"font-label text-[clamp(1rem,1.4vw,1.25rem)] font-bold uppercase tracking-[0.18em]";
 ---
 
 <div class="akshar-chitra-body">
 	{/* Typecraft + Collaborators */}
 	<section
-		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16 pb-16"
 		aria-labelledby="akshar-typecraft-title"
 	>
 		<div
 			class="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] lg:gap-12"
 		>
-			<div>
+			<div class="flex flex-col lg:h-full">
 				<h2 id="akshar-typecraft-title" class={sectionTitle}>
 					{typecraft.title}
 				</h2>
@@ -55,7 +55,9 @@ const stepTitle =
 						)
 					}
 				</p>
-				<figure class="mt-8 m-0 overflow-hidden bg-[#483332]">
+				<figure
+					class="mt-8 m-0 overflow-hidden bg-[#483332] lg:mt-auto"
+				>
 					<img
 						src={typecraft.logo.src}
 						alt={typecraft.logo.alt}
@@ -92,7 +94,7 @@ const stepTitle =
 										loading="lazy"
 										decoding="async"
 									/>
-									<p class="mt-3 font-label text-[clamp(0.875rem,1.1vw,1.125rem)] text-[#483332]">
+									<p class="mt-3 whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] text-[#483332]">
 										{person.name}
 									</p>
 								</li>
@@ -120,7 +122,7 @@ const stepTitle =
 												loading="lazy"
 												decoding="async"
 											/>
-											<p class="mt-3 font-label text-[clamp(0.875rem,1.1vw,1.125rem)] text-[#483332]">
+											<p class="mt-3 whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] text-[#483332]">
 												{person.name}
 											</p>
 										</li>
@@ -134,11 +136,13 @@ const stepTitle =
 		</div>
 	</section>
 
-	{/*
+	{
+		/*
 	  Watermark spans Landscape → Process on the right edge.
 	  Full-width canvas band at top = Ka’s shirorekha extended edge-to-edge,
 	  flush against Typecraft above (no gap).
-	*/}
+	*/
+	}
 	<div class="relative overflow-hidden">
 		<div
 			class="pointer-events-none absolute inset-x-0 top-0 z-[3] h-[14px] bg-canvas"
@@ -171,7 +175,9 @@ const stepTitle =
 							{
 								landscape.lead.map((part) =>
 									part.bold ? (
-										<strong class="font-bold">{part.text}</strong>
+										<strong class="font-bold">
+											{part.text}
+										</strong>
 									) : (
 										part.text
 									),
@@ -189,11 +195,15 @@ const stepTitle =
 								decoding="async"
 							/>
 						</figure>
-						<ul class="m-0 mt-8 list-disc space-y-5 pl-5 type-body text-ink">
+						<ul
+							class="m-0 mt-8 list-disc space-y-5 pl-5 type-body text-ink"
+						>
 							{
 								landscape.critiques.map((item) => (
 									<li>
-										<strong class="font-bold">{item.title}</strong>
+										<strong class="font-bold">
+											{item.title}
+										</strong>
 										<br />
 										{item.body}
 									</li>
@@ -203,7 +213,9 @@ const stepTitle =
 					</div>
 
 					<div>
-						<h3 class={`${sectionTitle} mb-5`}>{landscape.diagramTitle}</h3>
+						<h3 class={`${sectionTitle} mb-5`}>
+							{landscape.diagramTitle}
+						</h3>
 						<figure class="m-0">
 							<img
 								src={landscape.diagram.src}
@@ -234,7 +246,9 @@ const stepTitle =
 							<p class="font-body text-[clamp(1.25rem,2vw,1.5rem)] leading-[1.35] text-[#da6a55]">
 								{quote.map((part) =>
 									part.bold ? (
-										<strong class="font-bold text-[#984c3e]">{part.text}</strong>
+										<strong class="font-bold text-[#984c3e]">
+											{part.text}
+										</strong>
 									) : (
 										part.text
 									),
@@ -260,7 +274,9 @@ const stepTitle =
 									>
 										{item.label}
 									</p>
-									<p class="type-body mt-1 text-ink">{item.detail}</p>
+									<p class="type-body mt-1 text-ink">
+										{item.detail}
+									</p>
 								</div>
 							</li>
 						))
@@ -274,7 +290,9 @@ const stepTitle =
 			class="relative z-[1] overflow-hidden bg-white pt-[calc(14px+clamp(2rem,4vw,3.25rem))] pb-[clamp(2rem,4vw,3.25rem)]"
 			aria-labelledby="akshar-process-title"
 		>
-			{/* Full-width shirorekha band — Ka’s top stroke extended edge-to-edge */}
+			{
+				/* Full-width shirorekha band — Ka’s top stroke extended edge-to-edge */
+			}
 			<div
 				class="pointer-events-none absolute inset-x-0 top-0 z-[3] h-[14px] bg-canvas"
 				aria-hidden="true"
@@ -290,12 +308,16 @@ const stepTitle =
 				loading="lazy"
 				decoding="async"
 			/>
-			<div class="relative z-[1] mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)]">
+			<div
+				class="relative z-[1] mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)]"
+			>
 				<h2 id="akshar-process-title" class={sectionTitle}>
 					{process.title}
 				</h2>
 
-				<ul class="m-0 mt-10 list-none space-y-10 p-0 md:mt-12 md:space-y-12">
+				<ul
+					class="m-0 mt-10 list-none space-y-10 p-0 md:mt-12 md:space-y-12"
+				>
 					{
 						process.steps.map((step) => (
 							<li class="grid grid-cols-1 items-start gap-5 sm:grid-cols-[auto_minmax(0,1fr)] lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:gap-8">
@@ -311,23 +333,26 @@ const stepTitle =
 									/>
 								</figure>
 								<div class="min-w-0 max-w-[31.875rem]">
-									<h3 class={stepTitle} style={`color: ${step.titleColor}`}>
+									<h3
+										class={stepTitle}
+										style={`color: ${step.titleColor}`}
+									>
 										{step.title}
 									</h3>
 									<div class="mt-3 space-y-3">
-										{
-											step.paragraphs.map((paragraph) => (
-												<p class="type-body text-ink">
-													{paragraph.map((part) =>
-														part.bold ? (
-															<strong class="font-bold">{part.text}</strong>
-														) : (
-															part.text
-														),
-													)}
-												</p>
-											))
-										}
+										{step.paragraphs.map((paragraph) => (
+											<p class="type-body text-ink">
+												{paragraph.map((part) =>
+													part.bold ? (
+														<strong class="font-bold">
+															{part.text}
+														</strong>
+													) : (
+														part.text
+													),
+												)}
+											</p>
+										))}
 									</div>
 								</div>
 								<figure
@@ -358,7 +383,9 @@ const stepTitle =
 		aria-label="Letterform studies on the whiteboard"
 	>
 		<IglWhiteboardFrame label="Akshar Chitra letterform studies whiteboard">
-			<div class="relative size-full min-h-0 flex-1 overflow-hidden bg-[#ebe4da]">
+			<div
+				class="relative size-full min-h-0 flex-1 overflow-hidden bg-[#ebe4da]"
+			>
 				<img
 					src={whiteboard.background.src}
 					alt=""
@@ -375,7 +402,7 @@ const stepTitle =
 							src={overlay.image.src}
 							alt={overlay.image.alt}
 							class="pointer-events-none absolute z-[1] h-auto max-w-none object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.28)]"
-							style={`left: ${overlay.left}; top: ${overlay.top}; width: ${overlay.width};${overlay.rotate ? ` transform: rotate(${overlay.rotate});` : ''}`}
+							style={`left: ${overlay.left}; top: ${overlay.top}; width: ${overlay.width};${overlay.rotate ? ` transform: rotate(${overlay.rotate});` : ""}`}
 							loading="lazy"
 							decoding="async"
 						/>
@@ -387,134 +414,377 @@ const stepTitle =
 
 	{/* Illustration logics */}
 	<section
-		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		class="bg-white py-10"
 		aria-labelledby="akshar-logics-title"
 	>
-		<div
-			class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-10"
-		>
-			<h2 id="akshar-logics-title" class={`${accentTitle} shrink-0`}>
-				{logics.title}
-			</h2>
-			<p class="type-body max-w-[30.375rem] text-ink">{logics.lead}</p>
+		<div class="max-w-[75rem] mx-auto mt-12 md:mt-16 px-[clamp(1rem,3vw,2rem)]">
+			<div
+				class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-10"
+			>
+				<h2 id="akshar-logics-title" class={`${accentTitle} shrink-0`}>
+					{logics.title}
+				</h2>
+				<p class="type-body max-w-[30.375rem] text-ink">
+					{logics.lead}
+				</p>
+			</div>
+
+			<ul
+				class="m-0 mt-10 grid list-none grid-cols-1 gap-x-8 gap-y-12 p-0 sm:grid-cols-2"
+			>
+				{
+					logics.cards.map((card) => (
+						<li class="flex flex-col">
+							<figure class="m-0 overflow-hidden bg-white">
+								<img
+									src={card.image.src}
+									alt={card.image.alt}
+									class="block h-auto w-full"
+									width="514"
+									height="246"
+									loading="lazy"
+									decoding="async"
+								/>
+							</figure>
+							<h3
+								class={`${stepTitle} mt-4 text-center text-[#da6a55]`}
+							>
+								{card.title}
+							</h3>
+							<p class="type-body mt-2 whitespace-pre-line text-center text-[#53160b]">
+								{card.body.map((part) =>
+									part.bold ? (
+										<strong class="font-bold">
+											{part.text}
+										</strong>
+									) : (
+										part.text
+									),
+								)}
+							</p>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	{/* Pedagogy visuals — banner + Figma 352:361 */}
+	<section aria-label="Pedagogy in practice">
+		{/* Process banner + Insights (photo overlaps banner, Figma reference) */}
+		<div class="relative">
+			<figure class="m-0">
+				<img
+					src={pedagogy.banner.src}
+					alt={pedagogy.banner.alt}
+					class="block h-auto w-full"
+					width="1920"
+					height="610"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+
+			<div
+				class="relative z-[1] mx-auto grid max-w-[75rem] grid-cols-1 items-start gap-8 px-[clamp(1rem,3vw,2rem)] pt-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.15fr)] lg:gap-12 lg:pt-10"
+			>
+				<div class="lg:pt-[clamp(1.5rem,4vw,3rem)]">
+					<h2
+						class={`${accentTitle} whitespace-pre-line`}
+						id="akshar-pedagogy-insights-title"
+					>
+						{pedagogy.insights.title}
+					</h2>
+					<p class="type-body mt-5 whitespace-pre-line text-ink">
+						{
+							pedagogy.insights.body.map((part) =>
+								part.bold ? (
+									<strong class="font-bold">{part.text}</strong>
+								) : (
+									part.text
+								),
+							)
+						}
+					</p>
+				</div>
+				<figure
+					class="m-0 -mt-[clamp(3.5rem,14vw,9.5rem)] justify-self-center lg:justify-self-end"
+				>
+					<img
+						src={pedagogy.insights.photo.src}
+						alt={pedagogy.insights.photo.alt}
+						class="block h-auto w-full max-w-[45rem] -rotate-2 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
+						width="716"
+						height="431"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			</div>
 		</div>
 
-		<ul
-			class="m-0 mt-10 grid list-none grid-cols-1 gap-x-8 gap-y-12 p-0 sm:grid-cols-2"
+		{/* Ma decision band */}
+		<div class="mt-10 bg-white py-10 md:mt-12 md:py-12">
+			<div
+				class="mx-auto grid max-w-[75rem] grid-cols-1 items-center gap-8 px-[clamp(1rem,3vw,2rem)] lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-12"
+			>
+				<div
+					class="flex items-center justify-center gap-3 sm:gap-4"
+					aria-label="Letterform vocabulary options for म"
+				>
+					<span
+						class="font-body text-[clamp(4rem,8vw,6.875rem)] font-bold leading-none text-[#4c4c4c]"
+						aria-hidden="true"
+					>
+						{pedagogy.decision.letter}
+					</span>
+					<ul class="m-0 list-none space-y-2 p-0 sm:space-y-3">
+						{
+							pedagogy.decision.options.map((option) => (
+								<li
+									class="font-body text-[clamp(1.25rem,2.5vw,2.5rem)] font-medium leading-[1.15]"
+									style={`color: ${option.color}`}
+								>
+									{option.label}
+								</li>
+							))
+						}
+					</ul>
+					<span
+						class="font-body text-[clamp(4rem,8vw,6.875rem)] font-bold leading-none text-[#4c4c4c]"
+						aria-hidden="true"
+					>
+						?
+					</span>
+				</div>
+				<p class="type-body text-ink">
+					{pedagogy.decision.preface}
+					<br />
+					<br />
+					<strong class="font-bold text-[#7ca979]">
+						{pedagogy.decision.solutionLabel}
+					</strong>
+					{pedagogy.decision.solutionBody}
+				</p>
+			</div>
+		</div>
+
+		{/* Pedagogy in practice */}
+		<div
+			class="mx-auto mt-10 grid max-w-[75rem] grid-cols-1 items-start gap-10 px-[clamp(1rem,3vw,2rem)] md:mt-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.15fr)] lg:gap-12"
 		>
-			{
-				logics.cards.map((card) => (
-					<li class="flex flex-col">
-						<figure class="m-0 overflow-hidden bg-white">
-							<img
-								src={card.image.src}
-								alt={card.image.alt}
-								class="block h-auto w-full"
-								width="514"
-								height="246"
-								loading="lazy"
-								decoding="async"
-							/>
-						</figure>
-						<h3 class={`${stepTitle} mt-4 text-center text-[#da6a55]`}>
-							{card.title}
-						</h3>
-						<p class="type-body mt-2 whitespace-pre-line text-center text-[#53160b]">
-							{card.body.map((part) =>
-								part.bold ? (
-									<strong class="font-bold">{part.text}</strong>
-								) : (
-									part.text
-								),
-							)}
-						</p>
-					</li>
-				))
-			}
-		</ul>
+			<div>
+				<h2 class={`${stepTitle} text-[#da6a55]`}>
+					{pedagogy.practice.title}
+				</h2>
+				<p class="type-body mt-4 text-ink">
+					{
+						pedagogy.practice.lead.map((part) =>
+							part.bold ? (
+								<strong class="font-bold">{part.text}</strong>
+							) : (
+								part.text
+							),
+						)
+					}
+				</p>
+				<p class="type-body mt-4 text-ink">
+					{pedagogy.practice.listIntro}
+				</p>
+				<ul class="type-body m-0 mt-3 list-disc space-y-2 pl-5 text-ink">
+					{
+						pedagogy.practice.replacements.map((item) => (
+							<li>{item}</li>
+						))
+					}
+				</ul>
+			</div>
+			<figure class="m-0 justify-self-center lg:justify-self-end">
+				<img
+					src={pedagogy.practice.photo.src}
+					alt={pedagogy.practice.photo.alt}
+					class="block h-auto w-full max-w-[46rem] rotate-1 "
+					width="744"
+					height="457"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+		</div>
+
+		{/* Updated positioning — portrait hangs into Constraints below */}
+		<div
+			class="relative z-[2] mx-auto mt-10 grid max-w-[75rem] grid-cols-1 items-start gap-10 px-[clamp(1rem,3vw,2rem)] md:mt-14 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-12"
+		>
+			<figure
+				class="relative z-[2] m-0 mx-auto mb-[clamp(-6rem,-14vw,-9rem)] w-full max-w-[23rem] lg:mx-0"
+			>
+				<img
+					src={pedagogy.positioning.photo.src}
+					alt={pedagogy.positioning.photo.alt}
+					class="block h-auto w-full rotate-2 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
+					width="364"
+					height="504"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+			<div class="min-w-0">
+				<h2 class={`${stepTitle} text-[#da6a55]`}>
+					{pedagogy.positioning.title}
+				</h2>
+				<div
+					class="mt-5 overflow-x-auto"
+					role="table"
+					aria-label="How the tool is used by age group"
+				>
+					<div
+						class="grid min-w-[36rem] grid-cols-[minmax(14rem,0.4fr)_minmax(0,0.6fr)] border border-[#afafaf] bg-white"
+						role="row"
+					>
+						<div
+							class="border-r border-[#afafaf] px-4 py-3 font-label text-[clamp(0.875rem,1.1vw,1.25rem)] font-bold uppercase tracking-[0.01em] text-[#9ba1a5]"
+							role="columnheader"
+						>
+							Age Group
+						</div>
+						<div
+							class="px-4 py-3 font-label text-[clamp(0.875rem,1.1vw,1.25rem)] font-bold uppercase tracking-[0.01em] text-[#9ba1a5]"
+							role="columnheader"
+						>
+							How the Tool Is Used
+						</div>
+					</div>
+					{
+						pedagogy.positioning.columns.map((row) => (
+							<div
+								class="grid min-w-[36rem] grid-cols-[minmax(14rem,0.4fr)_minmax(0,0.6fr)] border border-t-0 border-[#afafaf] bg-white"
+								role="row"
+							>
+								<div
+									class="border-r border-[#afafaf] px-4 py-3 font-body text-[clamp(1rem,1.1vw,1.125rem)] font-bold"
+									style={`color: ${row.ageColor}`}
+									role="cell"
+								>
+									{row.age}
+								</div>
+								<div
+									class="px-4 py-3 type-body text-[#4c4c4c]"
+									role="cell"
+								>
+									{row.usage}
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</div>
 	</section>
 
-	{/* Pedagogy visuals */}
+	{/* Constraints — white band; portrait from above overlaps the top edge */}
 	<section
-		class="mx-auto mt-12 max-w-[75rem] space-y-8 px-[clamp(1rem,3vw,2rem)] md:mt-16"
-		aria-label="Pedagogy in practice"
-	>
-		<figure class="m-0 overflow-hidden">
-			<img
-				src={pedagogy.photo.src}
-				alt={pedagogy.photo.alt}
-				class="block h-auto w-full"
-				width="1200"
-				height="600"
-				loading="lazy"
-				decoding="async"
-			/>
-		</figure>
-		<figure class="m-0 overflow-hidden">
-			<img
-				src={pedagogy.practice.src}
-				alt={pedagogy.practice.alt}
-				class="block h-auto w-full"
-				width="1200"
-				height="800"
-				loading="lazy"
-				decoding="async"
-			/>
-		</figure>
-	</section>
-
-	{/* Constraints */}
-	<section
-		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		class="relative z-[1] bg-white pt-[clamp(5rem,12vw,9rem)] pb-12 md:pb-16"
 		aria-labelledby="akshar-constraints-title"
 	>
-		<h2 id="akshar-constraints-title" class={`${accentTitle} text-center`}>
-			{constraints.title}
-		</h2>
+		<div class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)]">
+			<h2
+				id="akshar-constraints-title"
+				class={`${accentTitle} text-center`}
+			>
+				{constraints.title}
+			</h2>
+			<div
+				class="mx-auto h-px w-full bg-[#3E3D3B]/60 mt-4"
+				aria-hidden="true"
+			>
+			</div>
 
-		<ul
-			class="m-0 mt-10 grid list-none grid-cols-1 gap-x-10 gap-y-10 p-0 md:grid-cols-2"
-		>
-			{
-				constraints.items.map((item) => (
-					<li>
-						<h3 class={`${stepTitle} text-[#da6a55]`}>{item.title}</h3>
-						<p class="type-body mt-3 whitespace-pre-line text-ink">
-							{item.body.map((part) =>
-								part.bold ? (
-									<strong class="font-bold">{part.text}</strong>
-								) : (
-									part.text
-								),
-							)}
-						</p>
-					</li>
-				))
-			}
-		</ul>
+			<div class="mt-2">
+				<ul
+					class="m-0 grid list-none grid-cols-1 gap-x-10 gap-y-8 p-0 md:grid-cols-2"
+				>
+					{
+						constraints.items.slice(0, 2).map((item) => (
+							<li>
+								<h3
+									class={`${stepTitle} pb-3 text-[#da6a55]`}
+								>
+									{item.title}
+								</h3>
+								<p class="type-body mt-4 whitespace-pre-line text-ink">
+									{item.body.map((part) =>
+										part.bold ? (
+											<strong class="font-bold">
+												{part.text}
+											</strong>
+										) : (
+											part.text
+										),
+									)}
+								</p>
+							</li>
+						))
+					}
+				</ul>
 
-		<figure class="mt-10 m-0 overflow-hidden md:mt-12">
-			<img
-				src={constraints.bhuttaProcess.src}
-				alt={constraints.bhuttaProcess.alt}
-				class="block h-auto w-full"
-				width="1200"
-				height="400"
-				loading="lazy"
-				decoding="async"
-			/>
-		</figure>
-		<figure class="mt-6 m-0 overflow-hidden">
-			<img
-				src={constraints.mockups.src}
-				alt={constraints.mockups.alt}
-				class="block h-auto w-full"
-				width="1200"
-				height="455"
-				loading="lazy"
-				decoding="async"
-			/>
-		</figure>
+				<div
+					class="my-2 h-px w-full mx-auto bg-[#3E3D3B]/60 mt-16"
+					aria-hidden="true"
+				>
+				</div>
+
+				<ul
+					class="m-0 grid list-none grid-cols-1 gap-x-10 gap-y-8 p-0 md:grid-cols-2"
+				>
+					{
+						constraints.items.slice(2).map((item) => (
+							<li>
+								<h3
+									class={`${stepTitle} pb-3 text-[#da6a55]`}
+								>
+									{item.title}
+								</h3>
+								<p class="type-body mt-4 whitespace-pre-line text-ink">
+									{item.body.map((part) =>
+										part.bold ? (
+											<strong class="font-bold">
+												{part.text}
+											</strong>
+										) : (
+											part.text
+										),
+									)}
+								</p>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<figure class="mt-10 m-0 overflow-hidden md:mt-12 bg-white">
+				<img
+					src={constraints.bhuttaProcess.src}
+					alt={constraints.bhuttaProcess.alt}
+					class="block h-auto w-full"
+					width="1200"
+					height="400"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+			<figure class="mt-6 m-0 overflow-hidden">
+				<img
+					src={constraints.mockups.src}
+					alt={constraints.mockups.alt}
+					class="block h-auto w-full"
+					width="1200"
+					height="455"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+		</div>
 	</section>
 
 	{/* Impact */}
