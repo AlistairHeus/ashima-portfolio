@@ -3,81 +3,57 @@
  * Featured case studies — sticky scroll folder stack.
  * Each folder carries its own tab label + content; tabs jump scroll to that step.
  * Figma Group 149:898. Folder assets: /images/home/folder-{1..4}.svg
+ * Content from work catalogue case studies (first four).
  */
 import Chip from '../Chip.astro';
+import { caseStudies } from '../../data/work';
 
-interface FeaturedProject {
-	readonly id: string;
-	readonly label: string;
+interface FolderMeta {
 	readonly folderSrc: string;
 	readonly labelColor: string;
 	readonly titleColor: string;
-	readonly title: string;
-	readonly description: string;
-	readonly imageSrc: string;
-	readonly imageAlt: string;
-	readonly chips: readonly string[];
-	readonly href: string;
 }
 
-const projects: readonly FeaturedProject[] = [
+/** Per-folder chrome (SVG + ink colors matched to each tab). */
+const folderMeta: readonly FolderMeta[] = [
 	{
-		id: '1',
-		label: 'PROJECT 1',
 		folderSrc: '/images/home/folder-1.svg',
 		labelColor: '#3b576e',
 		titleColor: '#4a3a06',
-		title: 'Rebranding Indraprastha Gas Limited',
-		description:
-			'Reimagining a legacy energy brand through strategy-led identity design, balancing familiarity with a vision for sustainable growth.',
-		imageSrc: '/images/home/featured-igl.png',
-		imageAlt: 'Indraprastha Gas Limited station with new brand identity',
-		chips: ['Brand Strategy', 'Visual Identity', 'Brand Systems'],
-		href: '/work',
 	},
 	{
-		id: '2',
-		label: 'PROJECT 2',
 		folderSrc: '/images/home/folder-2.svg',
 		labelColor: '#7c340a',
 		titleColor: '#7c340a',
-		title: 'Featured case study',
-		description:
-			'Additional featured work will live here — tap through the folders to explore.',
-		imageSrc: '/images/home/featured-igl.png',
-		imageAlt: '',
-		chips: ['Brand Strategy', 'Visual Identity'],
-		href: '/work',
 	},
 	{
-		id: '3',
-		label: 'PROJECT 3',
 		folderSrc: '/images/home/folder-3.svg',
 		labelColor: '#4a3a06',
 		titleColor: '#4a3a06',
-		title: 'Featured case study',
-		description:
-			'Additional featured work will live here — tap through the folders to explore.',
-		imageSrc: '/images/home/featured-igl.png',
-		imageAlt: '',
-		chips: ['Editorial Design', 'Typography'],
-		href: '/work',
 	},
 	{
-		id: '4',
-		label: 'PROJECT 4',
 		folderSrc: '/images/home/folder-4.svg',
 		labelColor: '#2e3716',
 		titleColor: '#2e3716',
-		title: 'Featured case study',
-		description:
-			'Additional featured work will live here — tap through the folders to explore.',
-		imageSrc: '/images/home/featured-igl.png',
-		imageAlt: '',
-		chips: ['Design Research', 'Systems'],
-		href: '/work',
 	},
 ];
+
+const projects = caseStudies.slice(0, folderMeta.length).map((study, index) => {
+	const folder = folderMeta[index]!;
+	return {
+		id: study.id,
+		label: `PROJECT ${index + 1}`,
+		folderSrc: folder.folderSrc,
+		labelColor: folder.labelColor,
+		titleColor: folder.titleColor,
+		title: study.title,
+		description: study.description,
+		imageSrc: study.imageSrc,
+		imageAlt: study.imageAlt,
+		chips: study.chips,
+		href: study.href ?? '/work',
+	};
+});
 
 /**
  * Tab hit-areas aligned to each folder SVG tab (viewBox width 1495).
@@ -89,6 +65,9 @@ const tabSlots = [
 	{ left: '47.2%', width: '23.2%' },
 	{ left: '70.6%', width: '23.1%' },
 ] as const;
+
+/** Scroll track height scales with stack depth (one viewport per folder step). */
+const trackHeightVh = Math.max(1, projects.length) * 100;
 ---
 
 <section
@@ -97,7 +76,11 @@ const tabSlots = [
 	data-featured
 >
 	{/* Tall track creates scroll distance; stage sticks while folders stack */}
-	<div class="featured__track relative h-[400vh]" data-featured-track>
+	<div
+		class="featured__track relative"
+		style={`height: ${trackHeightVh}vh`}
+		data-featured-track
+	>
 		{/*
 		  Overflow clips folders rising from below the viewport.
 		  Heading sits in a top band; folder centers in the remaining space so

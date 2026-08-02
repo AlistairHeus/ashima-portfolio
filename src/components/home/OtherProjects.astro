@@ -2,67 +2,42 @@
 /**
  * Other projects — list + stacked Polaroids (Figma home, ~149:921).
  * Background continues #FDFBF9 from Featured (no dots).
+ * Each polaroid shows a project image; hover/focus promotes that card to the front.
  */
 import Chip from '../Chip.astro';
 import Polaroid from '../Polaroid.astro';
+import { otherWorkProjects } from '../../data/work';
 
-interface OtherProject {
-	readonly title: string;
-	readonly chips: readonly string[];
-	readonly href?: string;
-	readonly muted?: boolean;
-}
+const projects = otherWorkProjects.map((project) => ({
+	id: project.id,
+	title: project.title,
+	chips: project.chips,
+	href: project.href,
+	imageSrc: project.imageSrc,
+	imageAlt: project.imageAlt,
+	/** Dim entries that do not yet have a dedicated case-study page. */
+	muted: !project.href || project.href === '/work',
+}));
 
-const projects: readonly OtherProject[] = [
-	{
-		title: 'Maahi: Logo Design',
-		chips: ['Logo Design', 'Narrative-driven design', 'Brand identity development'],
-		href: '/work',
-	},
-	{
-		title: 'Air India: Customer Experience',
-		chips: ['Systems thinking', 'Information Hierarchy', 'Brand Translation'],
-		href: '/work',
-		muted: true,
-	},
-	{
-		title: 'Royal Enfield TGHE Book',
-		chips: ['Editorial design', 'Information hierarchy', 'Visual storytelling'],
-		href: '/work/himalayan-book',
-		muted: true,
-	},
-	{
-		title: 'Vivan Hospital: Print & Digital Design',
-		chips: ['Brand Translation', 'Print Media', 'Digitization'],
-		href: '/work',
-		muted: true,
-	},
-	{
-		title: 'Reconnect: Researching Inclusive Play',
-		chips: ['Design Research', 'Inclusive Design', 'User Research'],
-		href: '/work',
-		muted: true,
-	},
-	{
-		title: 'Logofolio',
-		chips: ['Logo Design', 'Visual Storytelling', 'Concept Development'],
-		href: '/work',
-		muted: true,
-	},
-];
-
-const stack = [
-	{ rotate: -6, className: 'left-[8%] top-[12%] z-[1] w-[78%]' },
-	{ rotate: 4, className: 'left-[14%] top-[6%] z-[2] w-[78%]' },
-	{ rotate: -2, className: 'left-[4%] top-[18%] z-[3] w-[82%]' },
-	{ rotate: 3, className: 'left-[18%] top-[10%] z-[4] w-[80%]' },
-	{ rotate: -1, className: 'left-[10%] top-[14%] z-[5] w-[84%]' },
+/**
+ * Stack slots from back → front. Length matches project count so every
+ * polaroid gets a distinct offset / tilt in the pile.
+ */
+const stackSlots = [
+	{ rotate: -9, left: '4%', top: '20%', width: '74%' },
+	{ rotate: 7, left: '18%', top: '6%', width: '76%' },
+	{ rotate: -4, left: '2%', top: '12%', width: '78%' },
+	{ rotate: 5, left: '16%', top: '22%', width: '75%' },
+	{ rotate: -6, left: '8%', top: '4%', width: '80%' },
+	{ rotate: 3, left: '14%', top: '16%', width: '79%' },
+	{ rotate: -2, left: '10%', top: '10%', width: '84%' },
 ] as const;
 ---
 
 <section
 	class="other-projects bg-surface-warm px-[clamp(1rem,3vw,2rem)] pb-20 pt-6 md:pb-28 md:pt-10"
 	aria-labelledby="other-projects-heading"
+	data-other-projects
 >
 	<div class="mx-auto max-w-[75rem]">
 		<h2
@@ -78,7 +53,13 @@ const stack = [
 			<ul class="m-0 list-none divide-y divide-muted/30 border-y border-muted/30 p-0">
 				{
 					projects.map((project) => (
-						<li class:list={['py-5', project.muted && 'opacity-60']}>
+						<li
+							class:list={[
+								'other-projects__item py-5 transition-opacity duration-200',
+								project.muted && 'opacity-60',
+							]}
+							data-other-project-id={project.id}
+						>
 							{project.href ? (
 								<a
 									href={project.href}
@@ -100,24 +81,66 @@ const stack = [
 			</ul>
 
 			<div
-				class="relative mx-auto aspect-[4/5] w-full max-w-[34rem]"
+				class="other-projects__stack relative mx-auto aspect-[4/5] w-full max-w-[34rem]"
 				aria-hidden="true"
+				data-other-projects-stack
+				data-stack-slots={JSON.stringify(stackSlots.slice(0, projects.length))}
 			>
 				{
-					stack.map((card) => (
-						<div class:list={['absolute', card.className]}>
-							<Polaroid
-								imageSrc="/images/home/polaroid-stack-1.png"
-								imageAlt=""
-								variant="classic"
-								rotate={card.rotate}
-								aspectRatio="442 / 408"
-								class="max-w-none w-full"
-							/>
-						</div>
-					))
+					projects.map((project, index) => {
+						const slot = stackSlots[Math.min(index, stackSlots.length - 1)]!;
+						return (
+							<div
+								class="other-projects__polaroid absolute"
+								data-other-polaroid={project.id}
+								style={`left: ${slot.left}; top: ${slot.top}; width: ${slot.width}; z-index: ${index + 1}; --polaroid-rotate: ${slot.rotate}deg;`}
+							>
+								<Polaroid
+									imageSrc={project.imageSrc}
+									imageAlt=""
+									variant="classic"
+									rotate={0}
+									aspectRatio="442 / 408"
+									class="other-projects__polaroid-frame max-w-none w-full"
+								/>
+							</div>
+						);
+					})
 				}
 			</div>
 		</div>
 	</div>
 </section>
+
+<style>
+	.other-projects__item[data-active='true'] {
+		opacity: 1;
+	}
+
+	.other-projects__polaroid {
+		transform: rotate(var(--polaroid-rotate, 0deg));
+		transition:
+			left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+			top 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+			width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+			transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+			z-index 0s linear 0.15s;
+	}
+
+	.other-projects__polaroid[data-active='true'] :global(.polaroid) {
+		box-shadow: 0 8px 24px rgb(0 0 0 / 0.22);
+		transition: box-shadow 0.35s ease;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.other-projects__polaroid {
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	import { initOtherProjectsStack } from '../../scripts/other-projects-stack';
+
+	initOtherProjectsStack();
+</script>
