@@ -261,14 +261,16 @@ export interface AksharChitraCaseStudyContent {
 	readonly impact: {
 		readonly title: string;
 		readonly lead: readonly CaseStudyTextPart[];
+		/** Three-circle intersection diagram (Figma Why This Matters). */
+		readonly venn: CaseStudyImage;
 		readonly cards: readonly {
 			readonly title: string;
 			readonly body: string;
-			readonly background: string;
 			readonly titleColor: string;
 			readonly bodyColor: string;
+			/** Taped card face with watermark icon. */
+			readonly image: CaseStudyImage;
 		}[];
-		readonly finale: CaseStudyImage;
 	};
 }
 
@@ -1544,33 +1546,42 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 						bold: true,
 					},
 				],
+				venn: {
+					src: '/images/case-studies/akshar-chitra/venn-akshar.png',
+					alt: 'Venn diagram intersecting education imagery, Hindi language, and Mithila art at Akshar Chitra',
+				},
 				cards: [
 					{
 						title: 'For Craftspeople',
 						body: 'Increased awareness of how traditional crafts can be transformed through design. Gaining exposure to new markets and new ways of thinking about their work.',
-						background: '#d6a545',
 						titleColor: '#3d2e00',
-						bodyColor: '#fff7dc',
+						bodyColor: '#ffffff',
+						image: {
+							src: '/images/case-studies/akshar-chitra/wtm-card-1.png',
+							alt: '',
+						},
 					},
 					{
 						title: 'For Educators & Students',
 						body: 'Teachers discovered a tool that sparks conversation and engagement, with children. Older students found creative challenge in drawing letters from objects.',
-						background: '#c76e3a',
 						titleColor: '#552001',
-						bodyColor: '#ffece1',
+						bodyColor: '#ffffff',
+						image: {
+							src: '/images/case-studies/akshar-chitra/wtm-card-2.png',
+							alt: '',
+						},
 					},
 					{
 						title: 'For Designers',
 						body: 'This project demonstrates that graphic design can operate at the intersection of education, culture, craft and social impact.',
-						background: '#7e846e',
 						titleColor: '#273209',
-						bodyColor: '#eef5dc',
+						bodyColor: '#ffffff',
+						image: {
+							src: '/images/case-studies/akshar-chitra/wtm-card-3.png',
+							alt: '',
+						},
 					},
 				],
-				finale: {
-					src: '/images/case-studies/akshar-chitra/section-banner.png',
-					alt: 'Akshar Chitra letterform specimens and teaching aid applications',
-				},
 			},
 		},
 	},
