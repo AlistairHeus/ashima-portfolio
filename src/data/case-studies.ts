@@ -292,9 +292,11 @@ export interface AirIndiaCaseStudyContent {
 	readonly brandIdentity: CaseStudyImage;
 	readonly research: {
 		readonly title: string;
-		readonly body: string;
+		/** Body lines — fixed wraps match Figma (367:1631). */
+		readonly body: readonly string[];
 		readonly challengesTitle: string;
-		readonly challenges: readonly string[];
+		/** Challenge lines — fixed wraps match Figma; one string = one line. */
+		readonly challenges: readonly (readonly string[])[];
 		readonly diagram: CaseStudyImage;
 	};
 	readonly opportunity: {
@@ -503,13 +505,23 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			},
 			research: {
 				title: 'Research & Discovery',
-				body: 'Mapped the end-to-end passenger journey through airport recce, stakeholder interviews, competitor benchmarking, and touchpoint analysis to identify experience gaps and opportunities.',
+				body: [
+					'Mapped the end-to-end passenger journey through airport recce,',
+					'stakeholder interviews, competitor benchmarking, and touchpoint',
+					'analysis to identify experience gaps and opportunities.',
+				],
 				challengesTitle: 'Challenges',
 				challenges: [
-					'Significant variation in airport layouts, infrastructure and constraints (domestic & international)',
-					'Limited flexibility due to rules governed by the airport authority',
-					'Creating design guidelines for omni-channel touchpoints',
-					'Coordinating across teams, vendors, and locations (remote and on-ground)',
+					[
+						'Significant variation in airport layouts, infrastructure and',
+						'constraints (domestic & international)',
+					],
+					['Limited flexibility due to rules governed by the airport authority'],
+					['Creating design guidelines for omni-channel touchpoints'],
+					[
+						'Coordinating across teams, vendors, and locations (remote and',
+						'on-ground)',
+					],
 				],
 				diagram: {
 					src: '/images/case-studies/air-india/research-diagram.png',

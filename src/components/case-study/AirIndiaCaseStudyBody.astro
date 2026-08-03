@@ -66,8 +66,15 @@ const roseStat = '#f3c4cb';
 				>
 					{research.title}
 				</h2>
-				<p class="type-body mt-4 max-w-[30.5rem] text-ink">
-					{research.body}
+				<p class="mt-4 max-w-[30.375rem] font-body text-[1.0625rem] leading-[1.4375rem] text-ink">
+					{
+						research.body.map((line, index) => (
+							<>
+								{index > 0 ? <br /> : null}
+								{line}
+							</>
+						))
+					}
 				</p>
 
 				<h3
@@ -77,11 +84,18 @@ const roseStat = '#f3c4cb';
 					{research.challengesTitle}
 				</h3>
 				<ul
-					class="type-body mt-4 list-disc space-y-2.5 pl-[1.7rem] text-ink marker:text-ink"
+					class="mt-4 max-w-[32rem] list-disc space-y-2.5 pl-[1.7rem] font-body text-lg leading-[1.4375rem] tracking-[-0.0225rem] text-ink marker:text-ink"
 				>
 					{
 						research.challenges.map((challenge) => (
-							<li class="pl-1">{challenge}</li>
+							<li class="pl-1">
+								{challenge.map((line, index) => (
+									<>
+										{index > 0 ? <br /> : null}
+										{line}
+									</>
+								))}
+							</li>
 						))
 					}
 				</ul>
@@ -103,13 +117,13 @@ const roseStat = '#f3c4cb';
 
 	{/* Opportunity Mapping */}
 	<section
-		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-24"
 		aria-labelledby="air-india-opportunity-title"
 	>
 		<div
-			class="grid grid-cols-1 items-start gap-10 md:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] md:gap-8 lg:gap-10"
+			class="flex items-center gap-16"
 		>
-			<div class="md:pt-[clamp(4rem,8vw,8.5rem)]">
+			<div class="">
 				<h2
 					id="air-india-opportunity-title"
 					class="type-label-lg"
@@ -162,7 +176,7 @@ const roseStat = '#f3c4cb';
 
 	{/* Reimagining the Boarding Pass — pink band; Maharaja sits on baked white banner */}
 	<section
-		class="relative mt-12 overflow-hidden md:mt-16"
+		class="relative overflow-hidden"
 		style={`background-color: ${roseBand}`}
 		aria-labelledby="air-india-reimagining-title"
 	>
