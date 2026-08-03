@@ -249,9 +249,9 @@ const roseStat = '#f3c4cb';
 
 	{/* Designing with Purpose — title/body HTML; sticky + heatmap in visual */}
 	<section class="bg-white" aria-labelledby="air-india-purpose-title">
-		<div class="relative mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,4vw,3rem)]">
+		<div class="relative mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pb-24 ">
 			<div
-				class="mb-6 max-w-[30.375rem] md:absolute md:left-[clamp(1rem,3vw,2rem)] md:top-[clamp(3.5rem,6vw,5.5rem)] md:z-10 md:mb-0"
+				class="mb-6 max-w-[30.375rem] md:absolute md:left-[clamp(1rem,3vw,2rem)] md:top-[clamp(2.5rem,4vw,2.5rem)] md:z-10 md:mb-0"
 			>
 				<h2
 					id="air-india-purpose-title"
@@ -311,7 +311,7 @@ const roseStat = '#f3c4cb';
 			<div class="flex flex-col gap-6 md:h-full md:justify-between md:gap-0 md:pt-2">
 				<div>
 					<p
-						class="font-label text-xl font-normal uppercase tracking-[0.175rem]"
+						class="font-label mt-12 text-xl font-normal uppercase tracking-[0.175rem]"
 						style={`color: ${accent}`}
 					>
 						{boardingShowcase.eyebrow}
@@ -344,13 +344,13 @@ const roseStat = '#f3c4cb';
 
 		{/* Bottom half — hand bleeds to viewport left; features stay in content column */}
 		<div
-			class="mx-auto max-w-[75rem] overflow-x-clip px-[clamp(1rem,3vw,2rem)] pt-10 pb-[clamp(2rem,4vw,3rem)] md:overflow-visible md:pt-12"
+			class="mx-auto w-full  overflow-x-clip md:overflow-visible md:pt-12"
 		>
 			<div
-				class="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-10 lg:gap-12"
+				class="flex  items-center md:grid-cols-2 w-full pb-12"
 			>
 				<figure
-					class="m-0 max-md:-mx-[clamp(1rem,3vw,2rem)] md:-ml-[calc((100vw-min(100vw,75rem))/2+clamp(1rem,3vw,2rem))] md:w-[calc(100%+((100vw-min(100vw,75rem))/2)+clamp(1rem,3vw,2rem))] md:max-w-none"
+					class=" m-0 w-3/5 "
 				>
 					<img
 						src={boardingShowcase.hand.src}
@@ -363,7 +363,7 @@ const roseStat = '#f3c4cb';
 					/>
 				</figure>
 
-				<div>
+				<div class=" w-2/5">
 					<h3
 						class="type-label-lg"
 						style={`color: ${inkDeep}`}
@@ -450,27 +450,42 @@ const roseStat = '#f3c4cb';
 
 	{/* Touchpoints intro + stats */}
 	<section
-		class="mx-auto max-w-[75rem] "
+		class="mx-auto max-w-[75rem]"
 		aria-labelledby="air-india-touchpoints-title"
 	>
 		<div class="grid grid-cols-1 md:grid-cols-2">
-			<div class="bg-canvas py-10 md:px-10 md:py-12">
+			<div class="bg-canvas px-8 py-10 md:px-10 md:py-12">
 				<h2
 					id="air-india-touchpoints-title"
-					class="type-label-lg max-w-[20rem]"
+					class="type-label-lg"
 					style={`color: ${inkDeep}`}
 				>
-					{touchpointsIntro.title}
-				</h2>
-				<p class="mt-5 max-w-[30rem] font-body text-xl leading-7" style={`color: ${inkDeep}`}>
 					{
-						touchpointsIntro.body.map((part) =>
-							part.bold ? (
-								<strong class="font-bold">{part.text}</strong>
-							) : (
-								part.text
-							),
-						)
+						touchpointsIntro.title.map((line, index) => (
+							<>
+								{index > 0 ? <br /> : null}
+								{line}
+							</>
+						))
+					}
+				</h2>
+				<p
+					class="mt-5 max-w-[30.375rem] font-body text-xl leading-7"
+					style={`color: ${inkDeep}`}
+				>
+					{
+						touchpointsIntro.body.map((line, lineIndex) => (
+							<>
+								{lineIndex > 0 ? <br /> : null}
+								{line.map((part) =>
+									part.bold ? (
+										<strong class="font-bold">{part.text}</strong>
+									) : (
+										part.text
+									),
+								)}
+							</>
+						))
 					}
 				</p>
 			</div>
@@ -479,20 +494,28 @@ const roseStat = '#f3c4cb';
 				style={`background-color: ${roseStat}`}
 			>
 				<p
-					class="font-display text-[clamp(2rem,4vw,2.5rem)] font-bold uppercase leading-[1.15]"
+					class="font-display text-[2.5rem] font-bold uppercase leading-none"
 					style={`color: #6e000e`}
 				>
 					{touchpointsIntro.stat}
 				</p>
-				<p class="mt-3 max-w-[24rem] font-body text-xl leading-7" style={`color: ${inkDeep}`}>
+				<p
+					class="mt-3 max-w-[24.1875rem] font-body text-xl leading-7"
+					style={`color: ${inkDeep}`}
+				>
 					{
-						touchpointsIntro.statBody.map((part) =>
-							part.bold ? (
-								<strong class="font-bold">{part.text}</strong>
-							) : (
-								part.text
-							),
-						)
+						touchpointsIntro.statBody.map((line, lineIndex) => (
+							<>
+								{lineIndex > 0 ? <br /> : null}
+								{line.map((part) =>
+									part.bold ? (
+										<strong class="font-bold">{part.text}</strong>
+									) : (
+										part.text
+									),
+								)}
+							</>
+						))
 					}
 				</p>
 			</div>

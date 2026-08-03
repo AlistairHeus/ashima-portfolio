@@ -31,7 +31,8 @@ export type CaseStudyBody =
 	| 'igl'
 	| 'convergence'
 	| 'akshar-chitra'
-	| 'air-india';
+	| 'air-india'
+	| 'way-of-the-witch';
 
 export interface CaseStudy {
 	readonly id: string;
@@ -74,6 +75,8 @@ export interface CaseStudy {
 	readonly aksharChitra?: AksharChitraCaseStudyContent;
 	/** Air India brand extension narrative sections (Figma Project 01). */
 	readonly airIndia?: AirIndiaCaseStudyContent;
+	/** Way of the Witch book cover (Figma Project 10). */
+	readonly witch?: WitchCaseStudyContent;
 }
 
 export interface MythilaCaseStudyContent {
@@ -122,6 +125,24 @@ export interface ConvergenceCaseStudyContent {
 	/** Six spread photos in display order (two rows of two, then a closing pair). */
 	readonly spreads: readonly CaseStudyImage[];
 	readonly feature: CaseStudyImage;
+}
+
+/**
+ * Way of the Witch book cover body (Figma Project 10, 376:357).
+ * Landing uses shared CaseStudy fields; brief / iterations / selected / details live here.
+ */
+export interface WitchCaseStudyContent {
+	readonly brief: {
+		readonly title: string;
+		readonly body: string;
+	};
+	/** Composed research moodboard (references + palette). */
+	readonly moodboard: CaseStudyImage;
+	readonly iterationsTitle: string;
+	readonly iterations: readonly CaseStudyImage[];
+	readonly selectedTitle: string;
+	readonly selected: CaseStudyImage;
+	readonly details: CaseStudyImage;
 }
 
 /**
@@ -341,10 +362,13 @@ export interface AirIndiaCaseStudyContent {
 		readonly markSrc: string;
 	};
 	readonly touchpointsIntro: {
-		readonly title: string;
-		readonly body: readonly CaseStudyTextPart[];
+		/** Title lines — fixed wraps match Figma (367:1630). */
+		readonly title: readonly string[];
+		/** Body lines with optional bold spans. */
+		readonly body: readonly (readonly CaseStudyTextPart[])[];
 		readonly stat: string;
-		readonly statBody: readonly CaseStudyTextPart[];
+		/** Stat body lines with optional bold spans. */
+		readonly statBody: readonly (readonly CaseStudyTextPart[])[];
 	};
 	/** Triangular tags, baggage stickers, e-ticket, lounge card. */
 	readonly collaterals: CaseStudyImage;
@@ -686,19 +710,24 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 				markSrc: '/images/case-studies/air-india/quote-mark.svg',
 			},
 			touchpointsIntro: {
-				title: 'Designed all touchpoints for 83+ airports',
+				title: ['Designed all touchpoints', 'for 83+ airports'],
 				body: [
-					{
-						text: 'To ensure a seamless brand experience, the new visual identity was mapped across all passenger touchpoints. Each touchpoint posed unique challenges, requiring focused attention and ',
-					},
-					{ text: 'tailored solutions.', bold: true },
+					[{ text: 'To ensure a seamless brand experience, the new visual' }],
+					[{ text: 'identity was mapped across all passenger touchpoints.' }],
+					[{ text: 'Each touchpoint posed unique challenges, requiring' }],
+					[
+						{ text: 'focused attention and ' },
+						{ text: 'tailored solutions.', bold: true },
+					],
 				],
 				stat: '~72,000 passengers',
 				statBody: [
-					{
-						text: 'interact with these touchpoints everyday reiterating the new identity and improving their journey, since ',
-					},
-					{ text: 'January 2024.', bold: true },
+					[{ text: 'interact with these touchpoints everyday' }],
+					[{ text: 'reiterating the new identity and improving' }],
+					[
+						{ text: 'their journey, since ' },
+						{ text: 'January 2024.', bold: true },
+					],
 				],
 			},
 			collaterals: {
@@ -1918,6 +1947,92 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 						},
 					},
 				],
+			},
+		},
+	},
+	{
+		id: 'way-of-the-witch',
+		number: '03',
+		category: 'Book Cover Design',
+		title: 'Way of the Witch',
+		client: 'For Harper Collins',
+		description: [
+			'Way of the Witch by Ipsita Chakraborty explores Wicca as a belief system and way of life, delving into its rituals, symbolism and mythology.',
+			'Commissioned by HarperCollins India, Ishan Khosla Design Studio developed the book cover, with my contribution spanning concept development and visual design.',
+		],
+		skills: ['Cover Design', 'Illustration'],
+		tools: [
+			{
+				name: 'Adobe Illustrator',
+				iconSrc: '/icons/tools/illustrator.png',
+			},
+			{
+				name: 'Adobe Photoshop',
+				iconSrc: '/icons/tools/photoshop.png',
+			},
+			{
+				name: 'Adobe InDesign',
+				iconSrc: '/icons/tools/indesign.png',
+			},
+		],
+		hero: {
+			src: '/images/case-studies/way-of-the-witch/hero.png',
+			alt: 'Way of the Witch hardcover with gold foil lettering on a textured surface',
+		},
+		heroBandColor: '#e4e0d7',
+		body: 'way-of-the-witch',
+		witch: {
+			brief: {
+				title: 'Project Brief',
+				body: 'Design a cover that evokes the look and feel of an antique spellbook, using foil detailing, symbolic Wiccan iconography and period-inspired typography to capture the mystical essence of the book.',
+			},
+			moodboard: {
+				src: '/images/case-studies/way-of-the-witch/moodboard.png',
+				alt: 'Research moodboard with occult symbols, leather bindings, cauldron, moon phases, and colour palette',
+			},
+			iterationsTitle: 'Proposed Iterations',
+			iterations: [
+				{
+					src: '/images/case-studies/way-of-the-witch/iteration-1.png',
+					alt: 'Purple cover iteration with cauldron motif',
+				},
+				{
+					src: '/images/case-studies/way-of-the-witch/iteration-2.png',
+					alt: 'Green cover iteration with gold foil border',
+				},
+				{
+					src: '/images/case-studies/way-of-the-witch/iteration-3.png',
+					alt: 'Red cover iteration with pentagram',
+				},
+				{
+					src: '/images/case-studies/way-of-the-witch/iteration-4.png',
+					alt: 'Black cover iteration with triple moon',
+				},
+				{
+					src: '/images/case-studies/way-of-the-witch/iteration-5.png',
+					alt: 'Deep red cover iteration variant',
+				},
+				{
+					src: '/images/case-studies/way-of-the-witch/iteration-6.png',
+					alt: 'Forest green cover iteration variant',
+				},
+				{
+					src: '/images/case-studies/way-of-the-witch/iteration-7.png',
+					alt: 'Burgundy cover iteration variant',
+				},
+				{
+					src: '/images/case-studies/way-of-the-witch/iteration-8.png',
+					alt: 'Charcoal cover iteration variant',
+				},
+			],
+			selectedTitle: 'Selected Design',
+			selected: {
+				src: '/images/case-studies/way-of-the-witch/selected.png',
+				alt: 'Final Way of the Witch hardcover resting on a stone pedestal',
+			},
+			details: {
+				src: '/images/case-studies/way-of-the-witch/details.png',
+				alt: 'Annotated cover with callouts for foil border, typography, cauldron, pentagram, triple moon, and triskele',
 			},
 		},
 	},

@@ -121,4 +121,15 @@ export const otherWorkProjects: readonly WorkProject[] = [
 		chips: ['Editorial Design', 'Layout & Composition', 'Book Design'],
 		href: '/work/convergence',
 	},
+	{
+		id: 'way-of-the-witch',
+		number: '09',
+		title: 'Way of the Witch',
+		description:
+			'Designing a HarperCollins cover that evokes an antique spellbook through foil detailing, Wiccan iconography, and period typography.',
+		imageSrc: '/images/case-studies/way-of-the-witch/work-card.png',
+		imageAlt: 'Way of the Witch hardcover with gold foil lettering',
+		chips: ['Book Cover Design', 'Illustration', 'Print Design'],
+		href: '/work/way-of-the-witch',
+	},
 ] as const;

@@ -1,0 +1,131 @@
+---
+/**
+ * Way of the Witch book cover body — after the shared landing.
+ * Matches Figma Project 10 (376:357): brief + moodboard, iterations, selected, details.
+ */
+import type { WitchCaseStudyContent } from '../../data/case-studies';
+
+interface Props {
+	readonly content: WitchCaseStudyContent;
+}
+
+const { content } = Astro.props;
+const {
+	brief,
+	moodboard,
+	iterationsTitle,
+	iterations,
+	selectedTitle,
+	selected,
+	details,
+} = content;
+
+const inkDeep = '#1a001d';
+const selectedBand = '#e8ddd6';
+---
+
+<div class="witch-body">
+	{/* Project brief + composed moodboard */}
+	<section
+		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		aria-labelledby="witch-brief-title"
+	>
+		<h2 id="witch-brief-title" class="type-label-lg" style={`color: ${inkDeep}`}>
+			{brief.title}
+		</h2>
+		<p class="type-body mt-4 max-w-[36.75rem] text-ink">
+			{brief.body}
+		</p>
+
+		<figure class="m-0 mt-8 md:mt-10">
+			<img
+				src={moodboard.src}
+				alt={moodboard.alt}
+				class="block h-auto w-full"
+				width="1204"
+				height="624"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+	</section>
+
+	{/* Proposed iterations */}
+	<section
+		class="mx-auto mt-14 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-20"
+		aria-labelledby="witch-iterations-title"
+	>
+		<h2
+			id="witch-iterations-title"
+			class="type-label-lg text-center"
+			style={`color: ${inkDeep}`}
+		>
+			{iterationsTitle}
+		</h2>
+		<div
+			class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 md:mt-10 md:gap-5"
+		>
+			{
+				iterations.map((image) => (
+					<figure class="m-0 overflow-hidden">
+						<img
+							src={image.src}
+							alt={image.alt}
+							class="block h-auto w-full"
+							width="349"
+							height="540"
+							loading="lazy"
+							decoding="async"
+						/>
+					</figure>
+				))
+			}
+		</div>
+	</section>
+
+	{/* Selected design — soft band + full-bleed mockup */}
+	<section
+		class="mt-14 md:mt-20"
+		style={`background-color: ${selectedBand}`}
+		aria-labelledby="witch-selected-title"
+	>
+		<div class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pt-[clamp(2rem,4vw,3rem)]">
+			<h2
+				id="witch-selected-title"
+				class="type-label-lg"
+				style={`color: ${inkDeep}`}
+			>
+				{selectedTitle}
+			</h2>
+		</div>
+		<figure class="m-0 mt-6">
+			<img
+				src={selected.src}
+				alt={selected.alt}
+				class="block h-auto w-full"
+				width="1920"
+				height="1218"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+	</section>
+
+	{/* Annotated cover details */}
+	<section
+		class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2.5rem,5vw,4rem)]"
+		aria-label="Cover design details"
+	>
+		<figure class="m-0">
+			<img
+				src={details.src}
+				alt={details.alt}
+				class="block h-auto w-full"
+				width="1035"
+				height="557"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+	</section>
+</div>
