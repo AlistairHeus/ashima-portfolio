@@ -11,6 +11,7 @@ import VivanCaseStudyBody from '../../components/case-study/VivanCaseStudyBody.a
 import IglCaseStudyBody from '../../components/case-study/IglCaseStudyBody.astro';
 import ConvergenceCaseStudyBody from '../../components/case-study/ConvergenceCaseStudyBody.astro';
 import AksharChitraCaseStudyBody from '../../components/case-study/AksharChitraCaseStudyBody.astro';
+import AirIndiaCaseStudyBody from '../../components/case-study/AirIndiaCaseStudyBody.astro';
 import CaseStudyNav from '../../components/case-study/CaseStudyNav.astro';
 import {
 	caseStudyDetails,
@@ -64,6 +65,8 @@ const displayNumber = catalogueProject?.number ?? study.number ?? '';
 				<ConvergenceCaseStudyBody content={study.convergence} />
 			) : body === 'akshar-chitra' && study.aksharChitra ? (
 				<AksharChitraCaseStudyBody content={study.aksharChitra} />
+			) : body === 'air-india' && study.airIndia ? (
+				<AirIndiaCaseStudyBody content={study.airIndia} />
 			) : (
 				study.gallery &&
 				study.feature && (

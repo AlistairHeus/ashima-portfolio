@@ -30,7 +30,8 @@ export type CaseStudyBody =
 	| 'vivan'
 	| 'igl'
 	| 'convergence'
-	| 'akshar-chitra';
+	| 'akshar-chitra'
+	| 'air-india';
 
 export interface CaseStudy {
 	readonly id: string;
@@ -71,6 +72,8 @@ export interface CaseStudy {
 	readonly convergence?: ConvergenceCaseStudyContent;
 	/** Akshar Chitra narrative sections (filled as body sections are built). */
 	readonly aksharChitra?: AksharChitraCaseStudyContent;
+	/** Air India brand extension narrative sections (Figma Project 01). */
+	readonly airIndia?: AirIndiaCaseStudyContent;
 }
 
 export interface MythilaCaseStudyContent {
@@ -275,6 +278,83 @@ export interface AksharChitraCaseStudyContent {
 }
 
 /**
+ * Air India brand extension body content (Figma Project 01, 307:1936).
+ * Landing uses shared CaseStudy fields; narrative + applications live here.
+ */
+export interface AirIndiaPainPoint {
+	readonly title: string;
+	readonly body: readonly CaseStudyTextPart[];
+	readonly icon: CaseStudyImage;
+}
+
+export interface AirIndiaCaseStudyContent {
+	/** Full Brand Identity panel (logo, vista, type, colours, chakra). */
+	readonly brandIdentity: CaseStudyImage;
+	readonly research: {
+		readonly title: string;
+		readonly body: string;
+		readonly challengesTitle: string;
+		readonly challenges: readonly string[];
+		readonly diagram: CaseStudyImage;
+	};
+	readonly opportunity: {
+		readonly title: string;
+		readonly lead: string;
+		readonly objectives: readonly string[];
+		readonly framework: string;
+		readonly sticky: CaseStudyImage;
+		readonly venn: CaseStudyImage;
+	};
+	readonly reimagining: {
+		readonly title: string;
+		readonly visual: CaseStudyImage;
+		readonly painPoints: readonly AirIndiaPainPoint[];
+	};
+	/** Designing with Purpose — title/body as HTML; heatmap visual (sticky + legend in image). */
+	readonly designingPurpose: {
+		readonly title: string;
+		/** Body lines — fixed wraps match Figma (365:1326). */
+		readonly body: readonly string[];
+		readonly visual: CaseStudyImage;
+	};
+	/** Manual check-in boarding passes — top stack/reverse + bottom hand/features. */
+	readonly boardingShowcase: {
+		readonly eyebrow: string;
+		readonly title: string;
+		readonly lead: string;
+		readonly stack: CaseStudyImage;
+		readonly reverse: CaseStudyImage;
+		readonly hand: CaseStudyImage;
+		readonly featuresTitle: string;
+		readonly features: readonly {
+			readonly title: string;
+			readonly body: readonly CaseStudyTextPart[];
+		}[];
+	};
+	readonly quote: {
+		readonly text: string;
+		readonly name: string;
+		readonly role: string;
+		readonly photo: CaseStudyImage;
+		readonly markSrc: string;
+	};
+	readonly touchpointsIntro: {
+		readonly title: string;
+		readonly body: readonly CaseStudyTextPart[];
+		readonly stat: string;
+		readonly statBody: readonly CaseStudyTextPart[];
+	};
+	/** Triangular tags, baggage stickers, e-ticket, lounge card. */
+	readonly collaterals: CaseStudyImage;
+	/** Queue tops, counters, totems, standees, FIDS. */
+	readonly environmental: CaseStudyImage;
+	readonly process: {
+		readonly title: string;
+		readonly diagram: CaseStudyImage;
+	};
+}
+
+/**
  * IGL rebrand body content.
  * Landing (hero + intro) uses shared CaseStudy fields; body sections land here over time.
  */
@@ -382,6 +462,250 @@ export const allWorkProjects: readonly WorkProject[] = [
 
 /** Case studies with a published detail page. */
 export const caseStudyDetails: readonly CaseStudy[] = [
+	{
+		id: 'air-india-brand',
+		category: 'Brand Extension',
+		title: 'Air India',
+		client: '',
+		description: [
+			'Following its acquisition by the Tata Group, Air India unveiled a new global brand identity to mark its transformation into a premium private airline.',
+			'My role focused on scaling the identity into a global design system, redefining the passenger experience and brand visibility across 83+ airports. The primary challenge lay in implementing this vision across a diverse physical infrastructure under a stringent 4 month timeline.',
+		],
+		skills: [
+			'Systems thinking',
+			'Brand translation across print and digital medium',
+		],
+		tools: [
+			{
+				name: 'Adobe Illustrator',
+				iconSrc: '/icons/tools/illustrator.png',
+			},
+			{
+				name: 'Adobe Photoshop',
+				iconSrc: '/icons/tools/photoshop.png',
+			},
+			{
+				name: 'Adobe InDesign',
+				iconSrc: '/icons/tools/indesign.png',
+			},
+		],
+		hero: {
+			src: '/images/case-studies/air-india/hero.png',
+			alt: 'Air India aircraft with new livery flying above clouds',
+		},
+		/** Soft rose — Figma Project 01 hero band */
+		heroBandColor: '#E7C7CB',
+		body: 'air-india',
+		airIndia: {
+			brandIdentity: {
+				src: '/images/case-studies/air-india/brand-assets.png',
+				alt: 'Air India brand identity — logo, Vista window, typography, cabin-class colours, and chakra pattern',
+			},
+			research: {
+				title: 'Research & Discovery',
+				body: 'Mapped the end-to-end passenger journey through airport recce, stakeholder interviews, competitor benchmarking, and touchpoint analysis to identify experience gaps and opportunities.',
+				challengesTitle: 'Challenges',
+				challenges: [
+					'Significant variation in airport layouts, infrastructure and constraints (domestic & international)',
+					'Limited flexibility due to rules governed by the airport authority',
+					'Creating design guidelines for omni-channel touchpoints',
+					'Coordinating across teams, vendors, and locations (remote and on-ground)',
+				],
+				diagram: {
+					src: '/images/case-studies/air-india/research-diagram.png',
+					alt: 'Annotated isometric check-in counter layout with economy, premium, and priority zones',
+				},
+			},
+			opportunity: {
+				title: 'Opportunity Mapping',
+				lead: 'Each touchpoint was evaluated across 3 strategic objectives:',
+				objectives: [
+					'strengthening the brand',
+					'improving passenger experience',
+					'supporting operational efficiency',
+				],
+				framework:
+					'This framework helped prioritize where design could create the greatest impact.',
+				sticky: {
+					src: '/images/case-studies/air-india/sticky-opportunity.png',
+					alt: 'Sticky note identifying the boarding pass as the highest-impact touchpoint',
+				},
+				venn: {
+					src: '/images/case-studies/air-india/opportunity-venn.png',
+					alt: 'Three-circle opportunity map intersecting brand identity, passenger experience, and operational efficiency',
+				},
+			},
+			reimagining: {
+				title: 'Reimagining the Boarding Pass',
+				visual: {
+					src: '/images/case-studies/air-india/maharaja-boarding-2.png',
+					alt: 'Maharaja sitting on a white banner while holding a legacy Air India boarding pass',
+				},
+				painPoints: [
+					{
+						title: 'Airline Pain Points',
+						icon: {
+							src: '/images/case-studies/air-india/icon-airline.png',
+							alt: '',
+						},
+						body: [
+							{ text: 'Low visibility forces staff to ' },
+							{ text: 'manually highlight', bold: true },
+							{ text: ' details for passengers, while ' },
+							{ text: 'branding limitations', bold: true },
+							{ text: ' and ' },
+							{ text: 'cluttered information', bold: true },
+							{ text: ' that hinder often operational efficiency.' },
+						],
+					},
+					{
+						title: 'Passenger Pain Points',
+						icon: {
+							src: '/images/case-studies/air-india/icon-passenger.png',
+							alt: '',
+						},
+						body: [
+							{ text: 'A ' },
+							{ text: 'cluttered design', bold: true },
+							{ text: ' with ' },
+							{ text: 'small fonts', bold: true },
+							{ text: ' often buries critical flight info, leading to an ' },
+							{ text: 'unclear boarding process', bold: true },
+							{ text: ' and frequent passenger confusion.' },
+						],
+					},
+					{
+						title: 'Technical Constraints',
+						icon: {
+							src: '/images/case-studies/air-india/icon-technical.png',
+							alt: '',
+						},
+						body: [
+							{ text: 'Legacy thermal printing', bold: true },
+							{
+								text: ' enforced strict color and font limitations, requiring a rigid architecture to manage ',
+							},
+							{ text: '43 unique variables', bold: true },
+							{ text: ' within fixed character limits.' },
+						],
+					},
+				],
+			},
+			designingPurpose: {
+				title: 'Designing with Purpose',
+				body: [
+					'Close collaboration with airline staff and user testing provided',
+					'valuable insights into their specific needs and priorities to',
+					'determine the information priority mapping.',
+				],
+				visual: {
+					src: '/images/case-studies/air-india/designing-purpose.png',
+					alt: 'Annotated boarding pass heat-map with sticky callouts and information priority mapping',
+				},
+			},
+			boardingShowcase: {
+				eyebrow: 'Design shortlisted for',
+				title: 'Manual Check-in Counters',
+				lead: 'Pre-printed cardstock to provide a tangible and branded passenger experience, from the beginning of the journey and beyond.',
+				stack: {
+					src: '/images/case-studies/air-india/boarding-showcase-1-1.png',
+					alt: 'Stacked First, Premium Economy, Business, and Economy boarding passes',
+				},
+				reverse: {
+					src: '/images/case-studies/air-india/boarding-showcase-1-2.png',
+					alt: 'Reverse of the boarding pass with Vista graphics on red',
+				},
+				hand: {
+					src: '/images/case-studies/air-india/boarding-showcase-2-1.png',
+					alt: 'Hand holding Economy and Business boarding passes',
+				},
+				featuresTitle: 'Features',
+				features: [
+					{
+						title: 'Centralized Brand Integration',
+						body: [
+							{ text: 'Successfully integrated the ' },
+							{ text: '"Vista" window frame', bold: true },
+							{
+								text: ' as a core structural element, ensuring a cohesive connection to the new global identity.',
+							},
+						],
+					},
+					{
+						title: 'Colour Coding for classes',
+						body: [
+							{ text: 'Implemented a distinct' },
+							{ text: ' color-coding system', bold: true },
+							{
+								text: ' to facilitate seamless cabin class differentiation.',
+							},
+						],
+					},
+					{
+						title: 'Operational Balance',
+						body: [
+							{ text: 'Refined the information architecture to create an ' },
+							{ text: 'intuitive interface', bold: true },
+							{
+								text: ' that reduces friction at high-traffic security and boarding checkpoints.',
+							},
+						],
+					},
+					{
+						title: 'Strategic Information Hierarchy',
+						body: [
+							{
+								text: 'Prioritizes gate, seat, and flight details within the "Vista" frame for instant, ',
+							},
+							{ text: 'high-visibility recognition', bold: true },
+							{ text: '.' },
+						],
+					},
+				],
+			},
+			quote: {
+				text: 'The boarding pass design was a key highlight of the brand extension. It sets a solid standard for clarity and brand alignment in our passenger experience.',
+				name: 'Campbell Wilson',
+				role: 'CEO, MD of Air India',
+				photo: {
+					src: '/images/case-studies/air-india/ceo-wilson.png',
+					alt: 'Portrait of Campbell Wilson',
+				},
+				markSrc: '/images/case-studies/air-india/quote-mark.svg',
+			},
+			touchpointsIntro: {
+				title: 'Designed all touchpoints for 83+ airports',
+				body: [
+					{
+						text: 'To ensure a seamless brand experience, the new visual identity was mapped across all passenger touchpoints. Each touchpoint posed unique challenges, requiring focused attention and ',
+					},
+					{ text: 'tailored solutions.', bold: true },
+				],
+				stat: '~72,000 passengers',
+				statBody: [
+					{
+						text: 'interact with these touchpoints everyday reiterating the new identity and improving their journey, since ',
+					},
+					{ text: 'January 2024.', bold: true },
+				],
+			},
+			collaterals: {
+				src: '/images/case-studies/air-india/collaterals.png',
+				alt: 'Triangular baggage tags, stickers, e-ticket, and lounge access card holder',
+			},
+			environmental: {
+				src: '/images/case-studies/air-india/environmental.png',
+				alt: 'Airport environmental graphics — queue tops, counters, totems, welcome standees, and FIDS',
+			},
+			process: {
+				title: 'Overall process and my contribution',
+				diagram: {
+					src: '/images/case-studies/air-india/process-timeline.png',
+					alt: 'Process timeline from Empathize & Define through Execution with contribution notes',
+				},
+			},
+		},
+	},
 	{
 		id: 'himalayan-book',
 		category: 'Book Design',

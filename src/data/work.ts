@@ -25,7 +25,7 @@ export const caseStudies: readonly WorkProject[] = [
 		imageSrc: '/images/work/01-air-india.png',
 		imageAlt: 'Air India brand extension touchpoint collage',
 		chips: ['Brand Systems', 'Brand Experience', 'Print Design'],
-		href: '/work',
+		href: '/work/air-india-brand',
 	},
 	{
 		id: 'igl',
