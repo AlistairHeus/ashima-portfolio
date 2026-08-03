@@ -1,0 +1,171 @@
+---
+/**
+ * Maahi logo design body — after the shared landing.
+ * Adapts Figma Project 5 (390:1192) into site case-study patterns.
+ */
+import type { MaahiCaseStudyContent } from '../../data/case-studies';
+
+interface Props {
+	readonly content: MaahiCaseStudyContent;
+}
+
+const { content } = Astro.props;
+const { drivers, logotype, guidelines } = content;
+
+const inkDeep = '#1a001d';
+const softBand = '#f6ebe0';
+---
+
+<div class="maahi-body">
+	{/* Concept Drivers */}
+	<section
+		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		aria-labelledby="maahi-drivers-title"
+	>
+		<h2 id="maahi-drivers-title" class="type-label-lg" style={`color: ${inkDeep}`}>
+			{drivers.title}
+		</h2>
+		{
+			drivers.lead ? (
+				<p class="type-body mt-4 max-w-[36.75rem] text-ink">{drivers.lead}</p>
+			) : null
+		}
+
+		<figure class="m-0 mt-8 md:mt-10">
+			<img
+				src={drivers.collage.src}
+				alt={drivers.collage.alt}
+				class="block h-auto w-full"
+				width="1469"
+				height="826"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+	</section>
+
+	{/* Logotype */}
+	<section
+		class="mx-auto mt-14 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-20"
+		aria-labelledby="maahi-logotype-title"
+	>
+		<div
+			class="grid grid-cols-1 items-start gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-12 lg:gap-16"
+		>
+			<div>
+				<h2
+					id="maahi-logotype-title"
+					class="type-label-lg"
+					style={`color: ${inkDeep}`}
+				>
+					{logotype.title}
+				</h2>
+				<ol
+					class="type-body mt-8 list-decimal space-y-4 pl-[1.7rem] text-ink marker:text-ink"
+				>
+					{
+						logotype.points.map((point) => (
+							<li class="pl-1">
+								{point.map((part) =>
+									part.bold ? (
+										<strong class="font-bold">{part.text}</strong>
+									) : (
+										part.text
+									),
+								)}
+							</li>
+						))
+					}
+				</ol>
+			</div>
+
+			<figure class="m-0 flex items-center justify-center self-center">
+				<img
+					src={logotype.wordmark.src}
+					alt={logotype.wordmark.alt}
+					class="block h-auto w-full"
+					width="1280"
+					height="454"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+		</div>
+
+		<div
+			class="mt-10 grid grid-cols-1 items-center gap-8 md:mt-12 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-10"
+		>
+			<figure class="m-0 overflow-hidden">
+				<img
+					src={logotype.ritual.src}
+					alt={logotype.ritual.alt}
+					class="block h-auto w-full"
+					width="812"
+					height="324"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+
+			<figure class="m-0 overflow-hidden">
+				<img
+					src={logotype.applications.src}
+					alt={logotype.applications.alt}
+					class="block h-auto w-full"
+					width="2034"
+					height="240"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+		</div>
+	</section>
+
+	{/* Brand Guidelines */}
+	<section
+		class="mt-14 md:mt-20"
+		style={`background-color: ${softBand}`}
+		aria-labelledby="maahi-guidelines-title"
+	>
+		<div
+			class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2.5rem,5vw,4rem)]"
+		>
+			<div
+				class="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-12"
+			>
+				<div>
+					<h2
+						id="maahi-guidelines-title"
+						class="type-label-lg"
+						style={`color: ${inkDeep}`}
+					>
+						{guidelines.title}
+					</h2>
+					<p class="type-body mt-4 max-w-[36.75rem] text-ink">
+						{
+							guidelines.body.map((part) =>
+								part.bold ? (
+									<strong class="font-bold">{part.text}</strong>
+								) : (
+									part.text
+								),
+							)
+						}
+					</p>
+				</div>
+
+				<figure class="m-0">
+					<img
+						src={guidelines.visual.src}
+						alt={guidelines.visual.alt}
+						class="block h-auto w-full"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			</div>
+		</div>
+	</section>
+</div>

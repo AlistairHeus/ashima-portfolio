@@ -1,6 +1,6 @@
 ---
 /**
- * Reconnect inclusive-play body — after the shared landing.
+ * Reconnect inclusive-play body, after the shared landing.
  * Adapts Figma Project 6 (386:1191) content into site case-study patterns.
  */
 import type { ReconnectCaseStudyContent } from '../../data/case-studies';
@@ -28,45 +28,68 @@ const mintMuted = '#569584';
 			{research.title}
 		</h2>
 
+		{/* Desk research | On the ground */}
 		<div
-			class="mt-8 grid grid-cols-1 items-start gap-10 md:mt-10 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] md:gap-12 lg:gap-14"
+			class="mt-8 grid grid-cols-1 items-start gap-10 md:mt-10 md:grid-cols-2 md:gap-10 lg:gap-14"
 		>
 			<div>
 				<p class="type-label-md text-ink/55">{research.primaryLabel}</p>
-				<p class="type-body mt-3 max-w-[32rem] text-ink">
-					{
-						research.primaryBody.map((part) =>
-							part.bold ? (
-								<strong class="font-bold">{part.text}</strong>
-							) : (
-								part.text
-							),
-						)
-					}
-				</p>
+				{
+					research.primaryBody.map((part, index) => (
+						<p class={`type-body text-ink ${index === 0 ? 'mt-3' : 'mt-4'}`}>
+							{part.text}
+						</p>
+					))
+				}
+				<figure class="m-0 mt-6 overflow-hidden md:mt-8">
+					<img
+						src={research.classroom.src}
+						alt={research.classroom.alt}
+						class="block h-auto w-full"
+						width="1098"
+						height="614"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			</div>
 
-				<p class="type-label-md mt-8 text-ink/55 md:mt-10">{research.fieldLabel}</p>
-				<p class="mt-3 font-body text-lg font-bold leading-[1.4375rem] text-ink/55">
+			<div>
+				<p class="type-label-md text-ink/55">{research.fieldLabel}</p>
+				<p class="mt-3 font-body text-lg leading-[1.4375rem] text-ink/55">
 					{research.fieldEyebrow}
 				</p>
-				<p class="type-body mt-3 max-w-[32rem] text-ink">
-					{
-						research.fieldBody.map((part) =>
-							part.bold ? (
-								<strong class="font-bold">{part.text}</strong>
-							) : (
-								part.text
-							),
-						)
-					}
+				<p class="type-body mt-3 text-ink">
+					{research.fieldBody.map((part) => part.text)}
 				</p>
+				<figure class="m-0 mt-6 overflow-hidden md:mt-8">
+					<img
+						src={research.play.src}
+						alt={research.play.alt}
+						class="block h-auto w-full"
+						width="1096"
+						height="614"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			</div>
+		</div>
 
-				<p class="mt-6 font-body text-lg font-bold leading-[1.4375rem] text-ink/55">
+		{/* Who I spoke with | Personas */}
+		<div
+			class="mt-12 grid grid-cols-1 items-start gap-10 md:mt-14 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-10 lg:gap-14"
+		>
+			<div>
+				<p
+					class="font-body text-lg font-bold leading-[1.4375rem]"
+					style={`color: ${inkDeep}`}
+				>
 					{research.interviewsTitle}
 				</p>
-				<p class="type-body mt-2 max-w-[32rem] text-ink">{research.interviewsLead}</p>
+				<p class="type-body mt-2 text-ink">{research.interviewsLead}</p>
 				<ul
-					class="mt-3 max-w-[32rem] list-disc space-y-2 pl-[1.7rem] font-body text-lg leading-[1.4375rem] text-ink marker:text-ink"
+					class="mt-3 list-disc space-y-2 pl-[1.7rem] font-body text-lg leading-[1.4375rem] text-ink marker:text-ink"
 				>
 					{
 						research.stakeholders.map((item) => (
@@ -79,41 +102,17 @@ const mintMuted = '#569584';
 				</ul>
 			</div>
 
-			<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
-				<figure class="m-0 overflow-hidden">
-					<img
-						src={research.classroom.src}
-						alt={research.classroom.alt}
-						class="block h-auto w-full"
-						width="874"
-						height="574"
-						loading="lazy"
-						decoding="async"
-					/>
-				</figure>
-				<figure class="m-0 overflow-hidden">
-					<img
-						src={research.play.src}
-						alt={research.play.alt}
-						class="block h-auto w-full"
-						width="862"
-						height="576"
-						loading="lazy"
-						decoding="async"
-					/>
-				</figure>
-				<figure class="m-0 overflow-hidden sm:col-span-2">
-					<img
-						src={research.collage.src}
-						alt={research.collage.alt}
-						class="block h-auto w-full"
-						width="1200"
-						height="800"
-						loading="lazy"
-						decoding="async"
-					/>
-				</figure>
-			</div>
+			<figure class="m-0 overflow-hidden">
+				<img
+					src={research.personas.src}
+					alt={research.personas.alt}
+					class="block h-auto w-full"
+					width="2566"
+					height="846"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
 		</div>
 	</section>
 
@@ -348,15 +347,7 @@ const mintMuted = '#569584';
 						/>
 					</figure>
 					<p class="type-body max-w-[20rem] text-ink">
-						{
-							logo.groupsLead.map((part) =>
-								part.bold ? (
-									<em class="italic">{part.text}</em>
-								) : (
-									part.text
-								),
-							)
-						}
+						{logo.groupsLead.map((part) => part.text)}
 					</p>
 				</div>
 

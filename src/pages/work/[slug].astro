@@ -14,16 +14,17 @@ import AksharChitraCaseStudyBody from '../../components/case-study/AksharChitraC
 import AirIndiaCaseStudyBody from '../../components/case-study/AirIndiaCaseStudyBody.astro';
 import WitchCaseStudyBody from '../../components/case-study/WitchCaseStudyBody.astro';
 import ReconnectCaseStudyBody from '../../components/case-study/ReconnectCaseStudyBody.astro';
+import MaahiCaseStudyBody from '../../components/case-study/MaahiCaseStudyBody.astro';
 import CaseStudyNav from '../../components/case-study/CaseStudyNav.astro';
 import {
-	caseStudyDetails,
+	publishedCaseStudies,
 	getAdjacentProjects,
 	getCaseStudyById,
 	allWorkProjects,
 } from '../../data/case-studies';
 
 export function getStaticPaths() {
-	return caseStudyDetails.map((study) => ({
+	return publishedCaseStudies.map((study) => ({
 		params: { slug: study.id },
 	}));
 }
@@ -73,6 +74,8 @@ const displayNumber = study.number ?? catalogueProject?.number ?? '';
 				<WitchCaseStudyBody content={study.witch} />
 			) : body === 'reconnect' && study.reconnect ? (
 				<ReconnectCaseStudyBody content={study.reconnect} />
+			) : body === 'maahi' && study.maahi ? (
+				<MaahiCaseStudyBody content={study.maahi} />
 			) : (
 				study.gallery &&
 				study.feature && (

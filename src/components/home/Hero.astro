@@ -174,7 +174,7 @@ const folderStuff: readonly FolderStuffCard[] = [
 		z: 4,
 	},
 	{
-		src: '/images/work/08-vivan.png',
+		src: '/images/work/09-vivan.png',
 		alt: '',
 		left: '58%',
 		top: '-1%',
@@ -341,12 +341,6 @@ const folderStuff: readonly FolderStuffCard[] = [
 		</div>
 	</div>
 
-	{/* Scroll-linked dim — ramps up as following sections slide over */}
-	<div
-		class="hero-dim pointer-events-none absolute inset-0 z-20 bg-black"
-		data-hero-dim
-		aria-hidden="true"
-	></div>
 </section>
 
 {/*
@@ -375,11 +369,6 @@ const folderStuff: readonly FolderStuffCard[] = [
 		will-change: transform, font-variation-settings;
 	}
 
-	.hero-dim {
-		opacity: 0;
-		will-change: opacity;
-	}
-
 	.hero-polaroid {
 		will-change: transform, opacity;
 	}
@@ -404,39 +393,6 @@ const folderStuff: readonly FolderStuffCard[] = [
 		opacity: 0;
 	}
 </style>
-
-<script>
-	(() => {
-		/**
-		 * Dim the fixed hero across the full spacer.
-		 * Soft during the folder beat (first half), stronger as Featured covers.
-		 */
-		const dim = document.querySelector('[data-hero-dim]');
-		const spacer = document.querySelector('[data-hero-spacer]');
-		if (!(dim instanceof HTMLElement) || !(spacer instanceof HTMLElement)) return;
-
-		const MAX_OPACITY = 0.55;
-		let ticking = false;
-
-		const update = () => {
-			ticking = false;
-			const rect = spacer.getBoundingClientRect();
-			const height = rect.height || window.innerHeight * 2;
-			const progress = Math.min(1, Math.max(0, -rect.top / height));
-			dim.style.opacity = String(progress * MAX_OPACITY);
-		};
-
-		const onScroll = () => {
-			if (ticking) return;
-			ticking = true;
-			requestAnimationFrame(update);
-		};
-
-		update();
-		window.addEventListener('scroll', onScroll, { passive: true });
-		window.addEventListener('resize', onScroll, { passive: true });
-	})();
-</script>
 
 <script>
 	import { initHeroPolaroids } from '../../scripts/hero-polaroids';

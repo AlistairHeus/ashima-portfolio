@@ -33,7 +33,8 @@ export type CaseStudyBody =
 	| 'akshar-chitra'
 	| 'air-india'
 	| 'way-of-the-witch'
-	| 'reconnect';
+	| 'reconnect'
+	| 'maahi';
 
 export interface CaseStudy {
 	readonly id: string;
@@ -62,6 +63,11 @@ export interface CaseStudy {
 	 * Override per project (e.g. taupe, olive wash, lavender).
 	 */
 	readonly heroBandColor?: string;
+	/**
+	 * When false, the study stays in data but is omitted from routes and catalogues.
+	 * Defaults to published when omitted.
+	 */
+	readonly published?: boolean;
 	/** Which body layout to render after the shared landing. */
 	readonly body?: CaseStudyBody;
 	/** Mythila-specific section assets + copy. */
@@ -80,6 +86,8 @@ export interface CaseStudy {
 	readonly witch?: WitchCaseStudyContent;
 	/** Reconnect inclusive play (Figma Project 6). */
 	readonly reconnect?: ReconnectCaseStudyContent;
+	/** Maahi bridalwear logo (Figma Project 5). */
+	readonly maahi?: MaahiCaseStudyContent;
 }
 
 export interface MythilaCaseStudyContent {
@@ -166,9 +174,12 @@ export interface ReconnectCaseStudyContent {
 			readonly label: string;
 			readonly detail: string;
 		}[];
+		/** Devnar School photo under desk research. */
 		readonly classroom: CaseStudyImage;
+		/** On-ground session photo under field research. */
 		readonly play: CaseStudyImage;
-		readonly collage: CaseStudyImage;
+		/** Participant persona grid beside interviews. */
+		readonly personas: CaseStudyImage;
 	};
 	readonly direction: {
 		readonly title: string;
@@ -204,6 +215,30 @@ export interface ReconnectCaseStudyContent {
 		readonly mark: CaseStudyImage;
 		readonly wordmark: string;
 		readonly piece: CaseStudyImage;
+	};
+}
+
+/**
+ * Maahi logo design body (Figma Project 5, 390:1192).
+ * Landing uses shared CaseStudy fields; drivers / logotype / guidelines live here.
+ */
+export interface MaahiCaseStudyContent {
+	readonly drivers: {
+		readonly title: string;
+		readonly lead?: string;
+		readonly collage: CaseStudyImage;
+	};
+	readonly logotype: {
+		readonly title: string;
+		readonly points: readonly (readonly CaseStudyTextPart[])[];
+		readonly wordmark: CaseStudyImage;
+		readonly ritual: CaseStudyImage;
+		readonly applications: CaseStudyImage;
+	};
+	readonly guidelines: {
+		readonly title: string;
+		readonly body: readonly CaseStudyTextPart[];
+		readonly visual: CaseStudyImage;
 	};
 }
 
@@ -811,6 +846,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 	},
 	{
 		id: 'himalayan-book',
+		number: '06',
 		category: 'Book Design',
 		title: 'The Great Himalayan Exploration',
 		client: 'For Royal Enfield',
@@ -958,6 +994,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 	},
 	{
 		id: 'vivan',
+		number: '09',
 		category: 'Print & Digital Design',
 		title: 'Vivan Hospital',
 		client: '',
@@ -1321,6 +1358,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 	},
 	{
 		id: 'convergence',
+		number: '05',
 		category: 'Book Design',
 		title: 'Convergence',
 		client: 'For Institut Français en Inde',
@@ -2014,7 +2052,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 	},
 	{
 		id: 'way-of-the-witch',
-		number: '03',
+		number: '07',
 		category: 'Book Cover Design',
 		title: 'Way of the Witch',
 		client: 'For Harper Collins',
@@ -2099,20 +2137,16 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		},
 	},
 	{
-		id: 'reconnect',
-		number: '10',
-		category: 'Inclusive Design',
-		title: 'Reconnect',
-		client: 'For LV Prasad Eye Institute',
+		id: 'maahi',
+		number: '08',
+		category: 'Logo Design',
+		title: 'Maahi',
+		client: '',
 		description: [
-			'The Reconnect project was initiated by LV Prasad Eye Institute (LVPEI) in their innovation lab, supported by its rehabilitation centre, to create something meaningful for visually impaired children.',
-			'I provided research insights that guided the design direction of an inclusive play experience—building cognitive, motor, and spatial skills while fostering empathy in sighted players—and developed the visual identity (logo) for the game.',
+			'A mark shaped by ritual, memory, and making, for a bridalwear brand rooted in craft and continuity.',
+			'Maahi is an upcoming homegrown bridalwear brand based in Jaipur that reworks tradition into something deeply personal. From heirloom sarees to inherited textiles, pieces are transformed so brides can carry their history into new beginnings.',
 		],
-		skills: [
-			'User research & Insight synthesis',
-			'Inclusive design thinking',
-			'Empathy',
-		],
+		skills: ['Brand identity development', 'Narrative-driven design'],
 		tools: [
 			{
 				name: 'Adobe Illustrator',
@@ -2124,78 +2158,156 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			},
 		],
 		hero: {
+			src: '/images/case-studies/maahi/hero.png',
+			alt: 'Woman in bridal attire braiding a girl’s hair by warm lamp light',
+		},
+		heroBandColor: '#eed8c2',
+		body: 'maahi',
+		maahi: {
+			drivers: {
+				title: 'Concept Drivers',
+				lead: 'Three ideas shaped the mark — adornment, structure, and ritual — drawn from Jaipur’s architecture and bridal tradition.',
+				collage: {
+					src: '/images/case-studies/maahi/concept-collage.png',
+					alt: 'Mood collage pairing Spark, Arch, and Veil photography from bridal ritual and Jaipur architecture',
+				},
+			},
+			logotype: {
+				title: 'Logotype',
+				points: [
+					[
+						{ text: 'The bold arched letterforms draw inspiration from ' },
+						{ text: 'Indian architectural motifs', bold: true },
+						{ text: ' (' },
+						{ text: 'mandaps', bold: true },
+						{ text: ' and ' },
+						{ text: 'jharokas', bold: true },
+						{ text: ') and ' },
+						{ text: 'bridal veils.', bold: true },
+					],
+					[
+						{ text: 'The combination of ' },
+						{ text: 'bold and serif', bold: true },
+						{ text: ' lettering creates a balance of ' },
+						{ text: 'strength and grace', bold: true },
+						{ text: ', just like Maahi, the brand.' },
+					],
+					[
+						{ text: 'Custom serif to convey ' },
+						{ text: 'elegance and premium-ness', bold: true },
+						{ text: ' of the brand, anchoring it in timeless heirloom couture.' },
+					],
+					[
+						{ text: 'The ' },
+						{ text: 'deep red', bold: true },
+						{ text: ' and ' },
+						{ text: 'burnt orange', bold: true },
+						{ text: ' tones are directly inspired by ' },
+						{ text: 'haldi-kumkum', bold: true },
+						{ text: ' rituals, echoing the cultural richness of Indian weddings.' },
+					],
+				],
+				wordmark: {
+					src: '/images/case-studies/maahi/wordmark.png',
+					alt: 'Maahi wordmark in deep red with orange star accents in the arched letterforms',
+				},
+				ritual: {
+					src: '/images/case-studies/maahi/ritual-palette.png',
+					alt: 'Haldi and kumkum pigments with the Maahi colour palette swatches',
+				},
+				applications: {
+					src: '/images/case-studies/maahi/logo-applications.png',
+					alt: 'Maahi wordmark applied on orange, patterned red, and deep maroon fields',
+				},
+			},
+			guidelines: {
+				title: 'Brand Guidelines',
+				body: [
+					{
+						text: 'Developed and delivered a comprehensive brand guideline deck for Maahi, outlining the ',
+					},
+					{ text: 'correct usage', bold: true },
+					{
+						text: ' of the primary wordmark and secondary logomark ',
+					},
+					{ text: 'across print and digital touchpoints.', bold: true },
+					{ text: ' The document ' },
+					{ text: 'defined clear rules', bold: true },
+					{
+						text: ' for logo hierarchy, colour applications, clear space, scalability and contextual usage on varied backgrounds. It also included ',
+					},
+					{ text: 'practical guidance for real-world applications', bold: true },
+					{
+						text: ' such as packaging, garment labels, embroidery, web, and signage to ensure consistency.',
+					},
+				],
+				visual: {
+					src: '/images/case-studies/maahi/guidelines-combined.png',
+					alt: 'Stacked Maahi brand guidelines pages covering clearspace, usage, and scalability',
+				},
+			},
+		},
+	},
+	{
+		id: 'reconnect',
+		number: '10',
+		category: 'Inclusive Design',
+		title: 'Reconnect',
+		client: 'For LV Prasad Eye Institute',
+		description: [
+			'LVPEI’s innovation lab, working with its rehab centre, wanted a play experience that visually impaired and sighted children could actually share.',
+			'I handled the research side (desk review plus fieldwork) that fed into the game direction, and I designed the visual identity for Reconnect.',
+		],
+		skills: [
+			'User research & Insight synthesis',
+			'Inclusive design thinking',
+			'Visual identity',
+		],
+		tools: [],
+		hero: {
 			src: '/images/case-studies/reconnect/hero.png',
 			alt: 'Reconnect diamond board with green tactile pieces on a teal and navy textured surface',
 		},
-		/** Mint wash — Figma Project 6 hero band */
+		/** Mint wash from Figma Project 6 hero band */
 		heroBandColor: '#a4d4c6',
+		published: false,
 		body: 'reconnect',
 		reconnect: {
 			research: {
 				title: 'Understanding the Gap',
-				primaryLabel: 'Primary Research',
+				primaryLabel: 'Desk research',
 				primaryBody: [
 					{
-						text: 'The research explored perspectives on visual impairment, examining its ',
-					},
-					{ text: 'impact', bold: true },
-					{
-						text: ' on education, employment, and quality of life, along with cognitive and sensory adaptations. It drew from ',
-					},
-					{ text: 'inclusive design principles', bold: true },
-					{ text: ', ' },
-					{ text: 'psychology of play', bold: true },
-					{ text: ', and the role of ' },
-					{
-						text: 'shared activities in building social connection',
-						bold: true,
+						text: 'Before going on site, I spent time with the literature. How visual impairment shows up in schooling, work, and day-to-day life. How kids adapt through touch, sound, and space.',
 					},
 					{
-						text: ', while also considering advancements in assistive technologies such as ',
-					},
-					{ text: 'tactile interfaces and gamification', bold: true },
-					{ text: '. These ' },
-					{
-						text: 'insights collectively shaped an empathetic, inclusive solution.',
-						bold: true,
+						text: 'I also dug into inclusive design writing, the psychology of play, what shared activity does for social connection, and where tactile interfaces and game-like tools were already being tried.',
 					},
 				],
-				fieldLabel: 'On-field Research',
-				fieldEyebrow: 'Qualitative and Observational Research',
+				fieldLabel: 'On the ground',
+				fieldEyebrow: 'Observation and time spent in rehab settings',
 				fieldBody: [
 					{
-						text: 'To understand the lives and needs of visually impaired children across rehabilitation settings, insights were gathered through ',
-					},
-					{
-						text: 'daily routines, therapy sessions, parent interactions and play activities',
-						bold: true,
-					},
-					{
-						text: ', revealing tactile preferences and group dynamics at LVPEI Rehab Centre. Visited educational and social organisations such as Devnar School for the Blind, Courage Homes, Sahara NGO, National Association for the Blind (Gurgaon), and TTI of Poona Blind Men’s Association, learning how ',
-					},
-					{
-						text: 'children learn, play, and navigate social environments.',
-						bold: true,
+						text: 'Most of what stuck came from being there. Routines. Therapy sessions. Parents talking after meetings. Kids at play. At LVPEI’s rehab centre you could see which textures got picked up first, and how groups formed (or didn’t). I also went out to Devnar School for the Blind, Courage Homes, Sahara NGO, NAB in Gurgaon, and the TTI of Poona Blind Men’s Association. Different rooms, same question: how do these children learn, play, and move through a social space?',
 					},
 				],
-				interviewsTitle: 'Interviews',
-				interviewsLead:
-					'We engaged with various stakeholders to uncover diverse perspectives:',
+				interviewsTitle: 'Who I spoke with',
+				interviewsLead: 'A few groups kept coming up:',
 				stakeholders: [
 					{
-						label: 'Users: ',
+						label: 'Children: ',
 						detail:
-							'Explored their daily challenges, preferences, and aspirations.',
+							'what frustrated them day to day, what they liked to play, what they wanted next.',
 					},
 					{
-						label: 'Rehab Staff and Teachers: ',
+						label: 'Rehab staff and teachers: ',
 						detail:
-							'Discussed teaching methods, difficulties, and key areas of focus.',
+							'what worked in class, what kept falling short, where play fit into the day.',
 					},
 					{
-						label: 'Innovators: ',
+						label: 'People building tools: ',
 						detail:
-							'Gathered insights on existing solutions, gaps, and potential for improvement.',
+							'what already existed, where it failed, what still felt open.',
 					},
 				],
 				classroom: {
@@ -2204,92 +2316,68 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 				},
 				play: {
 					src: '/images/case-studies/reconnect/research-play.png',
-					alt: 'Children and facilitators interacting around a table during a research visit',
+					alt: 'Children seated on a blue mat with drawings and clay pots during a research session',
 				},
-				collage: {
-					src: '/images/case-studies/reconnect/research-collage.png',
-					alt: 'Field research collage — rehab meets, play sessions, chess championship, and LVPEI IT centre',
+				personas: {
+					src: '/images/case-studies/reconnect/research-personas.png',
+					alt: 'Grid of research participants with names, ages, vision profiles, and roles',
 				},
 			},
 			direction: {
 				title: 'Shaping the Direction',
 				lead: [
 					{
-						text: 'While our research explored multiple aspects of a visually impaired child’s life, ',
+						text: 'We looked at a lot of a visually impaired child’s day. School, mobility, therapy, the whole lot. Play kept rising to the top. Not as a side activity. As the place where skill, confidence, and contact with other kids either happened or didn’t.',
 					},
-					{ text: 'play emerged as a critical area of impact.', bold: true },
 				],
-				insightsTitle: 'Key Insights',
+				insightsTitle: 'What kept repeating',
 				insights: [
 					[
-						{ text: 'Visually impaired children ' },
-						{ text: 'rely', bold: true },
-						{ text: ' on ' },
-						{ text: 'touch, sound, and spatial awareness', bold: true },
-						{ text: ' to engage with their environment.' },
-					],
-					[
-						{ text: 'Play is essential for ' },
 						{
-							text: 'developing cognitive, motor, and social skills',
-							bold: true,
+							text: 'Kids who are visually impaired don’t “look around” the way sighted kids do. They build a picture of the room through touch, sound, and where their body sits in space.',
 						},
-						{ text: ' but existing play tools are ' },
+					],
+					[
 						{
-							text: 'rarely designed for shared interaction',
-							bold: true,
+							text: 'Play is how cognitive, motor, and social skills get practised. Most games on the shelf still assume vision, so shared play with sighted friends is rare.',
 						},
-						{ text: ' with sighted peers.' },
 					],
 					[
-						{ text: 'Inclusive play environments foster ' },
-						{ text: 'empathy, collaboration', bold: true },
-						{ text: ' and ' },
-						{ text: 'confidence', bold: true },
-						{ text: ' among children.' },
-					],
-					[
-						{ text: 'Limited play opportunities ' },
-						{ text: 'affect social interaction', bold: true },
-						{ text: ', confidence, and overall development.' },
-					],
-					[
-						{ text: 'Visually impaired children have ' },
-						{ text: 'limited access to inclusive play', bold: true },
-						{ text: ' experiences.' },
+						{
+							text: 'When play is set up so everyone can join, you start seeing empathy and teamwork show up on their own. Confidence follows. When play is scarce, that whole layer thins out.',
+						},
 					],
 				],
-				hmwTitle: 'Reframing problems into opportunities',
+				hmwTitle: 'Questions we carried into design',
 				hmw: [
-					'HMW design a game for visually impaired kids that supports brain development and engages their cognitive, motor and tactile senses?',
-					'HMW bridge gaps between sighted and visually impaired individuals through play?',
+					'Could a game support brain development while asking for cognitive, motor, and tactile work at once?',
+					'Could play close some of the distance between sighted kids and visually impaired kids, without making either group the helper?',
 				],
 				photo: {
 					src: '/images/case-studies/reconnect/insight-photo.png',
-					alt: 'Children playing a tactile board game together during research',
+					alt: 'Two players focused on a chessboard during a rehab centre match',
 				},
-				photoCaption:
-					'Witnessed a chess championship amongst rehab clients',
+				photoCaption: 'Chess championship among rehab clients',
 				pillars: [
 					{
 						title: 'Acceptance',
-						caption: 'of their special abilities',
+						caption: 'of different abilities',
 						icon: {
 							src: '/images/case-studies/reconnect/icon-acceptance.png',
 							alt: '',
 						},
 					},
 					{
-						title: 'Inclusive',
-						caption: 'All can play',
+						title: 'Inclusivity',
+						caption: 'Play without barriers',
 						icon: {
 							src: '/images/case-studies/reconnect/icon-inclusive.png',
 							alt: '',
 						},
 					},
 					{
-						title: 'Reconnect',
-						caption: 'with everyone through play',
+						title: 'Connection',
+						caption: 'Through shared play',
 						icon: {
 							src: '/images/case-studies/reconnect/icon-reconnect.png',
 							alt: '',
@@ -2298,19 +2386,18 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 				],
 			},
 			outcome: {
-				title: 'Outcome: RECONNECT',
+				title: 'The Game',
 				lead: [
-					{ text: 'Using the research insights', bold: true },
 					{
-						text: ', the design team developed Reconnect — an inclusive game which emerged as the embodiment of those insights. It builds confidence in visually impaired players, while allowing sighted players to experience play without sight, encouraging empathy and new perspectives. It extends beyond types of players to embrace inclusivity across all users—regardless of vision, age or gender, without barriers.',
+						text: 'Out of that work came Reconnect, a tactile game the product team built for visually impaired and sighted players together. Visually impaired players get a seat at a shared table. Sighted players try a round without leaning on vision. The point isn’t charity. It’s the same game, same rules, different bodies. Age and gender weren’t treated as filters either.',
 					},
 				],
-				aboutTitle: 'About the game',
+				aboutTitle: 'How it plays',
 				aboutBody:
-					'Reconnect reimagines Dots and Boxes as a tactile game for both visually impaired and sighted players. Simple yet strategic, it offers a familiar but interactive experience that supports cognitive and spatial development.',
-				explorationTitle: 'Board Game & 3D Exploration',
+					'Reconnect takes the old pen-and-paper Dots and Boxes idea and puts it in your hands. Familiar enough that you don’t need a long briefing. Physical enough that strategy and space become something you feel.',
+				explorationTitle: 'Board game and 3D builds',
 				explorationBody:
-					'Dots connect to form shapes, introducing basic geometry and strategy. The same concept extends into 3D, where building forms by hand enables a more tactile understanding of space.',
+					'Connect the dots, close a shape, score. Same logic climbs into 3D, where you build forms by hand and get a clearer read of volume and structure.',
 				products: [
 					{
 						src: '/images/case-studies/reconnect/product-diamond.png',
@@ -2334,27 +2421,22 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 					alt: 'Final Reconnect diamond board staged on a teal and navy textured surface',
 				},
 				tagline: [
-					{ text: 'A game ', bold: true },
 					{
-						text: 'that transforms a simple pen-and-paper concept into a tangible, ',
+						text: 'A pen-and-paper idea, made tangible. Built so more than one kind of player can sit down and play.',
 					},
-					{ text: 'inclusive experience', bold: true },
-					{ text: ' for the visually impaired.' },
 				],
 			},
 			logo: {
 				title: 'Logo Design',
 				lead: [
-					{ text: 'Inspired by the ' },
-					{ text: 'top view', bold: true },
-					{ text: ' of the game board, the logo represents ' },
-					{ text: 'players as adaptable elements', bold: true },
-					{ text: ' within the system.' },
+					{
+						text: 'I based the mark on a top-down view of the board. Four pieces locking into one ring. Players as parts that can shift, but still belong to the same set.',
+					},
 				],
 				groupsLead: [
-					{ text: 'The form draws from four player groups coming together to ' },
-					{ text: 'Reconnect', bold: true },
-					{ text: ':' },
+					{
+						text: 'Those four arms stand in for the groups the game had to hold at once:',
+					},
 				],
 				groups: [
 					'Blindfolded players',
@@ -2364,7 +2446,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 				],
 				mark: {
 					src: '/images/case-studies/reconnect/logo.png',
-					alt: 'Reconnect logo mark — four interlocking forms meeting at the centre',
+					alt: 'Reconnect logo mark: four interlocking forms meeting at the centre',
 				},
 				wordmark: 'RECONNECT',
 				piece: {
@@ -2377,10 +2459,17 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 ] as const;
 
 /**
- * Returns a case study by work project id, or undefined if unpublished.
+ * Returns a case study by work project id, or undefined if missing / unpublished.
  */
 export const getCaseStudyById = (id: string): CaseStudy | undefined =>
-	caseStudyDetails.find((study) => study.id === id);
+	caseStudyDetails.find((study) => study.id === id && study.published !== false);
+
+/**
+ * Published case studies only (detail routes and public nav).
+ */
+export const publishedCaseStudies: readonly CaseStudy[] = caseStudyDetails.filter(
+	(study) => study.published !== false,
+);
 
 /**
  * Returns adjacent catalogue projects for case study navigation.
