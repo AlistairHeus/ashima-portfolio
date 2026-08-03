@@ -1,9 +1,10 @@
 ---
 /**
  * Full case study landing — the reusable top-of-page composition:
- * Navbar (on band) → title stack → hero image (band/canvas break) → intro.
+ * Title stack → hero image (band/canvas break) → intro.
  *
- * Use with `<Layout showNavbar={false}>`. Pass a different `bandColor` per project.
+ * Navbar stays in Layout (topmost stacking context). Pass a different
+ * `bandColor` per project.
  */
 import CaseStudyHero from './CaseStudyHero.astro';
 import CaseStudyIntro from './CaseStudyIntro.astro';
@@ -31,7 +32,7 @@ const { study, number, currentPath = '/work' } = Astro.props;
 		heroBackdrop={study.heroBackdrop}
 		heroLayers={study.heroLayers}
 		currentPath={currentPath}
-		overlayNavbar
+		overlayNavbar={false}
 	/>
 
 	<CaseStudyIntro

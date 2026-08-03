@@ -24,7 +24,7 @@ const {
 		{ label: 'Home', href: '/' },
 		{ label: 'Work', href: '/work' },
 		{ label: 'Resume', href: '/resume' },
-		{ label: 'Contact', href: '/#contact' },
+		{ label: 'Contact', href: '#contact' },
 	],
 	currentPath = Astro.url.pathname,
 	showDivider = true,
@@ -42,7 +42,7 @@ const activePath = normalizePath(currentPath);
 
 /** Exact match, or prefix match for nested routes (e.g. /work/himalayan-book → Work). */
 const isNavItemActive = (href: string) => {
-	// In-page anchors (e.g. /#contact) are not route highlights.
+	// In-page anchors (e.g. #contact) are not route highlights.
 	if (href.includes('#')) return false;
 	const itemPath = normalizePath(href);
 	if (activePath === itemPath) {
@@ -57,7 +57,7 @@ const isNavItemActive = (href: string) => {
 
 <header
 	class:list={[
-		'site-nav fixed inset-x-0 top-0 z-50 w-full bg-transparent pt-[var(--spacing-page-top)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform',
+		'site-nav fixed inset-x-0 top-0 z-[100] w-full bg-transparent pt-[var(--spacing-page-top)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform',
 		className,
 	]}
 	data-site-nav

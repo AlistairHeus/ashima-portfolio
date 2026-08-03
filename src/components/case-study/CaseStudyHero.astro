@@ -11,7 +11,9 @@
  * bottom-aligned to the band→canvas break (halfway mark of the image).
  * Title row stays empty band color near the navbar.
  *
- * Layout navbar must be off (`showNavbar={false}`) when `overlayNavbar` is true.
+ * Layout navbar must be on when `overlayNavbar` is false (default for
+ * case studies — keeps nav in the root stacking context above page content).
+ * Set `overlayNavbar` only for rare standalone surfaces without Layout nav.
  */
 import Navbar from '../Navbar.astro';
 import type { CaseStudyHeroLayer } from '../../data/case-studies';
@@ -45,7 +47,7 @@ const {
 	heroBackdrop,
 	heroLayers,
 	currentPath = '/work',
-	overlayNavbar = true,
+	overlayNavbar = false,
 } = Astro.props;
 
 const breakPercent = Math.min(100, Math.max(0, bandBreakPercent));
@@ -54,7 +56,7 @@ const useLayers = Boolean(heroLayers && heroLayers.length > 0);
 ---
 
 <header
-	class="case-study-hero relative -mt-[var(--spacing-page-top)] grid grid-cols-1 overflow-hidden bg-[var(--case-study-band)]"
+	class="case-study-hero relative -mt-[var(--spacing-page-chrome)] grid grid-cols-1 overflow-hidden bg-[var(--case-study-band)]"
 	aria-labelledby="case-study-title"
 	style={`--case-study-band: ${bandColor}; --case-study-band-break: ${breakPercent}%; grid-template-rows: auto minmax(0, ${breakPercent}fr) minmax(0, ${remainPercent}fr);`}
 >
@@ -84,8 +86,8 @@ const useLayers = Boolean(heroLayers && heroLayers.length > 0);
 	>
 	</div>
 
-	{/* Titles — transparent over the atmosphere */}
-	<div class="case-study-hero__band relative z-[1] col-start-1 row-start-1 pt-[var(--spacing-page-top)]">
+	{/* Titles — transparent over the atmosphere; pad for fixed nav chrome */}
+	<div class="case-study-hero__band relative z-[1] col-start-1 row-start-1 pt-[var(--spacing-page-chrome)]">
 		{overlayNavbar && <Navbar currentPath={currentPath} />}
 
 		<div

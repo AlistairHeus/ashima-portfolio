@@ -29,11 +29,13 @@
 }
 
 /*
- * Page top inset before navbar.
- * Kept outside @theme so spacing-* scale machinery cannot alter the value.
+ * Page top inset before navbar + full chrome (inset + nav bar).
+ * Kept outside @theme so spacing-* scale machinery cannot alter the values.
  */
 :root {
-	--spacing-page-top: 64px;
+	--spacing-page-top: 48px;
+	--spacing-nav-bar: 3.75rem;
+	--spacing-page-chrome: calc(var(--spacing-page-top) + var(--spacing-nav-bar));
 }
 
 @layer base {
@@ -56,7 +58,7 @@
 
 	/* Shared page chrome — reserve space for fixed nav (inset + bar height) */
 	.page {
-		padding-top: calc(var(--spacing-page-top) + 3.75rem);
+		padding-top: var(--spacing-page-chrome);
 	}
 
 	@media (max-width: 48rem) {
