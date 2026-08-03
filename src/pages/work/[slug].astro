@@ -13,6 +13,7 @@ import ConvergenceCaseStudyBody from '../../components/case-study/ConvergenceCas
 import AksharChitraCaseStudyBody from '../../components/case-study/AksharChitraCaseStudyBody.astro';
 import AirIndiaCaseStudyBody from '../../components/case-study/AirIndiaCaseStudyBody.astro';
 import WitchCaseStudyBody from '../../components/case-study/WitchCaseStudyBody.astro';
+import ReconnectCaseStudyBody from '../../components/case-study/ReconnectCaseStudyBody.astro';
 import CaseStudyNav from '../../components/case-study/CaseStudyNav.astro';
 import {
 	caseStudyDetails,
@@ -70,6 +71,8 @@ const displayNumber = study.number ?? catalogueProject?.number ?? '';
 				<AirIndiaCaseStudyBody content={study.airIndia} />
 			) : body === 'way-of-the-witch' && study.witch ? (
 				<WitchCaseStudyBody content={study.witch} />
+			) : body === 'reconnect' && study.reconnect ? (
+				<ReconnectCaseStudyBody content={study.reconnect} />
 			) : (
 				study.gallery &&
 				study.feature && (

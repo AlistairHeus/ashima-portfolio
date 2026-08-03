@@ -32,7 +32,8 @@ export type CaseStudyBody =
 	| 'convergence'
 	| 'akshar-chitra'
 	| 'air-india'
-	| 'way-of-the-witch';
+	| 'way-of-the-witch'
+	| 'reconnect';
 
 export interface CaseStudy {
 	readonly id: string;
@@ -77,6 +78,8 @@ export interface CaseStudy {
 	readonly airIndia?: AirIndiaCaseStudyContent;
 	/** Way of the Witch book cover (Figma Project 10). */
 	readonly witch?: WitchCaseStudyContent;
+	/** Reconnect inclusive play (Figma Project 6). */
+	readonly reconnect?: ReconnectCaseStudyContent;
 }
 
 export interface MythilaCaseStudyContent {
@@ -143,6 +146,65 @@ export interface WitchCaseStudyContent {
 	readonly selectedTitle: string;
 	readonly selected: CaseStudyImage;
 	readonly details: CaseStudyImage;
+}
+
+/**
+ * Reconnect inclusive-play body (Figma Project 6, 386:1191).
+ * Landing uses shared CaseStudy fields; research / direction / outcome / logo live here.
+ */
+export interface ReconnectCaseStudyContent {
+	readonly research: {
+		readonly title: string;
+		readonly primaryLabel: string;
+		readonly primaryBody: readonly CaseStudyTextPart[];
+		readonly fieldLabel: string;
+		readonly fieldEyebrow: string;
+		readonly fieldBody: readonly CaseStudyTextPart[];
+		readonly interviewsTitle: string;
+		readonly interviewsLead: string;
+		readonly stakeholders: readonly {
+			readonly label: string;
+			readonly detail: string;
+		}[];
+		readonly classroom: CaseStudyImage;
+		readonly play: CaseStudyImage;
+		readonly collage: CaseStudyImage;
+	};
+	readonly direction: {
+		readonly title: string;
+		readonly lead: readonly CaseStudyTextPart[];
+		readonly insightsTitle: string;
+		readonly insights: readonly (readonly CaseStudyTextPart[])[];
+		readonly hmwTitle: string;
+		readonly hmw: readonly string[];
+		readonly photo: CaseStudyImage;
+		readonly photoCaption: string;
+		readonly pillars: readonly {
+			readonly title: string;
+			readonly caption: string;
+			readonly icon: CaseStudyImage;
+		}[];
+	};
+	readonly outcome: {
+		readonly title: string;
+		readonly lead: readonly CaseStudyTextPart[];
+		readonly aboutTitle: string;
+		readonly aboutBody: string;
+		readonly explorationTitle: string;
+		readonly explorationBody: string;
+		readonly products: readonly CaseStudyImage[];
+		readonly feature: CaseStudyImage;
+		readonly tagline: readonly CaseStudyTextPart[];
+	};
+	readonly logo: {
+		readonly title: string;
+		readonly lead: readonly CaseStudyTextPart[];
+		readonly groupsLead: readonly CaseStudyTextPart[];
+		readonly groups: readonly string[];
+		readonly mark: CaseStudyImage;
+		readonly wordmark: string;
+		readonly piece: CaseStudyImage;
+	};
 }
 
 /**
@@ -2033,6 +2095,282 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			details: {
 				src: '/images/case-studies/way-of-the-witch/details.png',
 				alt: 'Annotated cover with callouts for foil border, typography, cauldron, pentagram, triple moon, and triskele',
+			},
+		},
+	},
+	{
+		id: 'reconnect',
+		number: '10',
+		category: 'Inclusive Design',
+		title: 'Reconnect',
+		client: 'For LV Prasad Eye Institute',
+		description: [
+			'The Reconnect project was initiated by LV Prasad Eye Institute (LVPEI) in their innovation lab, supported by its rehabilitation centre, to create something meaningful for visually impaired children.',
+			'I provided research insights that guided the design direction of an inclusive play experience—building cognitive, motor, and spatial skills while fostering empathy in sighted players—and developed the visual identity (logo) for the game.',
+		],
+		skills: [
+			'User research & Insight synthesis',
+			'Inclusive design thinking',
+			'Empathy',
+		],
+		tools: [
+			{
+				name: 'Adobe Illustrator',
+				iconSrc: '/icons/tools/illustrator.png',
+			},
+			{
+				name: 'Adobe Photoshop',
+				iconSrc: '/icons/tools/photoshop.png',
+			},
+		],
+		hero: {
+			src: '/images/case-studies/reconnect/hero.png',
+			alt: 'Reconnect diamond board with green tactile pieces on a teal and navy textured surface',
+		},
+		/** Mint wash — Figma Project 6 hero band */
+		heroBandColor: '#a4d4c6',
+		body: 'reconnect',
+		reconnect: {
+			research: {
+				title: 'Understanding the Gap',
+				primaryLabel: 'Primary Research',
+				primaryBody: [
+					{
+						text: 'The research explored perspectives on visual impairment, examining its ',
+					},
+					{ text: 'impact', bold: true },
+					{
+						text: ' on education, employment, and quality of life, along with cognitive and sensory adaptations. It drew from ',
+					},
+					{ text: 'inclusive design principles', bold: true },
+					{ text: ', ' },
+					{ text: 'psychology of play', bold: true },
+					{ text: ', and the role of ' },
+					{
+						text: 'shared activities in building social connection',
+						bold: true,
+					},
+					{
+						text: ', while also considering advancements in assistive technologies such as ',
+					},
+					{ text: 'tactile interfaces and gamification', bold: true },
+					{ text: '. These ' },
+					{
+						text: 'insights collectively shaped an empathetic, inclusive solution.',
+						bold: true,
+					},
+				],
+				fieldLabel: 'On-field Research',
+				fieldEyebrow: 'Qualitative and Observational Research',
+				fieldBody: [
+					{
+						text: 'To understand the lives and needs of visually impaired children across rehabilitation settings, insights were gathered through ',
+					},
+					{
+						text: 'daily routines, therapy sessions, parent interactions and play activities',
+						bold: true,
+					},
+					{
+						text: ', revealing tactile preferences and group dynamics at LVPEI Rehab Centre. Visited educational and social organisations such as Devnar School for the Blind, Courage Homes, Sahara NGO, National Association for the Blind (Gurgaon), and TTI of Poona Blind Men’s Association, learning how ',
+					},
+					{
+						text: 'children learn, play, and navigate social environments.',
+						bold: true,
+					},
+				],
+				interviewsTitle: 'Interviews',
+				interviewsLead:
+					'We engaged with various stakeholders to uncover diverse perspectives:',
+				stakeholders: [
+					{
+						label: 'Users: ',
+						detail:
+							'Explored their daily challenges, preferences, and aspirations.',
+					},
+					{
+						label: 'Rehab Staff and Teachers: ',
+						detail:
+							'Discussed teaching methods, difficulties, and key areas of focus.',
+					},
+					{
+						label: 'Innovators: ',
+						detail:
+							'Gathered insights on existing solutions, gaps, and potential for improvement.',
+					},
+				],
+				classroom: {
+					src: '/images/case-studies/reconnect/research-classroom.png',
+					alt: 'Students gathered outdoors at Devnar School for the Blind',
+				},
+				play: {
+					src: '/images/case-studies/reconnect/research-play.png',
+					alt: 'Children and facilitators interacting around a table during a research visit',
+				},
+				collage: {
+					src: '/images/case-studies/reconnect/research-collage.png',
+					alt: 'Field research collage — rehab meets, play sessions, chess championship, and LVPEI IT centre',
+				},
+			},
+			direction: {
+				title: 'Shaping the Direction',
+				lead: [
+					{
+						text: 'While our research explored multiple aspects of a visually impaired child’s life, ',
+					},
+					{ text: 'play emerged as a critical area of impact.', bold: true },
+				],
+				insightsTitle: 'Key Insights',
+				insights: [
+					[
+						{ text: 'Visually impaired children ' },
+						{ text: 'rely', bold: true },
+						{ text: ' on ' },
+						{ text: 'touch, sound, and spatial awareness', bold: true },
+						{ text: ' to engage with their environment.' },
+					],
+					[
+						{ text: 'Play is essential for ' },
+						{
+							text: 'developing cognitive, motor, and social skills',
+							bold: true,
+						},
+						{ text: ' but existing play tools are ' },
+						{
+							text: 'rarely designed for shared interaction',
+							bold: true,
+						},
+						{ text: ' with sighted peers.' },
+					],
+					[
+						{ text: 'Inclusive play environments foster ' },
+						{ text: 'empathy, collaboration', bold: true },
+						{ text: ' and ' },
+						{ text: 'confidence', bold: true },
+						{ text: ' among children.' },
+					],
+					[
+						{ text: 'Limited play opportunities ' },
+						{ text: 'affect social interaction', bold: true },
+						{ text: ', confidence, and overall development.' },
+					],
+					[
+						{ text: 'Visually impaired children have ' },
+						{ text: 'limited access to inclusive play', bold: true },
+						{ text: ' experiences.' },
+					],
+				],
+				hmwTitle: 'Reframing problems into opportunities',
+				hmw: [
+					'HMW design a game for visually impaired kids that supports brain development and engages their cognitive, motor and tactile senses?',
+					'HMW bridge gaps between sighted and visually impaired individuals through play?',
+				],
+				photo: {
+					src: '/images/case-studies/reconnect/insight-photo.png',
+					alt: 'Children playing a tactile board game together during research',
+				},
+				photoCaption:
+					'Witnessed a chess championship amongst rehab clients',
+				pillars: [
+					{
+						title: 'Acceptance',
+						caption: 'of their special abilities',
+						icon: {
+							src: '/images/case-studies/reconnect/icon-acceptance.png',
+							alt: '',
+						},
+					},
+					{
+						title: 'Inclusive',
+						caption: 'All can play',
+						icon: {
+							src: '/images/case-studies/reconnect/icon-inclusive.png',
+							alt: '',
+						},
+					},
+					{
+						title: 'Reconnect',
+						caption: 'with everyone through play',
+						icon: {
+							src: '/images/case-studies/reconnect/icon-reconnect.png',
+							alt: '',
+						},
+					},
+				],
+			},
+			outcome: {
+				title: 'Outcome: RECONNECT',
+				lead: [
+					{ text: 'Using the research insights', bold: true },
+					{
+						text: ', the design team developed Reconnect — an inclusive game which emerged as the embodiment of those insights. It builds confidence in visually impaired players, while allowing sighted players to experience play without sight, encouraging empathy and new perspectives. It extends beyond types of players to embrace inclusivity across all users—regardless of vision, age or gender, without barriers.',
+					},
+				],
+				aboutTitle: 'About the game',
+				aboutBody:
+					'Reconnect reimagines Dots and Boxes as a tactile game for both visually impaired and sighted players. Simple yet strategic, it offers a familiar but interactive experience that supports cognitive and spatial development.',
+				explorationTitle: 'Board Game & 3D Exploration',
+				explorationBody:
+					'Dots connect to form shapes, introducing basic geometry and strategy. The same concept extends into 3D, where building forms by hand enables a more tactile understanding of space.',
+				products: [
+					{
+						src: '/images/case-studies/reconnect/product-diamond.png',
+						alt: 'Diamond Reconnect board with green connectors and white rods',
+					},
+					{
+						src: '/images/case-studies/reconnect/product-hex.png',
+						alt: 'Hexagonal Reconnect board with connected geometric forms',
+					},
+					{
+						src: '/images/case-studies/reconnect/product-piece-1.png',
+						alt: 'Close-up of green spherical game connectors',
+					},
+					{
+						src: '/images/case-studies/reconnect/product-piece-2.png',
+						alt: 'Close-up of assembled 3D tactile game pieces',
+					},
+				],
+				feature: {
+					src: '/images/case-studies/reconnect/work-card.png',
+					alt: 'Final Reconnect diamond board staged on a teal and navy textured surface',
+				},
+				tagline: [
+					{ text: 'A game ', bold: true },
+					{
+						text: 'that transforms a simple pen-and-paper concept into a tangible, ',
+					},
+					{ text: 'inclusive experience', bold: true },
+					{ text: ' for the visually impaired.' },
+				],
+			},
+			logo: {
+				title: 'Logo Design',
+				lead: [
+					{ text: 'Inspired by the ' },
+					{ text: 'top view', bold: true },
+					{ text: ' of the game board, the logo represents ' },
+					{ text: 'players as adaptable elements', bold: true },
+					{ text: ' within the system.' },
+				],
+				groupsLead: [
+					{ text: 'The form draws from four player groups coming together to ' },
+					{ text: 'Reconnect', bold: true },
+					{ text: ':' },
+				],
+				groups: [
+					'Blindfolded players',
+					'Sighted players',
+					'Congenitally blind',
+					'Adventitiously blind',
+				],
+				mark: {
+					src: '/images/case-studies/reconnect/logo.png',
+					alt: 'Reconnect logo mark — four interlocking forms meeting at the centre',
+				},
+				wordmark: 'RECONNECT',
+				piece: {
+					src: '/images/case-studies/reconnect/piece-closeup.png',
+					alt: 'Close-up of a green Reconnect game piece that inspired the logo',
+				},
 			},
 		},
 	},

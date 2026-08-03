@@ -132,4 +132,15 @@ export const otherWorkProjects: readonly WorkProject[] = [
 		chips: ['Book Cover Design', 'Illustration', 'Print Design'],
 		href: '/work/way-of-the-witch',
 	},
+	{
+		id: 'reconnect',
+		number: '10',
+		title: 'Reconnect: Designing for Inclusivity',
+		description:
+			'An inclusive tactile game for visually impaired and sighted players, developed with LVPEI through research-led design and visual identity.',
+		imageSrc: '/images/case-studies/reconnect/work-card.png',
+		imageAlt: 'Reconnect diamond board game on a teal and navy textured surface',
+		chips: ['Inclusive Design', 'User Research', 'Visual Identity'],
+		href: '/work/reconnect',
+	},
 ] as const;

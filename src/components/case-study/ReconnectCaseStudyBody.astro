@@ -1,0 +1,392 @@
+---
+/**
+ * Reconnect inclusive-play body — after the shared landing.
+ * Adapts Figma Project 6 (386:1191) content into site case-study patterns.
+ */
+import type { ReconnectCaseStudyContent } from '../../data/case-studies';
+
+interface Props {
+	readonly content: ReconnectCaseStudyContent;
+}
+
+const { content } = Astro.props;
+const { research, direction, outcome, logo } = content;
+
+const inkDeep = '#1a001d';
+const mintSoft = '#e8f4ef';
+const mintAccent = '#125b45';
+const mintMuted = '#569584';
+---
+
+<div class="reconnect-body">
+	{/* Understanding the Gap */}
+	<section
+		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		aria-labelledby="reconnect-research-title"
+	>
+		<h2 id="reconnect-research-title" class="type-label-lg" style={`color: ${inkDeep}`}>
+			{research.title}
+		</h2>
+
+		<div
+			class="mt-8 grid grid-cols-1 items-start gap-10 md:mt-10 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] md:gap-12 lg:gap-14"
+		>
+			<div>
+				<p class="type-label-md text-ink/55">{research.primaryLabel}</p>
+				<p class="type-body mt-3 max-w-[32rem] text-ink">
+					{
+						research.primaryBody.map((part) =>
+							part.bold ? (
+								<strong class="font-bold">{part.text}</strong>
+							) : (
+								part.text
+							),
+						)
+					}
+				</p>
+
+				<p class="type-label-md mt-8 text-ink/55 md:mt-10">{research.fieldLabel}</p>
+				<p class="mt-3 font-body text-lg font-bold leading-[1.4375rem] text-ink/55">
+					{research.fieldEyebrow}
+				</p>
+				<p class="type-body mt-3 max-w-[32rem] text-ink">
+					{
+						research.fieldBody.map((part) =>
+							part.bold ? (
+								<strong class="font-bold">{part.text}</strong>
+							) : (
+								part.text
+							),
+						)
+					}
+				</p>
+
+				<p class="mt-6 font-body text-lg font-bold leading-[1.4375rem] text-ink/55">
+					{research.interviewsTitle}
+				</p>
+				<p class="type-body mt-2 max-w-[32rem] text-ink">{research.interviewsLead}</p>
+				<ul
+					class="mt-3 max-w-[32rem] list-disc space-y-2 pl-[1.7rem] font-body text-lg leading-[1.4375rem] text-ink marker:text-ink"
+				>
+					{
+						research.stakeholders.map((item) => (
+							<li class="pl-1">
+								<strong class="font-bold">{item.label}</strong>
+								{item.detail}
+							</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+				<figure class="m-0 overflow-hidden">
+					<img
+						src={research.classroom.src}
+						alt={research.classroom.alt}
+						class="block h-auto w-full"
+						width="874"
+						height="574"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+				<figure class="m-0 overflow-hidden">
+					<img
+						src={research.play.src}
+						alt={research.play.alt}
+						class="block h-auto w-full"
+						width="862"
+						height="576"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+				<figure class="m-0 overflow-hidden sm:col-span-2">
+					<img
+						src={research.collage.src}
+						alt={research.collage.alt}
+						class="block h-auto w-full"
+						width="1200"
+						height="800"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			</div>
+		</div>
+	</section>
+
+	{/* Shaping the Direction */}
+	<section
+		class="mt-14 md:mt-20"
+		style={`background-color: ${mintSoft}`}
+		aria-labelledby="reconnect-direction-title"
+	>
+		<div
+			class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2.5rem,5vw,4rem)]"
+		>
+			<h2 id="reconnect-direction-title" class="type-label-lg" style={`color: ${inkDeep}`}>
+				{direction.title}
+			</h2>
+			<p class="type-body mt-4 max-w-[36rem] text-ink">
+				{
+					direction.lead.map((part) =>
+						part.bold ? (
+							<strong class="font-bold">{part.text}</strong>
+						) : (
+							part.text
+						),
+					)
+				}
+			</p>
+
+			<div
+				class="mt-10 grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-12"
+			>
+				<div>
+					<p class="font-body text-lg font-bold leading-[1.4375rem] text-ink/55">
+						{direction.insightsTitle}
+					</p>
+					<ul
+						class="mt-4 list-disc space-y-3 pl-[1.7rem] font-body text-lg leading-[1.4375rem] text-ink marker:text-ink"
+					>
+						{
+							direction.insights.map((insight) => (
+								<li class="pl-1">
+									{insight.map((part) =>
+										part.bold ? (
+											<strong class="font-bold">{part.text}</strong>
+										) : (
+											part.text
+										),
+									)}
+								</li>
+							))
+						}
+					</ul>
+
+					<p class="type-label-md mt-10 text-ink/55">{direction.hmwTitle}</p>
+					<ul class="mt-4 flex list-none flex-col gap-5 p-0">
+						{
+							direction.hmw.map((statement) => (
+								<li
+									class="border-l-4 pl-4 font-display text-xl font-medium leading-snug md:text-[1.5rem]"
+									style={`border-color: ${mintMuted}; color: ${mintAccent}`}
+								>
+									{statement}
+								</li>
+							))
+						}
+					</ul>
+				</div>
+
+				<figure class="m-0">
+					<img
+						src={direction.photo.src}
+						alt={direction.photo.alt}
+						class="block h-auto w-full"
+						width="866"
+						height="524"
+						loading="lazy"
+						decoding="async"
+					/>
+					{
+						direction.photoCaption ? (
+							<figcaption class="mt-3 text-center font-body text-sm text-ink/55">
+								{direction.photoCaption}
+							</figcaption>
+						) : null
+					}
+				</figure>
+			</div>
+
+			<ul
+				class="mt-12 grid list-none grid-cols-1 gap-8 p-0 sm:grid-cols-3 sm:gap-6"
+				aria-label="Design pillars"
+			>
+				{
+					direction.pillars.map((pillar) => (
+						<li class="flex flex-col items-center text-center">
+							<img
+								src={pillar.icon.src}
+								alt=""
+								class="size-16 object-contain opacity-40 md:size-20"
+								width="80"
+								height="80"
+								loading="lazy"
+								decoding="async"
+								aria-hidden="true"
+							/>
+							<p class="mt-3 font-body text-lg font-bold text-ink">{pillar.title}</p>
+							<p class="mt-1 max-w-[10rem] font-body text-base text-ink/55">
+								{pillar.caption}
+							</p>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	{/* Outcome */}
+	<section
+		class="mx-auto mt-14 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-20"
+		aria-labelledby="reconnect-outcome-title"
+	>
+		<h2 id="reconnect-outcome-title" class="type-label-lg" style={`color: ${inkDeep}`}>
+			{outcome.title}
+		</h2>
+
+		<div
+			class="mt-8 grid grid-cols-1 items-start gap-10 md:mt-10 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-12"
+		>
+			<div>
+				<p class="type-body max-w-[32rem] text-ink">
+					{
+						outcome.lead.map((part) =>
+							part.bold ? (
+								<strong class="font-bold">{part.text}</strong>
+							) : (
+								part.text
+							),
+						)
+					}
+				</p>
+
+				<p class="mt-8 font-body text-lg font-bold leading-[1.4375rem] text-ink/55">
+					{outcome.aboutTitle}
+				</p>
+				<p class="type-body mt-2 max-w-[32rem] text-ink">{outcome.aboutBody}</p>
+
+				<p class="mt-6 font-body text-lg font-bold leading-[1.4375rem] text-ink/55">
+					{outcome.explorationTitle}
+				</p>
+				<p class="type-body mt-2 max-w-[32rem] text-ink">{outcome.explorationBody}</p>
+			</div>
+
+			<div class="grid grid-cols-2 gap-3 sm:gap-4">
+				{
+					outcome.products.map((image) => (
+						<figure class="m-0 overflow-hidden bg-white">
+							<img
+								src={image.src}
+								alt={image.alt}
+								class="block h-auto w-full"
+								width="400"
+								height="380"
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+					))
+				}
+			</div>
+		</div>
+
+		<figure class="m-0 mt-8 md:mt-10">
+			<img
+				src={outcome.feature.src}
+				alt={outcome.feature.alt}
+				class="block h-auto w-full"
+				width="1786"
+				height="842"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+		<p
+			class="mt-6 max-w-[48rem] font-display text-[clamp(1.5rem,2.8vw,2.25rem)] font-medium leading-snug text-ink/70"
+		>
+			{
+				outcome.tagline.map((part) =>
+					part.bold ? (
+						<span class="text-ink">{part.text}</span>
+					) : (
+						part.text
+					),
+				)
+			}
+		</p>
+	</section>
+
+	{/* Logo Design */}
+	<section
+		class="mx-auto mt-14 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pb-[clamp(2.5rem,5vw,4rem)] md:mt-20"
+		aria-labelledby="reconnect-logo-title"
+	>
+		<h2 id="reconnect-logo-title" class="type-label-lg" style={`color: ${inkDeep}`}>
+			{logo.title}
+		</h2>
+
+		<div
+			class="mt-8 grid grid-cols-1 items-center gap-10 md:mt-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-12 lg:gap-16"
+		>
+			<div>
+				<p class="type-body max-w-[32rem] text-ink">
+					{
+						logo.lead.map((part) =>
+							part.bold ? (
+								<strong class="font-bold">{part.text}</strong>
+							) : (
+								part.text
+							),
+						)
+					}
+				</p>
+
+				<div class="mt-8 flex items-center gap-5">
+					<figure class="m-0 shrink-0 overflow-hidden rounded-full">
+						<img
+							src={logo.piece.src}
+							alt={logo.piece.alt}
+							class="block size-24 object-cover md:size-28"
+							width="195"
+							height="192"
+							loading="lazy"
+							decoding="async"
+						/>
+					</figure>
+					<p class="type-body max-w-[20rem] text-ink">
+						{
+							logo.groupsLead.map((part) =>
+								part.bold ? (
+									<em class="italic">{part.text}</em>
+								) : (
+									part.text
+								),
+							)
+						}
+					</p>
+				</div>
+
+				<ul
+					class="mt-6 grid list-none grid-cols-2 gap-x-4 gap-y-2 p-0 font-body text-base font-bold text-ink/60"
+				>
+					{
+						logo.groups.map((group) => (
+							<li>{group}</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<figure class="m-0 flex flex-col items-center justify-center">
+				<img
+					src={logo.mark.src}
+					alt={logo.mark.alt}
+					class="block w-full max-w-[18rem] opacity-70 md:max-w-[22rem]"
+					width="334"
+					height="326"
+					loading="lazy"
+					decoding="async"
+				/>
+				<p
+					class="mt-6 font-display text-[clamp(2.5rem,6vw,5rem)] font-extrabold uppercase tracking-wide text-ink/45"
+				>
+					{logo.wordmark}
+				</p>
+			</figure>
+		</div>
+	</section>
+</div>
