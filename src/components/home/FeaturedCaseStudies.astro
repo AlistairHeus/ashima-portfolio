@@ -115,23 +115,33 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 									id={`featured-card-${project.id}`}
 									data-featured-card={project.id}
 									data-featured-index={index}
+									data-inactive="false"
 									class="featured__card absolute inset-0 size-full"
-									style={`z-index: ${index + 1}; transform: translate3d(0, ${index === 0 ? 0 : 100}vh, 0);`}
+									style={`z-index: ${index + 1}; transform: translate3d(0, ${index === 0 ? 0 : 100}vh, 0); --featured-label: ${project.labelColor}; --featured-folder-mask: url('${project.folderSrc}');`}
 									aria-hidden={index === 0 ? 'false' : 'true'}
 								>
+									{/*
+									  Brand folder + neutral ProjectFolder beige underlay.
+									  Once a later folder centers on top, the brand fades out
+									  so covered folders read as inactive chrome.
+									*/}
+									<div
+										class="featured__folder-neutral pointer-events-none absolute inset-0"
+										aria-hidden="true"
+									></div>
 									<img
 										src={project.folderSrc}
 										alt=""
 										aria-hidden="true"
-										class="pointer-events-none absolute inset-0 size-full object-fill select-none"
+										class="featured__folder-brand pointer-events-none absolute inset-0 size-full object-fill select-none"
 									/>
 
 									{/* Visual tab label — travels with this folder (not the click target) */}
 									<span
 										aria-hidden="true"
 										data-featured-tab-label={project.id}
-										class="featured__tab pointer-events-none absolute top-[0.85%] z-20 flex h-[5.7%] items-center justify-center truncate px-1 font-label font-bold leading-none tracking-[0.18em] uppercase"
-										style={`left: ${tabSlots[index].left}; width: ${tabSlots[index].width}; color: ${project.labelColor}`}
+										class="featured__tab featured__tab-label pointer-events-none absolute top-[0.85%] z-20 flex h-[5.7%] items-center justify-center truncate px-1 font-label font-bold leading-none tracking-[0.18em] uppercase"
+										style={`left: ${tabSlots[index].left}; width: ${tabSlots[index].width}`}
 									>
 										{project.label}
 									</span>
@@ -260,6 +270,55 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 
 	.featured__card {
 		will-change: transform;
+	}
+
+	/*
+	  Neutral underlay — same beige gradient as ProjectFolder back-base.
+	  Masked to the brand SVG silhouette so tab cutouts stay correct.
+	*/
+	.featured__folder-neutral {
+		background-image: linear-gradient(180.41deg, #f3eae3 -9%, #ddc3ae 57%);
+		opacity: 0;
+		transition: opacity 0.45s ease;
+		filter: drop-shadow(1px 0 3.75px rgb(0 0 0 / 0.25));
+		-webkit-mask-image: var(--featured-folder-mask);
+		mask-image: var(--featured-folder-mask);
+		-webkit-mask-size: 100% 100%;
+		mask-size: 100% 100%;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-position: center;
+		mask-position: center;
+	}
+
+	.featured__folder-brand {
+		transition: opacity 0.45s ease;
+	}
+
+	.featured__tab-label {
+		color: var(--featured-label);
+		transition: color 0.45s ease;
+	}
+
+	/* Covered folders: beige chrome + muted tab ink */
+	.featured__card[data-inactive='true'] .featured__folder-neutral {
+		opacity: 1;
+	}
+
+	.featured__card[data-inactive='true'] .featured__folder-brand {
+		opacity: 0;
+	}
+
+	.featured__card[data-inactive='true'] .featured__tab-label {
+		color: #7a5c45;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.featured__folder-neutral,
+		.featured__folder-brand,
+		.featured__tab-label {
+			transition: none;
+		}
 	}
 </style>
 

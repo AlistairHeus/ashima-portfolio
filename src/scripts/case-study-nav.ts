@@ -1,7 +1,9 @@
 /**
  * Case study footer carousel — two visible projects; arrows rotate circularly.
  * Folder links navigate; arrow buttons only advance the window.
+ * Advances animate with a directional slide (GSAP).
  */
+import gsap from 'gsap';
 
 interface NavProject {
 	readonly id: string;
@@ -14,6 +16,9 @@ interface NavProject {
 	readonly href?: string;
 	readonly accentColor?: string;
 }
+
+/** Slide distance in px for exit / enter. */
+const SLIDE_PX = 48;
 
 /**
  * Apply project accent CSS vars on a folder root (hover recolor).
@@ -80,6 +85,19 @@ const paintSlot = (
 };
 
 /**
+ * Collect folder + copy panels for both carousel columns.
+ */
+const getPanels = (root: HTMLElement): HTMLElement[] =>
+	[0, 1].flatMap((slotIndex) => {
+		const folder = root.querySelector(`[data-nav-slot="${slotIndex}"]`);
+		const copy = root.querySelector(`[data-nav-copy="${slotIndex}"]`);
+		const panels: HTMLElement[] = [];
+		if (folder instanceof HTMLElement) panels.push(folder);
+		if (copy instanceof HTMLElement) panels.push(copy);
+		return panels;
+	});
+
+/**
  * Initialize the case-study footer carousel on the page.
  */
 export const initCaseStudyNav = (): void => {
@@ -102,6 +120,17 @@ export const initCaseStudyNav = (): void => {
 	let offset = Number.isFinite(parsedOffset) ? parsedOffset : count - 1;
 	offset = ((offset % count) + count) % count;
 
+	const buttons = Array.from(
+		root.querySelectorAll<HTMLButtonElement>('[data-nav-dir]'),
+	);
+	let animating = false;
+
+	const setButtonsDisabled = (disabled: boolean): void => {
+		buttons.forEach((button) => {
+			button.disabled = disabled;
+		});
+	};
+
 	const render = (): void => {
 		const left = projects[offset % count];
 		const right = projects[(offset + 1) % count];
@@ -110,12 +139,64 @@ export const initCaseStudyNav = (): void => {
 		paintSlot(root, 1, right);
 	};
 
+	const prefersReducedMotion = (): boolean =>
+		window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	/**
+	 * Advance the window. Positive delta slides content left (next);
+	 * negative slides right (prev).
+	 */
 	const step = (delta: number): void => {
+		if (animating || delta === 0) return;
+
 		offset = (offset + delta + count) % count;
-		render();
+
+		if (prefersReducedMotion()) {
+			render();
+			return;
+		}
+
+		const panels = getPanels(root);
+		if (panels.length === 0) {
+			render();
+			return;
+		}
+
+		animating = true;
+		setButtonsDisabled(true);
+
+		const exitX = delta > 0 ? -SLIDE_PX : SLIDE_PX;
+		const enterX = delta > 0 ? SLIDE_PX : -SLIDE_PX;
+
+		const tl = gsap.timeline({
+			onComplete: () => {
+				gsap.set(panels, { clearProps: 'transform' });
+				animating = false;
+				setButtonsDisabled(false);
+			},
+		});
+
+		tl.to(panels, {
+			x: exitX,
+			opacity: 0,
+			duration: 0.28,
+			ease: 'power2.in',
+			stagger: 0.03,
+		});
+		tl.add(() => {
+			render();
+			gsap.set(panels, { x: enterX, opacity: 0 });
+		});
+		tl.to(panels, {
+			x: 0,
+			opacity: 1,
+			duration: 0.4,
+			ease: 'power3.out',
+			stagger: 0.04,
+		});
 	};
 
-	root.querySelectorAll<HTMLButtonElement>('[data-nav-dir]').forEach((button) => {
+	buttons.forEach((button) => {
 		button.addEventListener('click', () => {
 			const dir = Number(button.dataset.navDir);
 			if (!Number.isFinite(dir) || dir === 0) return;

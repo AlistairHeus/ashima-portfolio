@@ -65,18 +65,31 @@ const stackSlots = [
 							{project.href ? (
 								<a
 									href={project.href}
-									class="block text-heading no-underline transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+									class="flex items-center gap-5 text-heading no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 								>
-									<p class="type-h6">{project.title}</p>
+									<div class="min-w-0 flex-1">
+										<p class="type-h6">{project.title}</p>
+										<div class="mt-3 flex flex-wrap gap-2">
+											{project.chips.map((chip) => (
+												<Chip label={chip} muted={project.muted} />
+											))}
+										</div>
+									</div>
+									<span
+										class="other-projects__arrow shrink-0"
+										aria-hidden="true"
+									></span>
 								</a>
 							) : (
-								<p class="type-h6 text-heading">{project.title}</p>
+								<>
+									<p class="type-h6 text-heading">{project.title}</p>
+									<div class="mt-3 flex flex-wrap gap-2">
+										{project.chips.map((chip) => (
+											<Chip label={chip} muted={project.muted} />
+										))}
+									</div>
+								</>
 							)}
-							<div class="mt-3 flex flex-wrap gap-2">
-								{project.chips.map((chip) => (
-									<Chip label={chip} muted={project.muted} />
-								))}
-							</div>
 						</li>
 					))
 				}
@@ -129,6 +142,47 @@ const stackSlots = [
 
 	.other-projects__item--muted[data-active='true'] {
 		opacity: 0.7;
+	}
+
+	/* Arrow reveals on row hover / keyboard focus; ink matches title */
+	.other-projects__arrow {
+		display: block;
+		width: 2.75rem;
+		height: 3rem;
+		background-color: currentColor;
+		opacity: 0;
+		transform: translateX(-0.25rem);
+		transition:
+			opacity 0.2s ease,
+			transform 0.2s ease;
+		-webkit-mask-image: url('/icons/arrow-right.svg');
+		mask-image: url('/icons/arrow-right.svg');
+		-webkit-mask-size: contain;
+		mask-size: contain;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-position: center;
+		mask-position: center;
+	}
+
+	@media (width >= 48rem) {
+		.other-projects__arrow {
+			width: 3.25rem;
+			height: 3.5rem;
+		}
+	}
+
+	.other-projects__item:hover .other-projects__arrow,
+	.other-projects__item:focus-within .other-projects__arrow {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.other-projects__arrow {
+			transition: none;
+			transform: none;
+		}
 	}
 
 	.other-projects__polaroid {

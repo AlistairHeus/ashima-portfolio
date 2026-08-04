@@ -2,6 +2,7 @@
  * Scroll-driven featured folder stack.
  * Folders rise from below the viewport with their tab labels.
  * A tab becomes clickable only after its folder has landed — and stays clickable.
+ * Covered folders (below the centered top) switch to neutral beige chrome.
  */
 
 /** Offset below the viewport used as the enter position for stacking folders. */
@@ -68,31 +69,47 @@ export const initFeaturedScroll = (): void => {
 	};
 
 	/**
-	 * Map 0–1 track progress → folder transforms.
+	 * Local 0–1 progress for folder `index` (folder 0 is always settled).
+	 */
+	const localProgress = (progress: number, index: number, stackCount: number): number => {
+		if (index === 0) return 1;
+		const start = (index - 1) / stackCount;
+		const end = index / stackCount;
+		return Math.min(1, Math.max(0, (progress - start) / (end - start || 1)));
+	};
+
+	/**
+	 * Map 0–1 track progress → folder transforms + inactive chrome.
 	 * Folder 1 stays put; folders 2–4 each rise from below the viewport.
+	 * Once a folder centers on top, earlier folders fade to neutral beige.
 	 */
 	const applyProgress = (progress: number): void => {
 		const stackCount = Math.max(1, count - 1);
 
+		/** Highest folder that has reached (near) center — keeps brand; below it go neutral. */
+		let topIndex = 0;
+
 		cards.forEach((card, index) => {
+			const local = localProgress(progress, index, stackCount);
+
 			if (index === 0) {
 				card.style.transform = 'translate3d(0, 0, 0)';
-				return;
+			} else {
+				const yVh = ENTER_VH * (1 - local);
+				card.style.transform = `translate3d(0, ${yVh}vh, 0)`;
+
+				if (local >= LAND_THRESHOLD && !unlocked[index]) {
+					unlocked[index] = true;
+					setTabEnabled(index, true);
+				}
 			}
 
-			const start = (index - 1) / stackCount;
-			const end = index / stackCount;
-			const local = Math.min(
-				1,
-				Math.max(0, (progress - start) / (end - start || 1)),
-			);
-			const yVh = ENTER_VH * (1 - local);
-			card.style.transform = `translate3d(0, ${yVh}vh, 0)`;
+			if (local >= LAND_THRESHOLD) topIndex = index;
+		});
 
-			if (local >= LAND_THRESHOLD && !unlocked[index]) {
-				unlocked[index] = true;
-				setTabEnabled(index, true);
-			}
+		// Covered folders → neutral ProjectFolder beige; rising/top keep band color.
+		cards.forEach((card, index) => {
+			card.dataset.inactive = index < topIndex ? 'true' : 'false';
 		});
 
 		// Keep already-landed tabs enabled (including after scrolling back up).
@@ -102,9 +119,7 @@ export const initFeaturedScroll = (): void => {
 
 		let activeIndex = 0;
 		for (let i = 1; i < count; i += 1) {
-			const start = (i - 1) / stackCount;
-			const end = i / stackCount;
-			const local = (progress - start) / (end - start || 1);
+			const local = localProgress(progress, i, stackCount);
 			if (local >= 0.5) activeIndex = i;
 		}
 		setActive(activeIndex);

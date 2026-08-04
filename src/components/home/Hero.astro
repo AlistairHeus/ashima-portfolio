@@ -6,17 +6,12 @@
  */
 import Polaroid from '../Polaroid.astro';
 
-const nameLine1 = 'ASHIMA';
-const nameLine2 = 'KAUSHIK';
-
 /** Left / right subtitles — single-line, Lato Bold, all caps. */
 const roleLabel = 'VISUAL DESIGNER';
 const locationLabel = 'BASED IN INDIA';
 
 const gridSrc = '/images/home/grid.webp';
 const folderSrc = '/images/folder-shape.svg';
-
-const nameLines = [nameLine1, nameLine2] as const;
 
 interface HeroPolaroid {
 	readonly src: string;
@@ -303,21 +298,11 @@ const folderStuff: readonly FolderStuffCard[] = [
 			{roleLabel}
 		</p>
 
-		<h1 id="hero-heading" class="hero-name cursor-default whitespace-nowrap text-center">
-			{
-				nameLines.map((line) => (
-					<span
-						class="hero-name-line magnetic-type__word block font-display text-[#242424]"
-						data-magnetic-word
-					>
-						{Array.from(line).map((ch) => (
-							<span class="hero-name-char magnetic-type__char" data-magnetic-char>
-								{ch}
-							</span>
-						))}
-					</span>
-				))
-			}
+		<h1
+			id="hero-heading"
+			class="hero-name cursor-default whitespace-nowrap text-center font-display uppercase text-[#242424]"
+		>
+			Ashima Kaushik
 		</h1>
 
 		{/* Mobile location */}
@@ -354,13 +339,14 @@ const folderStuff: readonly FolderStuffCard[] = [
 ></div>
 
 <style>
-	.hero-name-line {
+	.hero-name,
+	:global(.hero-name-line) {
 		font-size: clamp(3.5rem, 10vw, 8rem);
 		line-height: 1;
 		letter-spacing: -0.03em;
 	}
 
-	.hero-name-char {
+	:global(.hero-name-char) {
 		will-change: transform, font-variation-settings, opacity;
 	}
 
@@ -396,11 +382,13 @@ const folderStuff: readonly FolderStuffCard[] = [
 	  Reduced-motion skips the pending state via the inline bootstrap.
 	*/
 	@media (prefers-reduced-motion: no-preference) {
-		.hero[data-hero-intro='pending'] .hero-name-char,
+		.hero[data-hero-intro='pending']
+			.hero-name:not([data-hero-name-enhanced='true']),
+		.hero[data-hero-intro='pending'] :global(.hero-name-char),
 		.hero[data-hero-intro='pending'] .hero-subtitle-text,
 		.hero[data-hero-intro='pending'] .hero-mobile-subtitle,
 		.hero[data-hero-intro='pending'] .hero-polaroid,
-		.hero[data-hero-intro='running'] .hero-name-char,
+		.hero[data-hero-intro='running'] :global(.hero-name-char),
 		.hero[data-hero-intro='running'] .hero-subtitle-text,
 		.hero[data-hero-intro='running'] .hero-mobile-subtitle,
 		.hero[data-hero-intro='running'] .hero-polaroid {
@@ -431,6 +419,36 @@ const folderStuff: readonly FolderStuffCard[] = [
 
 	const nameLines = ['ASHIMA', 'KAUSHIK'] as const;
 
+	/**
+	 * Progressively enhance the semantic server-rendered name into the glyph
+	 * wrappers used by the intro and magnetic-type animations.
+	 */
+	const enhanceHeroName = (root: HTMLElement): void => {
+		if (root.dataset.heroNameEnhanced === 'true') return;
+
+		const fragment = document.createDocumentFragment();
+		for (const line of nameLines) {
+			const lineElement = document.createElement('span');
+			lineElement.className =
+				'hero-name-line magnetic-type__word block font-display text-[#242424]';
+			lineElement.dataset.magneticWord = '';
+
+			for (const character of Array.from(line)) {
+				const characterElement = document.createElement('span');
+				characterElement.className =
+					'hero-name-char magnetic-type__char';
+				characterElement.dataset.magneticChar = '';
+				characterElement.textContent = character;
+				lineElement.append(characterElement);
+			}
+
+			fragment.append(lineElement);
+		}
+
+		root.replaceChildren(fragment);
+		root.dataset.heroNameEnhanced = 'true';
+	};
+
 	const startMagnetic = () => {
 		const root = document.getElementById('hero-heading');
 		if (!(root instanceof HTMLElement)) return;
@@ -443,6 +461,11 @@ const folderStuff: readonly FolderStuffCard[] = [
 	};
 
 	const boot = () => {
+		const nameRoot = document.getElementById('hero-heading');
+		if (nameRoot instanceof HTMLElement) {
+			enhanceHeroName(nameRoot);
+		}
+
 		initHeroIntro(() => {
 			initHeroPolaroids();
 			startMagnetic();

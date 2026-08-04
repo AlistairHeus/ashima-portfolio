@@ -5,6 +5,7 @@
  */
 import Chip from '../Chip.astro';
 import ProjectFolder from '../ProjectFolder.astro';
+import SectionHeading from '../SectionHeading.astro';
 import { getCaseStudyById } from '../../data/case-studies';
 import type { WorkProject } from '../../data/work';
 
@@ -31,25 +32,31 @@ const canCarousel = navProjects.length >= 2 && initialLeft && initialRight;
 const initialOffset = navProjects.length >= 2 ? navProjects.length - 1 : 0;
 
 const arrowBtnClass =
-	'inline-flex items-center justify-center border-0 bg-transparent p-0 no-underline transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-default disabled:opacity-40';
+	'inline-flex items-center justify-center border-0 bg-transparent p-0 text-heading no-underline transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-default disabled:opacity-40';
 ---
 
 {
 	canCarousel && (
 		<nav
 			class="case-study-nav mx-auto mt-20 w-full max-w-[90rem] px-[clamp(1rem,3vw,2rem)] pb-16 md:mt-28 md:pb-24"
-			aria-label="More projects"
+			aria-labelledby="case-study-nav-heading"
 			data-case-study-nav
 			data-nav-projects={JSON.stringify(navProjects)}
 			data-nav-offset={String(initialOffset)}
 		>
+			<SectionHeading
+				id="case-study-nav-heading"
+				title="More projects"
+				class="mx-auto max-w-[75rem]"
+			/>
+
 			{/*
 			  Desktop: 4 columns × 2 rows
 			  Row 1 — arrow | folder | folder | arrow
 			  Row 2 —       | copy   | copy   |
 			*/}
 			<div
-				class="grid grid-cols-1 gap-y-6 md:grid-cols-[2.75rem_minmax(0,1fr)_minmax(0,1fr)_2.75rem] md:items-center md:gap-x-8 md:gap-y-6 lg:gap-x-12 xl:gap-x-16"
+				class="case-study-nav__stage mt-10 grid grid-cols-1 gap-y-6 overflow-x-clip md:mt-14 md:grid-cols-[2.75rem_minmax(0,1fr)_minmax(0,1fr)_2.75rem] md:items-center md:gap-x-8 md:gap-y-6 lg:gap-x-12 xl:gap-x-16"
 			>
 				<button
 					type="button"
@@ -57,14 +64,10 @@ const arrowBtnClass =
 					data-nav-dir="-1"
 					aria-label="Show previous projects"
 				>
-					<img
-						src="/icons/arrow-left.svg"
-						alt=""
-						width="59"
-						height="64"
-						class="h-11 w-auto rotate-180 lg:h-12"
+					<span
+						class="case-study-nav__arrow case-study-nav__arrow--prev"
 						aria-hidden="true"
-					/>
+					></span>
 				</button>
 
 				{/* Left slot */}
@@ -133,19 +136,48 @@ const arrowBtnClass =
 					data-nav-dir="1"
 					aria-label="Show next projects"
 				>
-					<img
-						src="/icons/arrow-right.svg"
-						alt=""
-						width="59"
-						height="64"
-						class="h-11 w-auto lg:h-12"
+					<span
+						class="case-study-nav__arrow case-study-nav__arrow--next"
 						aria-hidden="true"
-					/>
+					></span>
 				</button>
 			</div>
 		</nav>
 	)
 }
+
+<style>
+	.case-study-nav__arrow {
+		display: block;
+		width: 2.75rem;
+		height: 3rem;
+		background-color: currentColor;
+		-webkit-mask-size: contain;
+		mask-size: contain;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-position: center;
+		mask-position: center;
+	}
+
+	.case-study-nav__arrow--prev {
+		-webkit-mask-image: url('/icons/arrow-left.svg');
+		mask-image: url('/icons/arrow-left.svg');
+		transform: rotate(180deg);
+	}
+
+	.case-study-nav__arrow--next {
+		-webkit-mask-image: url('/icons/arrow-right.svg');
+		mask-image: url('/icons/arrow-right.svg');
+	}
+
+	@media (width >= 64rem) {
+		.case-study-nav__arrow {
+			width: 3rem;
+			height: 3.25rem;
+		}
+	}
+</style>
 
 <script>
 	import { initCaseStudyNav } from '../../scripts/case-study-nav';
