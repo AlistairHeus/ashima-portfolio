@@ -12,7 +12,21 @@ interface NavProject {
 	readonly imageAlt: string;
 	readonly chips: readonly string[];
 	readonly href?: string;
+	readonly accentColor?: string;
 }
+
+/**
+ * Apply project accent CSS vars on a folder root (hover recolor).
+ */
+const paintAccent = (folderRoot: HTMLElement, accentColor?: string): void => {
+	if (accentColor) {
+		folderRoot.style.setProperty('--pf-accent', accentColor);
+		folderRoot.dataset.hasAccent = 'true';
+		return;
+	}
+	folderRoot.style.removeProperty('--pf-accent');
+	delete folderRoot.dataset.hasAccent;
+};
 
 /**
  * Fill one carousel slot (folder + copy) from project data.
@@ -26,6 +40,11 @@ const paintSlot = (
 	const copy = root.querySelector(`[data-nav-copy="${slotIndex}"]`);
 	if (!(folderWrap instanceof HTMLElement) || !(copy instanceof HTMLElement)) {
 		return;
+	}
+
+	const folderRoot = folderWrap.querySelector('[data-project-folder]');
+	if (folderRoot instanceof HTMLElement) {
+		paintAccent(folderRoot, project.accentColor);
 	}
 
 	const link = folderWrap.querySelector('a.project-folder, .project-folder');

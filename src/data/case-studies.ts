@@ -64,6 +64,11 @@ export interface CaseStudy {
 	 */
 	readonly heroBandColor?: string;
 	/**
+	 * Folder chrome accent on Work grid / case-study nav hover.
+	 * Independent of `heroBandColor` so catalogue cards can diverge from the landing band.
+	 */
+	readonly folderColor?: string;
+	/**
 	 * When false, the study stays in data but is omitted from routes and catalogues.
 	 * Defaults to published when omitted.
 	 */
@@ -618,6 +623,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		},
 		/** Soft rose — Figma Project 01 hero band */
 		heroBandColor: '#E7C7CB',
+		folderColor: '#E7C7CB',
 		body: 'air-india',
 		airIndia: {
 			brandIdentity: {
@@ -887,7 +893,8 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			src: '/images/case-studies/himalayan/feature.png',
 			alt: 'Cheraw Bamboo Dance open book spread from The Celebration Map chapter',
 		},
-		heroBandColor: DEFAULT_CASE_STUDY_BAND,
+		heroBandColor: '#DDC8D0',
+		folderColor: '#DDC8D0',
 		body: 'gallery',
 	},
 	{
@@ -928,8 +935,8 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 				className: 'absolute right-[1%] bottom-[1%] w-[59%] max-w-none',
 			},
 		],
-		/** #9C9873 @ 10% over canvas ≈ warm olive wash */
-		heroBandColor: '#f6f1eb',
+		heroBandColor: '',
+		folderColor: '#006c65',
 		body: 'mythila',
 		mythila: {
 			tagline: [
@@ -1019,6 +1026,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		},
 		/** Figma Project 08 hero band */
 		heroBandColor: '#d5c2da',
+		folderColor: '#d5c2da',
 		body: 'vivan',
 		vivan: {
 			socialPhones: {
@@ -1081,6 +1089,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		},
 		/** Figma Project 02 hero band */
 		heroBandColor: '#bcceb8',
+		folderColor: '#bcceb8',
 		body: 'igl',
 		igl: {
 			brandToday: {
@@ -1377,8 +1386,8 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			src: '/images/case-studies/convergence/hero.png',
 			alt: 'Open Convergence book spread with bold typography on an olive field',
 		},
-		/** #D9D9D9 @ 60% over canvas ≈ cool grey wash */
-		heroBandColor: '#e5e2e0',
+		heroBandColor: '#C1BAA8',
+		folderColor: '#A99A78',
 		body: 'convergence',
 		convergence: {
 			cover: {
@@ -1454,6 +1463,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		},
 		/** Figma Project 04 hero band */
 		heroBandColor: '#f1cdc1',
+		folderColor: '#f1cdc1',
 		body: 'akshar-chitra',
 		aksharChitra: {
 			typecraft: {
@@ -2079,7 +2089,8 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			src: '/images/case-studies/way-of-the-witch/hero.png',
 			alt: 'Way of the Witch hardcover with gold foil lettering on a textured surface',
 		},
-		heroBandColor: '#e4e0d7',
+		heroBandColor: '#CCC094',
+		folderColor: '#CCC094',
 		body: 'way-of-the-witch',
 		witch: {
 			brief: {
@@ -2162,6 +2173,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			alt: 'Woman in bridal attire braiding a girl’s hair by warm lamp light',
 		},
 		heroBandColor: '#eed8c2',
+		folderColor: '#F9D7A9',
 		body: 'maahi',
 		maahi: {
 			drivers: {
@@ -2270,6 +2282,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		},
 		/** Mint wash from Figma Project 6 hero band */
 		heroBandColor: '#a4d4c6',
+		folderColor: '#a4d4c6',
 		published: false,
 		body: 'reconnect',
 		reconnect: {

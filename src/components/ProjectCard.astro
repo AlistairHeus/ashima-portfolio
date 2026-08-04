@@ -5,6 +5,7 @@
  */
 import Chip from './Chip.astro';
 import ProjectFolder from './ProjectFolder.astro';
+import { getCaseStudyById } from '../data/case-studies';
 import type { WorkProject } from '../data/work';
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
 
 const { project, align = 'start', class: className } = Astro.props;
 const isCentered = align === 'center';
+const accentColor = getCaseStudyById(project.id)?.folderColor;
 ---
 
 <article class:list={['project-card group/card flex w-full flex-col', className]}>
@@ -25,6 +27,7 @@ const isCentered = align === 'center';
 		imageAlt={project.imageAlt}
 		linkLabel={project.title}
 		href={project.href}
+		accentColor={accentColor}
 		class:list={['max-w-none', isCentered && 'mx-auto']}
 	/>
 

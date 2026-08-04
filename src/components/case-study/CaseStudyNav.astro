@@ -5,18 +5,30 @@
  */
 import Chip from '../Chip.astro';
 import ProjectFolder from '../ProjectFolder.astro';
+import { getCaseStudyById } from '../../data/case-studies';
 import type { WorkProject } from '../../data/work';
 
 interface Props {
 	readonly projects: readonly WorkProject[];
 }
 
+interface NavProject extends WorkProject {
+	readonly accentColor?: string;
+}
+
 const { projects } = Astro.props;
+
+const navProjects: readonly NavProject[] = projects.map((project) => ({
+	...project,
+	accentColor: getCaseStudyById(project.id)?.folderColor,
+}));
+
 /** Start on circular neighbors of the current page: [previous, next]. */
-const initialLeft = projects.length >= 2 ? projects[projects.length - 1] : projects[0];
-const initialRight = projects[0];
-const canCarousel = projects.length >= 2 && initialLeft && initialRight;
-const initialOffset = projects.length >= 2 ? projects.length - 1 : 0;
+const initialLeft =
+	navProjects.length >= 2 ? navProjects[navProjects.length - 1] : navProjects[0];
+const initialRight = navProjects[0];
+const canCarousel = navProjects.length >= 2 && initialLeft && initialRight;
+const initialOffset = navProjects.length >= 2 ? navProjects.length - 1 : 0;
 
 const arrowBtnClass =
 	'inline-flex items-center justify-center border-0 bg-transparent p-0 no-underline transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-default disabled:opacity-40';
@@ -28,7 +40,7 @@ const arrowBtnClass =
 			class="case-study-nav mx-auto mt-20 w-full max-w-[90rem] px-[clamp(1rem,3vw,2rem)] pb-16 md:mt-28 md:pb-24"
 			aria-label="More projects"
 			data-case-study-nav
-			data-nav-projects={JSON.stringify(projects)}
+			data-nav-projects={JSON.stringify(navProjects)}
 			data-nav-offset={String(initialOffset)}
 		>
 			{/*
@@ -63,6 +75,7 @@ const arrowBtnClass =
 						imageAlt={initialLeft.imageAlt}
 						linkLabel={initialLeft.title}
 						href={initialLeft.href}
+						accentColor={initialLeft.accentColor}
 						showNumber={false}
 						class="mx-auto max-w-none"
 					/>
@@ -92,6 +105,7 @@ const arrowBtnClass =
 						imageAlt={initialRight.imageAlt}
 						linkLabel={initialRight.title}
 						href={initialRight.href}
+						accentColor={initialRight.accentColor}
 						showNumber={false}
 						class="mx-auto max-w-none"
 					/>
