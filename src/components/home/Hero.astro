@@ -369,7 +369,7 @@ const folderStuff: readonly FolderStuffCard[] = [
 		font-weight: 100;
 		font-variation-settings: 'wght' 100;
 		text-align: center;
-		will-change: transform, font-variation-settings;
+		will-change: transform, font-variation-settings, opacity;
 	}
 
 	.hero-polaroid {
@@ -395,11 +395,48 @@ const folderStuff: readonly FolderStuffCard[] = [
 		will-change: opacity;
 		opacity: 0;
 	}
+
+	/*
+	  Hide intro targets until JS takes over (avoids a hard pop-in).
+	  Reduced-motion skips the pending state via the inline bootstrap.
+	*/
+	@media (prefers-reduced-motion: no-preference) {
+		.hero[data-hero-intro='pending'] .hero-name-char,
+		.hero[data-hero-intro='pending'] .hero-subtitle-text,
+		.hero[data-hero-intro='pending'] .hero-mobile-subtitle,
+		.hero[data-hero-intro='pending'] .hero-polaroid,
+		.hero[data-hero-intro='running'] .hero-name-char,
+		.hero[data-hero-intro='running'] .hero-subtitle-text,
+		.hero[data-hero-intro='running'] .hero-mobile-subtitle,
+		.hero[data-hero-intro='running'] .hero-polaroid {
+			opacity: 0;
+		}
+	}
 </style>
 
+<script is:inline>
+	(() => {
+		const hero = document.querySelector('[data-hero]');
+		if (!hero) return;
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			hero.setAttribute('data-hero-intro', 'done');
+			return;
+		}
+		hero.setAttribute('data-hero-intro', 'pending');
+	})();
+</script>
+
 <script>
+	import { initHeroIntro } from '../../scripts/hero-intro';
 	import { initHeroPolaroids } from '../../scripts/hero-polaroids';
-	initHeroPolaroids();
+
+	const boot = () => {
+		initHeroIntro(() => {
+			initHeroPolaroids();
+		});
+	};
+
+	void Promise.all([document.fonts?.ready ?? Promise.resolve()]).then(boot);
 </script>
 
 <script
@@ -415,8 +452,10 @@ const folderStuff: readonly FolderStuffCard[] = [
 		 * Magnetic name interaction (desktop).
 		 * Soft exponential easing + mouse damping; char widths locked at bold
 		 * so variable weight doesn't reflow and jitter the line.
+		 * Waits for the hero intro so transforms don't fight the entry timeline.
 		 */
 		const root = document.getElementById('hero-heading');
+		const hero = document.querySelector('[data-hero]');
 		if (!(root instanceof HTMLElement)) return;
 
 		const prefersReduced = window.matchMedia(
@@ -424,6 +463,7 @@ const folderStuff: readonly FolderStuffCard[] = [
 		).matches;
 		if (prefersReduced) return;
 
+		const startMagnetic = () => {
 		const chars = Array.from(root.querySelectorAll('[data-hero-char]'));
 		const count = chars.length;
 		if (count === 0) return;
@@ -450,6 +490,9 @@ const folderStuff: readonly FolderStuffCard[] = [
 
 		/** Freeze each glyph's advance at bold width to stop reflow jitter. */
 		const lockCharWidths = () => {
+			// Intro already locked widths; only re-measure if a char lost its box.
+			const needsLock = chars.some((el) => !el.style.width);
+			if (!needsLock) return;
 			for (const el of chars) {
 				el.style.fontWeight = String(weightMax);
 				el.style.fontVariationSettings = `'wght' ${weightMax}`;
@@ -644,5 +687,12 @@ const folderStuff: readonly FolderStuffCard[] = [
 		root.addEventListener('mousemove', onMove);
 		root.addEventListener('mouseleave', onLeave);
 		window.addEventListener('resize', onResize);
+		};
+
+		if (hero?.getAttribute('data-hero-intro') === 'done') {
+			startMagnetic();
+		} else {
+			hero?.addEventListener('herointrodone', startMagnetic, { once: true });
+		}
 	})();
 </script>
