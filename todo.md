@@ -3,8 +3,9 @@ ToDo:
 
 1. Hero:
 
-Add two polaroids, group sun logo with petrol project. 
-vivan is grouped with air india???
+-> Add two polaroids, group sun logo with petrol project. 
+
+-> vivan is grouped with air india???
 check new projects and make sure inclusion.
 entry animation for text.
 

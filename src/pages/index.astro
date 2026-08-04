@@ -3,11 +3,44 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/home/Hero.astro';
 import FeaturedCaseStudies from '../components/home/FeaturedCaseStudies.astro';
 import OtherProjects from '../components/home/OtherProjects.astro';
+
+const siteUrl = 'https://www.ashimakaushik.in/';
+const description =
+	'Portfolio of Ashima Kaushik — visual communication design through research, strategy, typography and storytelling.';
+
+const jsonLd = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'WebSite',
+		name: 'Ashima Kaushik',
+		url: siteUrl,
+		description,
+		inLanguage: 'en',
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'Person',
+		name: 'Ashima Kaushik',
+		jobTitle: 'Visual Communication Designer',
+		url: siteUrl,
+		email: 'ashimakaushik.design@gmail.com',
+		address: {
+			'@type': 'PostalAddress',
+			addressCountry: 'IN',
+		},
+		sameAs: [
+			'https://www.linkedin.com/in/ashimakaushik17',
+			'https://www.behance.net/ashimakaushik',
+		],
+	},
+];
 ---
 
 <Layout
 	title="Ashima Kaushik — Visual Communication Designer"
-	description="Portfolio of Ashima Kaushik — visual communication design through research, strategy, typography and storytelling."
+	description={description}
+	image="/icons/web-app-manifest-512x512.png"
+	jsonLd={jsonLd}
 	currentPath="/"
 >
 	<main>

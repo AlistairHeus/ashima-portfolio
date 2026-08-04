@@ -6,6 +6,17 @@ import Footer from '../components/Footer.astro';
 interface Props {
 	readonly title?: string;
 	readonly description?: string;
+	/**
+	 * Absolute URL or site-root path for Open Graph / Twitter share image.
+	 * Defaults to the web app manifest icon.
+	 */
+	readonly image?: string;
+	/** Open Graph type. Defaults to website. */
+	readonly ogType?: 'website' | 'article';
+	/** Optional robots directive (e.g. noindex, nofollow). */
+	readonly robots?: string;
+	/** JSON-LD object or list of objects injected as application/ld+json. */
+	readonly jsonLd?: Record<string, unknown> | readonly Record<string, unknown>[];
 	/** Path used to highlight the active nav item. Defaults to the current URL. */
 	readonly currentPath?: string;
 	/** Hide the shared navbar (e.g. rare standalone surfaces). */
@@ -14,25 +25,62 @@ interface Props {
 	readonly showFooter?: boolean;
 }
 
+const DEFAULT_OG_IMAGE = '/icons/web-app-manifest-512x512.png';
+
 const {
 	title = 'Ashima Kaushik',
 	description = "Ashima Kaushik's portfolio — visual communication design.",
+	image = DEFAULT_OG_IMAGE,
+	ogType = 'website',
+	robots,
+	jsonLd,
 	currentPath = Astro.url.pathname,
 	showNavbar = true,
 	showFooter = true,
 } = Astro.props;
+
+const site = Astro.site ?? new URL('https://www.ashimakaushik.in');
+const canonicalURL = new URL(Astro.url.pathname, site);
+const absoluteImage = image.startsWith('http')
+	? image
+	: new URL(image, site).href;
+const jsonLdBlocks = jsonLd
+	? Array.isArray(jsonLd)
+		? jsonLd
+		: [jsonLd]
+	: [];
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
+		<link rel="canonical" href={canonicalURL} />
 		<meta name="description" content={description} />
+		{robots && <meta name="robots" content={robots} />}
 		<title>{title}</title>
+
+		<meta property="og:type" content={ogType} />
+		<meta property="og:site_name" content="Ashima Kaushik" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:image" content={absoluteImage} />
+		<meta property="og:locale" content="en_IN" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={absoluteImage} />
+
+		{
+			jsonLdBlocks.map((block) => (
+				<script type="application/ld+json" set:html={JSON.stringify(block)} />
+			))
+		}
 	</head>
 	<body>
 		<div class="page flex min-h-screen flex-col">

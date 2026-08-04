@@ -43,11 +43,29 @@ const pageTitle = `${study.title} — Ashima Kaushik`;
 const pageDescription = study.description[0] ?? study.title;
 const body = study.body ?? 'gallery';
 const displayNumber = study.number ?? catalogueProject?.number ?? '';
+const pageUrl = new URL(`/work/${study.id}`, Astro.site).href;
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'CreativeWork',
+	name: study.title,
+	description: pageDescription,
+	url: pageUrl,
+	image: new URL(study.hero.src, Astro.site).href,
+	author: {
+		'@type': 'Person',
+		name: 'Ashima Kaushik',
+		url: 'https://www.ashimakaushik.in/',
+	},
+	keywords: study.skills.join(', '),
+};
 ---
 
 <Layout
 	title={pageTitle}
 	description={pageDescription}
+	image={study.hero.src}
+	ogType="article"
+	jsonLd={jsonLd}
 	currentPath="/work"
 >
 	<main class="bg-canvas">
