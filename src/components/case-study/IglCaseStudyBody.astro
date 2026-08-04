@@ -204,12 +204,12 @@ const {
 		>
 			{
 				/*
-			  Figma (1200 content): title @180, lead @486 (w534), equal ~180 side
-			  margins — not justify-between. Title + lead share a vertical center.
+			  Title left, lead right — wider lead so copy reads in ~3 lines
+			  (not the narrower Figma w534 that wrapped to 5).
 			*/
 			}
 			<div
-				class="flex flex-col gap-4 px-6 md:flex-row md:items-center md:gap-[6.5rem] md:px-[11.25rem]"
+				class="flex flex-col gap-4 px-6 md:flex-row md:items-center md:gap-10 md:px-12 lg:gap-14 lg:px-20"
 			>
 				<h2
 					id="igl-big-insights-title"
@@ -219,7 +219,7 @@ const {
 				</h2>
 
 				<p
-					class="max-w-[33.375rem] font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-ink"
+					class="max-w-[48rem] font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-ink md:flex-1"
 				>
 					{
 						bigInsights.lead.map((part) =>
@@ -350,15 +350,13 @@ const {
 		</div>
 	</section>
 
-	{/* Section 7 — Archetypes (icon + label stack | bullets) */}
-	<section
-		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
-		aria-label="Brand archetypes"
-	>
-		<div class="px-6 md:px-12 lg:px-16">
+	{/* Section 7 — Archetypes: one fit-content block, flex-centered on the page */}
+	<section class="mt-12 w-full md:mt-16" aria-label="Brand archetypes">
+		<div class="flex justify-center px-[clamp(1.25rem,5vw,4rem)]">
 			<div
-				class="grid grid-cols-1 items-center gap-6 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] md:gap-10 lg:gap-16"
+				class="inline-grid grid-cols-1 items-center gap-x-[clamp(2.75rem,6vw,5.5rem)] gap-y-6 md:grid-cols-[auto_minmax(14rem,20rem)]"
 			>
+				{/* Primary: icon + titles | bullets */}
 				<div class="flex items-center gap-4 md:gap-5">
 					<img
 						src={archetypes.primary.icon.src}
@@ -372,12 +370,12 @@ const {
 					/>
 					<div>
 						<p
-							class="font-label text-[clamp(0.875rem,1.1vw,1.125rem)] uppercase tracking-[0.14em] text-[#377c34]"
+							class="whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] uppercase tracking-[0.14em] text-[#377c34]"
 						>
 							{archetypes.primary.label}
 						</p>
 						<h2
-							class="mt-1 font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-bold uppercase leading-tight text-project-green-bright"
+							class="mt-1 whitespace-nowrap font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-bold uppercase leading-tight text-project-green-bright"
 						>
 							{archetypes.primary.name}
 						</h2>
@@ -389,17 +387,14 @@ const {
 				>
 					{archetypes.primary.points.map((point) => <li>{point}</li>)}
 				</ul>
-			</div>
 
-			<div
-				class="my-8 border-t border-outline/45 md:my-10"
-				role="presentation"
-			>
-			</div>
+				<div
+					class="col-span-full my-2 border-t border-outline/45 md:my-4"
+					role="presentation"
+				>
+				</div>
 
-			<div
-				class="grid grid-cols-1 items-center gap-6 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] md:gap-10 lg:gap-16"
-			>
+				{/* Secondary — same column tracks as primary */}
 				<div class="flex items-center gap-4 md:gap-5">
 					<img
 						src={archetypes.secondary.icon.src}
@@ -413,12 +408,12 @@ const {
 					/>
 					<div>
 						<p
-							class="font-label text-[clamp(0.875rem,1.1vw,1.125rem)] uppercase tracking-[0.14em] text-[#377c34]"
+							class="whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] uppercase tracking-[0.14em] text-[#377c34]"
 						>
 							{archetypes.secondary.label}
 						</p>
 						<h2
-							class="mt-1 font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-bold uppercase leading-tight text-project-green-bright"
+							class="mt-1 whitespace-nowrap font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-bold uppercase leading-tight text-project-green-bright"
 						>
 							{archetypes.secondary.name}
 						</h2>
@@ -552,72 +547,17 @@ const {
 			</div>
 		</div>
 
-		<div
-			class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pt-10 pb-4 md:pt-12"
-		>
-			<div
-				class="grid grid-cols-1 items-start gap-8 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_minmax(12rem,22rem)] md:items-center md:gap-6 lg:gap-8"
-			>
-				<div class="flex flex-col items-center text-center">
-					<p
-						class="font-label text-[clamp(0.875rem,1.1vw,1.25rem)] uppercase tracking-[0.14em] text-project-green"
-					>
-						{finalDirection.beforeLabel}
-					</p>
-					<figure class="m-0 mt-3 w-full max-w-[21rem]">
-						<img
-							src={finalDirection.before.src}
-							alt={finalDirection.before.alt}
-							class="mx-auto block h-auto w-full"
-							width="339"
-							height="311"
-							loading="lazy"
-							decoding="async"
-						/>
-					</figure>
-				</div>
-
-				<p
-					class="hidden self-center text-center font-display text-[clamp(2rem,4vw,3.5rem)] leading-none text-project-green md:block"
-					aria-hidden="true"
-				>
-					→
-				</p>
-
-				<div class="flex flex-col items-center text-center">
-					<p
-						class="font-label text-[clamp(0.875rem,1.1vw,1.25rem)] uppercase tracking-[0.14em] text-project-green"
-					>
-						{finalDirection.afterLabel}
-					</p>
-					<figure class="m-0 mt-3 w-full max-w-[22rem]">
-						<img
-							src={finalDirection.after.src}
-							alt={finalDirection.after.alt}
-							class="mx-auto block h-auto w-full"
-							width="378"
-							height="332"
-							loading="lazy"
-							decoding="async"
-						/>
-					</figure>
-				</div>
-
-				<figure
-					class="m-0 mx-auto w-full max-w-[22rem] self-center md:mx-0 md:justify-self-end"
-				>
-					<img
-						src={finalDirection.sticky.src}
-						alt={finalDirection.sticky.alt}
-						class="block h-auto w-full"
-						width="379"
-						height="239"
-						loading="lazy"
-						decoding="async"
-					/>
-				</figure>
-			</div>
-		</div>
+		<figure class="m-0 mx-auto w-full bg-white">
+			<img
+				src={finalDirection.comparison.src}
+				alt={finalDirection.comparison.alt}
+				class="mx-auto block h-auto w-full "
+				width="1200"
+				height="400"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
 	</section>
 
 	{/* Section 14 — Brand Guidelines closing */}
@@ -652,12 +592,6 @@ const {
 					class="mt-6 font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-medium uppercase leading-tight text-project-green-bright"
 				>
 					{closing.brandIdea}
-				</p>
-
-				<p
-					class="mt-6 font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-ink"
-				>
-					{closing.followUp}
 				</p>
 			</div>
 

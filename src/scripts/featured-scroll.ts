@@ -32,6 +32,12 @@ export const initFeaturedScroll = (): void => {
 	const links = Array.from(
 		root.querySelectorAll<HTMLAnchorElement>('[data-featured-link]'),
 	);
+	const scrollHint = root.querySelector<HTMLElement>(
+		'[data-featured-scroll-hint]',
+	);
+	const otherProjects = document.querySelector<HTMLElement>(
+		'[data-other-projects]',
+	);
 	const count = cards.length;
 	if (!track || count === 0) return;
 
@@ -136,8 +142,23 @@ export const initFeaturedScroll = (): void => {
 		return Math.min(1, Math.max(0, -rect.top / scrollable));
 	};
 
+	/**
+	 * Fade the scroll cue once Other Projects enters the viewport
+	 * (or the featured track has fully played out). Restores on scroll back.
+	 */
+	const updateScrollHint = (): void => {
+		if (!scrollHint) return;
+		const pastTrack = getProgress() >= 0.98;
+		const otherEntering = otherProjects
+			? otherProjects.getBoundingClientRect().top < window.innerHeight * 0.92
+			: pastTrack;
+		const shouldHide = pastTrack || otherEntering;
+		scrollHint.dataset.hidden = shouldHide ? 'true' : 'false';
+	};
+
 	const onScroll = (): void => {
 		applyProgress(getProgress());
+		updateScrollHint();
 	};
 
 	/** Jump scroll so folder `index` is fully stacked. */

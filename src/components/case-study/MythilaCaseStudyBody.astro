@@ -144,68 +144,71 @@ const { content } = Astro.props;
 		</div>
 	</section>
 
-	{/* Font features */}
-	<section
-		class="mx-auto mt-16 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-20"
-		aria-label="Features of the font"
-	>
-		<figure class="m-0 overflow-hidden">
-			<img
-				src={content.features.src}
-				alt={content.features.alt}
-				class="h-auto w-full"
-				width="1200"
-				height="849"
-				loading="lazy"
-				decoding="async"
-			/>
-		</figure>
-	</section>
+	{/*
+	  Features sit above; applications.png tucks under their bottom edge and
+	  carries the enlarge-specimen gallery (+ purchase) — bridging like Figma.
+	*/}
+	<div class="relative">
+		<section
+			class="relative z-[1] mx-auto mt-16 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-20"
+			aria-label="Features of the font"
+		>
+			<figure class="m-0 overflow-hidden">
+				<img
+					src={content.features.src}
+					alt={content.features.alt}
+					class="h-auto w-full"
+					width="1200"
+					height="849"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+		</section>
 
-	{/* Applications gallery */}
-	<section
-		class="mx-auto mt-16 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-20"
-		aria-label="Type in use"
-	>
-		<MythilaApplications images={content.applications} />
-	</section>
+		<div
+			class="relative -mt-[clamp(3.5rem,10vw,8rem)]"
+		>
+			{
+				content.applicationsBgSrc && (
+					<img
+						src={content.applicationsBgSrc}
+						alt=""
+						aria-hidden="true"
+						class="pointer-events-none absolute inset-0 z-0 h-full w-full select-none object-cover object-top opacity-20"
+						width="1137"
+						height="782"
+						loading="lazy"
+						decoding="async"
+					/>
+				)
+			}
 
-	{/* Purchase / type tester */}
-	<section
-		class="mx-auto mt-10 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pb-4 md:mt-14"
-		aria-label="Purchase license"
-	>
-		{
-			content.purchaseHref ? (
+			{/* Applications gallery */}
+			<section
+				class="relative z-[1] mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pt-[clamp(3.5rem,10vw,8rem)] md:pt-[clamp(4.5rem,12vw,10rem)]"
+				aria-label="Type in use"
+			>
+				<MythilaApplications images={content.applications} />
+			</section>
+		</div>
+	</div>
+
+	{
+		content.purchaseHref && (
+			<section
+				class="mx-auto mt-12 flex max-w-[75rem] justify-center px-[clamp(1rem,3vw,2rem)] pb-6 md:mt-16 md:pb-8"
+				aria-label="Purchase license"
+			>
 				<a
 					href={content.purchaseHref}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="block no-underline outline-offset-4 transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-primary"
+					class="inline-flex items-center justify-center bg-[#C76E3A] px-[clamp(1.75rem,4vw,3rem)] py-[clamp(0.85rem,1.8vw,1.15rem)] text-[clamp(0.8rem,1.4vw,1.05rem)] font-medium tracking-[0.06em] text-white no-underline uppercase shadow-[0_4px_14px_rgb(199_110_58/0.28)] outline-offset-4 transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-px hover:bg-[#552001] hover:shadow-[0_6px_18px_rgb(85_32_1/0.32)] focus-visible:outline-2 focus-visible:outline-[#C76E3A]"
 				>
-					<img
-						src={content.purchase.src}
-						alt={content.purchase.alt}
-						class="h-auto w-full"
-						width="1499"
-						height="671"
-						loading="lazy"
-						decoding="async"
-					/>
+					Purchase license here
 				</a>
-			) : (
-				<figure class="m-0 overflow-hidden">
-					<img
-						src={content.purchase.src}
-						alt={content.purchase.alt}
-						class="h-auto w-full"
-						width="1499"
-						height="671"
-						loading="lazy"
-						decoding="async"
-					/>
-				</figure>
-			)
-		}
-	</section>
+			</section>
+		)
+	}
 </div>

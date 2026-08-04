@@ -22,7 +22,7 @@ export const caseStudies: readonly WorkProject[] = [
 		title: 'Air India: Brand Extension',
 		description:
 			"Scaling Air India's new visual identity across passenger touchpoints to create a consistent experience across 83+ airports.",
-		imageSrc: '/images/work/01-air-india.png',
+		imageSrc: '/images/case-studies/air-india/air-india-thumbnail.jpg',
 		imageAlt: 'Air India brand extension touchpoint collage',
 		chips: ['Brand Systems', 'Brand Experience', 'Print Design'],
 		href: '/work/air-india-brand',

@@ -1,0 +1,204 @@
+---
+/**
+ * About me + what shapes my work — scrapbook panel between Hero and Featured.
+ * Figma 458:1260. Assets: torn-page, torn-description (avatar baked in), binder-clip.
+ */
+
+interface Pillar {
+	readonly title: string;
+	readonly body: string;
+	readonly bg: string;
+	readonly titleColor: string;
+	readonly bodyColor: string;
+	readonly rotate: number;
+	readonly clipRotate: number;
+}
+
+const aboutQuoteLine1 = 'I believe in creating thoughtful visual systems through';
+const aboutQuoteLine2 = 'research, strategy, typography and storytelling.';
+
+const pillars: readonly Pillar[] = [
+	{
+		title: 'Observe',
+		body: 'Notice people, places and systems with curiosity.',
+		bg: '#b5a45c',
+		titleColor: '#4a3a06',
+		bodyColor: '#f7e5ae',
+		rotate: -1,
+		clipRotate: 0,
+	},
+	{
+		title: 'Absorb',
+		body: 'Learn through conversations, books, critique and collaboration.',
+		bg: '#c76e3a',
+		titleColor: '#7c340a',
+		bodyColor: '#ffddca',
+		rotate: 1,
+		clipRotate: 1,
+	},
+	{
+		title: 'Collect',
+		body: 'Gather stories, objects and visual ephemera that spark future ideas.',
+		bg: '#b0beca',
+		titleColor: '#3b576e',
+		bodyColor: '#40688b',
+		rotate: 0,
+		clipRotate: 0,
+	},
+	{
+		title: 'Translate',
+		body: 'Turn insights into visual systems that people can understand and use.',
+		bg: '#7e846e',
+		titleColor: '#2e3716',
+		bodyColor: '#dee0d6',
+		rotate: -1,
+		clipRotate: -1,
+	},
+];
+---
+
+<section class="about-me relative z-20 overflow-x-clip" aria-label="About me" data-about-me>
+	{/* Full scrapbook sheet — bottom tear extends over Featured */}
+	<div class="about-me__sheet pointer-events-none absolute inset-x-0 top-0 -z-10 w-full select-none">
+		<img
+			src="/images/home/torn-page.png"
+			alt=""
+			aria-hidden="true"
+			class="about-me__sheet-img absolute inset-0 size-full object-fill [filter:drop-shadow(0_4px_12px_rgb(0_0_0_/0.1))_drop-shadow(0_-4px_12px_rgb(0_0_0_/_0.1))]"
+			decoding="async"
+		/>
+		{/* Paper grain — masked to the torn silhouette so tears stay clean */}
+		<div class="about-me__texture absolute inset-0" aria-hidden="true"></div>
+	</div>
+
+	<div
+		class="relative z-10 mx-auto flex w-full max-w-[75rem] flex-col items-center px-[clamp(1rem,4vw,2.5rem)] pt-[clamp(4.5rem,10vw,7.5rem)] pb-[clamp(3.5rem,8vw,5.5rem)]"
+	>
+		<h2
+			class="font-display text-center text-[clamp(1rem,1.2vw+0.65rem,1.5rem)] font-normal uppercase leading-none tracking-[0.18em] text-[#2e2f38]"
+		>
+			About me
+		</h2>
+
+		{/*
+		  torn-description.png already composites the pin badge + torn strip.
+		  Quote sits on the paper area to the right of the badge.
+		*/}
+		<figure class="about-me__blurb relative  w-full max-w-[50rem]">
+			<img
+				src="/images/home/torn-description.png"
+				alt=""
+				aria-hidden="true"
+				class="pointer-events-none relative z-0 w-full select-none drop-shadow-[0_2px_2px_rgb(0_0_0_/_0.2)]"
+				decoding="async"
+			/>
+			<figcaption
+				class="about-me__quote absolute ml-8 pb-4 z-10 font-label text-[clamp(0.8125rem,1.1vw+0.45rem,1.25rem)] leading-[1.35] text-[#2e2f38]"
+			>
+				{aboutQuoteLine1}
+				<br />
+				{aboutQuoteLine2}
+			</figcaption>
+		</figure>
+
+		<h2
+			class="mt-[clamp(2.75rem,6vw,4.5rem)] font-display text-center text-[clamp(1rem,1.2vw+0.65rem,1.5rem)] font-normal uppercase leading-none tracking-[0.18em] text-[#2e2f38]"
+		>
+			What shapes my work
+		</h2>
+
+		<ul
+			class="mt-[clamp(2rem,4.5vw,1.25rem)] grid w-full list-none grid-cols-1 gap-x-[clamp(0.75rem,2vw,1.5rem)] gap-y-10 p-0 sm:grid-cols-2 lg:grid-cols-4"
+		>
+			{
+				pillars.map((pillar) => (
+					<li
+						class="about-me__pillar relative mx-auto w-full max-w-[17.625rem] pt-[2.65rem]"
+						style={`transform: rotate(${pillar.rotate}deg)`}
+					>
+						<img
+							src="/images/home/binder-clip.png"
+							alt=""
+							aria-hidden="true"
+							class="about-me__clip pointer-events-none absolute -top-2 left-1/2 z-20 w-[clamp(3.75rem,8vw,5.75rem)] select-none drop-shadow-[0_4px_4px_rgb(0_0_0_/_0.33)]"
+							style={`transform: translateX(-50%) rotate(${pillar.clipRotate}deg)`}
+							decoding="async"
+						/>
+						<article
+							class="flex min-h-[clamp(10.5rem,22vw,12.375rem)] flex-col items-center justify-center gap-3 px-5 py-6 text-center shadow-[0_4px_4px_rgb(0_0_0_/_0.25)]"
+							style={`background: ${pillar.bg}`}
+						>
+							<h3
+								class="font-display text-[clamp(1rem,1.1vw+0.55rem,1.5rem)] font-normal uppercase leading-none tracking-[0.18em]"
+								style={`color: ${pillar.titleColor}`}
+							>
+								{pillar.title}
+							</h3>
+							<p
+								class="max-w-[16rem] font-display text-[clamp(0.875rem,0.9vw+0.45rem,1.125rem)] leading-snug"
+								style={`color: ${pillar.bodyColor}`}
+							>
+								{pillar.body}
+							</p>
+						</article>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<style>
+	/*
+	  Sheet fills the section and hangs past the bottom so the torn edge
+	  paints over Featured. Negative margin pulls Featured up under the tear.
+	*/
+	.about-me {
+		--about-tear-overlap: clamp(1.75rem, 4.5vw, 3.5rem);
+		min-height: min(72vw, 45rem);
+		margin-bottom: calc(var(--about-tear-overlap) * -1);
+		padding-bottom: var(--about-tear-overlap);
+	}
+
+	.about-me__sheet {
+		height: calc(100% + var(--about-tear-overlap));
+	}
+
+	.about-me__texture {
+		background-image: url('/images/home/paper-texture.jpeg');
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		mix-blend-mode: multiply;
+		opacity: 0.55;
+		-webkit-mask-image: url('/images/home/torn-page.png');
+		mask-image: url('/images/home/torn-page.png');
+		-webkit-mask-size: 100% 100%;
+		mask-size: 100% 100%;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-position: center;
+		mask-position: center;
+	}
+
+	/* Quote sits on the paper band — left clears the baked-in avatar badge */
+	.about-me__quote {
+		top: 50%;
+		left: 30%;
+		right: 5%;
+		transform: translateY(-50%);
+	}
+
+	@media (max-width: 40rem) {
+		.about-me__quote {
+			left: 34%;
+			right: 4%;
+			font-size: clamp(0.75rem, 2.8vw, 0.9375rem);
+			line-height: 1.3;
+		}
+	}
+
+	.about-me__clip {
+		transform-origin: center bottom;
+	}
+</style>

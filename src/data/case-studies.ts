@@ -106,6 +106,11 @@ export interface MythilaCaseStudyContent {
 	readonly workshop: CaseStudyImage;
 	readonly glyphsApp: CaseStudyImage;
 	readonly features: CaseStudyImage;
+	/**
+	 * Character-set specimen sheet behind the enlarge-specimen gallery;
+	 * tucks under the features section above.
+	 */
+	readonly applicationsBgSrc?: string;
 	/** Interactive applications gallery (preview + thumbnails). */
 	readonly applications: readonly CaseStudyImage[];
 	readonly purchase: CaseStudyImage;
@@ -457,7 +462,8 @@ export interface AirIndiaCaseStudyContent {
 		}[];
 	};
 	readonly quote: {
-		readonly text: string;
+		/** Quote lines — fixed wraps match Figma. */
+		readonly text: readonly string[];
 		readonly name: string;
 		readonly role: string;
 		readonly photo: CaseStudyImage;
@@ -565,11 +571,7 @@ export interface IglCaseStudyContent {
 	readonly finalDirection: {
 		readonly title: string;
 		readonly lead: string;
-		readonly beforeLabel: string;
-		readonly afterLabel: string;
-		readonly before: CaseStudyImage;
-		readonly after: CaseStudyImage;
-		readonly sticky: CaseStudyImage;
+		readonly comparison: CaseStudyImage;
 	};
 	/** Closing narrative + guidelines visual. */
 	readonly closing: {
@@ -577,7 +579,6 @@ export interface IglCaseStudyContent {
 		readonly lead: string;
 		readonly subtext: string;
 		readonly brandIdea: string;
-		readonly followUp: string;
 		readonly visual: CaseStudyImage;
 	};
 }
@@ -803,7 +804,11 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 				],
 			},
 			quote: {
-				text: 'The boarding pass design was a key highlight of the brand extension. It sets a solid standard for clarity and brand alignment in our passenger experience.',
+				text: [
+					'The boarding pass design was a key highlight of the',
+					'brand extension. It sets a solid standard for clarity',
+					'and brand alignment in our passenger experience.',
+				],
 				name: 'Campbell Wilson',
 				role: 'CEO, MD of Air India',
 				photo: {
@@ -974,6 +979,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 				src: '/images/case-studies/mythila/features.png',
 				alt: 'Features of the font with character grids and sticky-note callout',
 			},
+			applicationsBgSrc: '/images/case-studies/mythila/applications.png',
 			applications: [
 				{
 					src: '/images/case-studies/mythila/applications/1.png',
@@ -996,7 +1002,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 				src: '/images/case-studies/mythila/purchase.png',
 				alt: 'Purchase license callout with Mythila type specimens at three sizes',
 			},
-			purchaseHref: 'https://www.typecraftinitiative.org/',
+			purchaseHref: 'https://www.typecraftinitiative.org/product-page/mythila-devanagari-display-typeface',
 		},
 	},
 	{
@@ -1336,19 +1342,9 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			finalDirection: {
 				title: 'Arriving at the Right Balance',
 				lead: 'The selected direction focused on refining the existing identity; to balance familiarity with a more contemporary expression because radical shifts weakened brand recall.',
-				beforeLabel: 'Before',
-				afterLabel: 'After',
-				before: {
-					src: '/images/case-studies/igl/final-before.png',
-					alt: 'Existing IGL logo before the rebrand',
-				},
-				after: {
-					src: '/images/case-studies/igl/final-after.png',
-					alt: 'Refined IGL sun and ring mark after the rebrand',
-				},
-				sticky: {
-					src: '/images/case-studies/igl/final-sticky.png',
-					alt: 'Sticky note summarizing refinements: legibility, proportions, cleaner language, adaptability',
+				comparison: {
+					src: '/images/case-studies/igl/before-after-joined.png',
+					alt: 'Before and after IGL logo comparison with sticky note summarizing refinements: legibility, proportions, cleaner language, adaptability',
 				},
 			},
 			closing: {
@@ -1356,8 +1352,6 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 				lead: 'The challenge wasn’t just to design a visual identity, it was to create clarity around what the brand stands for and how it should consistently express itself across every touchpoint.',
 				subtext: 'I approached this by defining a Brand Code, a foundational layer that brings together the brand under one cohesive framework. At the core of this system sits the brand idea:',
 				brandIdea: '“Powering dreams”',
-				followUp:
-					'A simple yet expansive thought that bridges IGL’s functional role as an energy provider with its larger emotional and national relevance. This included articulating the brand’s positioning as a progressive energy leader, values centered on reliability and responsibility, a personality that is confident yet approachable and an ambition to drive growth through innovation and impact.',
 				visual: {
 					src: '/images/case-studies/igl/guidelines-visual.png',
 					alt: 'IGL brand guidelines book open to a spread with logo construction and brand pillars',
@@ -1435,7 +1429,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 	},
 	{
 		id: 'akshar-chitra',
-		category: 'Redefining a Hindi Primer',
+		category: 'Teaching Aid',
 		title: 'Akshar Chitra',
 		client: 'With Typecraft Initiative',
 		description: [
@@ -1476,7 +1470,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 					{
 						text: "Typecraft’s concept of ‘Akshar Chitra’ extends this approach into early education, ",
 					},
-					{ text: 'bridging typography, craft and learning.', bold: true },
+					{ text: 'bridging typography, craft and foundational learning.', bold: true },
 				],
 				logo: {
 					src: '/images/case-studies/akshar-chitra/typecraft-logo.png',
@@ -2178,7 +2172,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		maahi: {
 			drivers: {
 				title: 'Concept Drivers',
-				lead: 'Three ideas shaped the mark — adornment, structure, and ritual — drawn from Jaipur’s architecture and bridal tradition.',
+				lead: 'Three ideas shaped the mark: adornment, structure, and ritual; drawn from Jaipur’s architecture and bridal tradition.',
 				collage: {
 					src: '/images/case-studies/maahi/concept-collage.png',
 					alt: 'Mood collage pairing Spark, Arch, and Veil photography from bridal ritual and Jaipur architecture',

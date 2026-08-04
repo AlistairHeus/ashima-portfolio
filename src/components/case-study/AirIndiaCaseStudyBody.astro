@@ -56,7 +56,7 @@ const roseStat = '#f3c4cb';
 		aria-labelledby="air-india-research-title"
 	>
 		<div
-			class="mx-auto grid max-w-[75rem] grid-cols-1 items-start gap-8 px-[clamp(1rem,3vw,2rem)] py-[clamp(2.5rem,5vw,3.75rem)] md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-10 lg:gap-12"
+			class="mx-auto grid max-w-[75rem] grid-cols-1 items-start gap-8 px-[clamp(1rem,3vw,2rem)] py-[clamp(2.5rem,5vw,3.75rem)] md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:gap-10 lg:grid-cols-[minmax(36rem,1fr)_minmax(0,1.1fr)] lg:gap-12"
 		>
 			<div>
 				<h2
@@ -66,12 +66,12 @@ const roseStat = '#f3c4cb';
 				>
 					{research.title}
 				</h2>
-				<p class="mt-4 max-w-[30.375rem] font-body text-[1.0625rem] leading-[1.4375rem] text-ink">
+				<p class="mt-4 max-w-[34rem] font-body text-[1.0625rem] leading-[1.4375rem] text-ink">
 					{
 						research.body.map((line, index) => (
 							<>
 								{index > 0 ? <br /> : null}
-								{line}
+								<span class="lg:whitespace-nowrap">{line}</span>
 							</>
 						))
 					}
@@ -84,7 +84,7 @@ const roseStat = '#f3c4cb';
 					{research.challengesTitle}
 				</h3>
 				<ul
-					class="mt-4 max-w-[32rem] list-disc space-y-2.5 pl-[1.7rem] font-body text-lg leading-[1.4375rem] tracking-[-0.0225rem] text-ink marker:text-ink"
+					class="mt-4 max-w-[36rem] list-disc space-y-2.5 pl-[1.7rem] font-body text-lg leading-[1.4375rem] tracking-[-0.0225rem] text-ink marker:text-ink"
 				>
 					{
 						research.challenges.map((challenge) => (
@@ -92,7 +92,7 @@ const roseStat = '#f3c4cb';
 								{challenge.map((line, index) => (
 									<>
 										{index > 0 ? <br /> : null}
-										{line}
+										<span class="lg:whitespace-nowrap">{line}</span>
 									</>
 								))}
 							</li>
@@ -181,14 +181,14 @@ const roseStat = '#f3c4cb';
 		aria-labelledby="air-india-reimagining-title"
 	>
 		<div
-			class="relative z-10 mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,4vw,3rem)] md:absolute md:inset-0 md:py-0 md:pt-[clamp(1.5rem,4vw,3rem)]"
+			class="relative z-10 mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,4vw,3rem)] md:absolute md:inset-0 md:py-[clamp(1.5rem,4vw,3rem)]"
 		>
 			<div
 				class="grid grid-cols-1 gap-8 md:h-full md:grid-cols-[minmax(0,1.2fr)_minmax(16rem,22rem)] md:gap-8 lg:gap-12"
 			>
 				<h2
 					id="air-india-reimagining-title"
-					class="type-label-lg whitespace-nowrap mt-5"
+					class="type-label-lg whitespace-nowrap md:self-start"
 					style={`color: ${inkDeep}`}
 				>
 					Reimagining
@@ -196,7 +196,7 @@ const roseStat = '#f3c4cb';
 					the Boarding Pass
 				</h2>
 
-				<ul class="m-0 flex list-none flex-col gap-7 p-0 md:pt-1 mt-5">
+				<ul class="m-0 flex list-none flex-col justify-center gap-7 p-0 -mt-46">
 					{
 						reimagining.painPoints.map((point) => (
 							<li class="grid grid-cols-[4.3rem_1fr] gap-x-3">
@@ -300,7 +300,7 @@ const roseStat = '#f3c4cb';
 				<img
 					src={boardingShowcase.stack.src}
 					alt={boardingShowcase.stack.alt}
-					class="block h-auto w-full"
+					class="block h-auto w-full drop-shadow-[0_8px_20px_rgba(0,0,0,0.22)]"
 					width="487"
 					height="421"
 					loading="lazy"
@@ -332,7 +332,7 @@ const roseStat = '#f3c4cb';
 					<img
 						src={boardingShowcase.reverse.src}
 						alt={boardingShowcase.reverse.alt}
-						class="block h-auto w-full rounded-[10px]"
+						class="block h-auto w-full rounded-[10px] shadow-[0_8px_20px_rgba(0,0,0,0.22)]"
 						width="494"
 						height="204"
 						loading="lazy"
@@ -409,11 +409,11 @@ const roseStat = '#f3c4cb';
 		<div
 			class="mx-auto flex max-w-[75rem] flex-col items-center gap-8 px-[clamp(1rem,3vw,2rem)] py-[clamp(2.5rem,5vw,4rem)] md:flex-row md:items-center md:justify-start md:gap-10 lg:gap-14"
 		>
-			<div class="flex shrink-0 flex-col items-center text-center">
+			<div class="flex w-[8.75rem] shrink-0 flex-col items-center text-center">
 				<img
 					src={quote.photo.src}
 					alt={quote.photo.alt}
-					class="size-[6.9rem] rounded-full border border-[#d0afd5] object-cover"
+					class="mx-auto size-[6.9rem] rounded-full border border-[#d0afd5] object-cover "
 					width="111"
 					height="111"
 					loading="lazy"
@@ -430,19 +430,27 @@ const roseStat = '#f3c4cb';
 				</p>
 			</div>
 
-			<blockquote class="m-0 flex max-w-[45rem] items-start gap-4 md:gap-6">
+			<blockquote class="m-0 flex min-w-0 flex-1 items-center gap-4 md:gap-6">
 				<img
 					src={quote.markSrc}
 					alt=""
-					class="mt-1 w-[5.5rem] shrink-0 opacity-40 md:w-[8.6rem]"
+					class="w-[5.5rem] shrink-0 opacity-40 md:w-[8.6rem]"
 					width="138"
 					height="129"
 					loading="lazy"
 					decoding="async"
 					aria-hidden="true"
 				/>
-				<p class="font-body text-2xl leading-normal tracking-[0.01em] text-ink">
-					{quote.text}
+				{/*
+				  Fixed Figma wraps — each line is nowrap on md+ so the column
+				  width cannot re-break mid-phrase (that caused the ragged wrap).
+				*/}
+				<p class="font-air-india min-w-0 py-5 text-[clamp(1.125rem,2.2vw,1.5rem)] leading-normal tracking-[0.01em] text-ink">
+					{
+						quote.text.map((line) => (
+							<span class="block md:whitespace-nowrap">{line}</span>
+						))
+					}
 				</p>
 			</blockquote>
 		</div>
