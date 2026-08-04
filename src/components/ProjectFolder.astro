@@ -20,6 +20,8 @@ interface Props {
 	readonly href?: string;
 	readonly folderSrc?: string;
 	readonly paperclipSrc?: string;
+	/** Show the tab index number. Defaults to true. */
+	readonly showNumber?: boolean;
 	readonly class?: string;
 }
 
@@ -31,6 +33,7 @@ const {
 	href,
 	folderSrc = '/images/folder-shape.svg',
 	paperclipSrc = '/icons/paperclip.png',
+	showNumber = true,
 	class: className,
 } = Astro.props;
 
@@ -101,13 +104,17 @@ const innerShadowId = `pf-inner-${crypto.randomUUID()}`;
 			</div>
 
 			{/* 2. Index number — Figma 149:564 · Lato Bold 70 · #AAD0F1 */}
-			<p
-				class="absolute top-[1.9%] left-[7.45%] z-[1] w-[18.2%] font-label text-[clamp(2.5rem,8vw,4.375rem)] font-bold leading-none text-primary-soft"
-				style={`filter: url(#${innerShadowId})`}
-				aria-hidden="true"
-			>
-				{number}
-			</p>
+			{
+				showNumber && (
+					<p
+						class="absolute top-[1.9%] left-[7.45%] z-[1] w-[18.2%] font-label text-[clamp(2.5rem,8vw,4.375rem)] font-bold leading-none text-primary-soft"
+						style={`filter: url(#${innerShadowId})`}
+						aria-hidden="true"
+					>
+						{number}
+					</p>
+				)
+			}
 
 			{/*
 			  3. Front flap — Figma 149:565

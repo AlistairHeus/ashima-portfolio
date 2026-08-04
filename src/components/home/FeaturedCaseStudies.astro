@@ -8,6 +8,7 @@
 import Chip from '../Chip.astro';
 import MagneticChars from '../MagneticChars.astro';
 import { caseStudies } from '../../data/work';
+import { getCaseStudyById } from '../../data/case-studies';
 
 interface FolderMeta {
 	readonly folderSrc: string;
@@ -41,13 +42,16 @@ const folderMeta: readonly FolderMeta[] = [
 
 const projects = caseStudies.slice(0, folderMeta.length).map((study, index) => {
 	const folder = folderMeta[index]!;
+	const detail = getCaseStudyById(study.id);
 	return {
 		id: study.id,
 		label: `PROJECT ${index + 1}`,
 		folderSrc: folder.folderSrc,
 		labelColor: folder.labelColor,
 		titleColor: folder.titleColor,
-		title: study.title,
+		/** Case-study page naming: category above, short title below. */
+		category: detail?.category ?? '',
+		title: detail?.title ?? study.title,
 		description: study.description,
 		imageSrc: study.imageSrc,
 		imageAlt: study.imageAlt,
@@ -57,15 +61,22 @@ const projects = caseStudies.slice(0, folderMeta.length).map((study, index) => {
 });
 
 /**
- * Tab hit-areas aligned to each folder SVG tab (viewBox width 1495).
+ * Tab hit-areas + labels aligned to each folder SVG’s flat tab top
+ * (viewBox width 1495 — see folder-{1..4}.svg path geometry).
  * Vertically: tab strip is ~0.8%–6.6% of folder height.
  */
-const tabSlots = [
-	{ left: '1.9%', width: '22.3%' },
-	{ left: '23.8%', width: '23.1%' },
-	{ left: '47.2%', width: '23.2%' },
-	{ left: '70.6%', width: '23.1%' },
+const FOLDER_VB = 1495;
+const tabFlatRanges = [
+	{ start: 28.5, end: 277.863 },
+	{ start: 378.089, end: 627.451 },
+	{ start: 727.672, end: 977.034 },
+	{ start: 1077.26, end: 1326.62 },
 ] as const;
+
+const tabSlots = tabFlatRanges.map(({ start, end }) => ({
+	left: `${(start / FOLDER_VB) * 100}%`,
+	width: `${((end - start) / FOLDER_VB) * 100}%`,
+})) as readonly { readonly left: string; readonly width: string }[];
 
 /** Scroll track height scales with stack depth (one viewport per folder step). */
 const trackHeightVh = Math.max(1, projects.length) * 100;
@@ -132,7 +143,7 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 										style={`pointer-events: ${index === 0 ? 'auto' : 'none'}`}
 										tabindex={index === 0 ? 0 : -1}
 										data-featured-link={project.id}
-										aria-label={`View ${project.title} case study`}
+										aria-label={`View ${project.category ? `${project.category} — ` : ''}${project.title} case study`}
 										aria-hidden={index === 0 ? 'false' : 'true'}
 									>
 										<div class="grid h-full items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12 xl:gap-16">
@@ -162,8 +173,21 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 											</div>
 
 											<div class="min-w-0 px-1 pb-4 lg:px-0 lg:pb-0">
+												{
+													project.category ? (
+														<p
+															class="font-label text-[clamp(0.75rem,1.4vw+0.35rem,1.5rem)] font-light uppercase leading-none tracking-[0.18em]"
+															style={`color: ${project.titleColor}`}
+														>
+															{project.category}
+														</p>
+													) : null
+												}
 												<h3
-													class="font-display cursor-default text-[clamp(1.75rem,3vw+0.5rem,3.5rem)] leading-[1.15] tracking-normal"
+													class:list={[
+														'font-display cursor-default text-[clamp(1.75rem,3vw+0.5rem,3.5rem)] leading-[1.15] tracking-normal',
+														project.category && 'mt-1 md:mt-2',
+													]}
 													style={`color: ${project.titleColor}`}
 													data-magnetic-root
 													data-magnetic-invert

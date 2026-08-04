@@ -195,9 +195,9 @@
 	will-change: transform, font-variation-settings;
 }
 
-/* Bold rest → thin near cursor (case study + featured headings) */
+/* Heavier rest → thin near cursor (featured defaults 700; case study sets --magnetic-rest) */
 [data-magnetic-invert] .magnetic-type__char,
 [data-magnetic-invert] .magnetic-type__space {
-	font-weight: 700;
-	font-variation-settings: 'wght' 700;
+	font-weight: var(--magnetic-rest, 700);
+	font-variation-settings: 'wght' var(--magnetic-rest, 700);
 }

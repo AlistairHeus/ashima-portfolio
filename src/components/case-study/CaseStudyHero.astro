@@ -97,27 +97,45 @@ const useLayers = Boolean(heroLayers && heroLayers.length > 0);
 			<p
 				class="case-study-hero__number font-label text-[clamp(2.5rem,5vw,4rem)] font-light leading-none text-ink"
 				aria-hidden="true"
+				data-cs-intro="number"
 			>
 				{number}
 			</p>
 
-			<p class="type-label-lg mt-5 font-light text-ink md:mt-6">{category}</p>
+			<p
+				class="type-label-lg mt-5 font-light text-ink md:mt-6"
+				data-cs-intro="category"
+			>
+				{category}
+			</p>
 
 			<h1
 				id="case-study-title"
 				class="type-h1 mx-auto mt-3 max-w-[65rem] cursor-default uppercase text-ink md:mt-4"
 				data-magnetic-root
 				data-magnetic-invert
+				data-magnetic-rest="400"
+				style="--magnetic-rest: 400"
 			>
 				<MagneticChars text={title} />
 			</h1>
 
-			{client ? <p class="type-label-lg mt-3 font-normal text-ink md:mt-4">{client}</p> : null}
+			{client ? (
+				<p
+					class="type-label-lg mt-3 font-normal text-ink md:mt-4"
+					data-cs-intro="client"
+				>
+					{client}
+				</p>
+			) : null}
 		</div>
 	</div>
 
 	{/* Hero media spans the band-break split (rows 2–3) */}
-	<div class="case-study-hero__media relative z-[1] col-start-1 row-start-2 row-end-4">
+	<div
+		class="case-study-hero__media relative z-[1] col-start-1 row-start-2 row-end-4"
+		data-cs-intro="media"
+	>
 		<figure class="relative mx-auto m-0 max-w-[75rem] px-[clamp(1rem,3vw,2rem)]">
 			{
 				useLayers ? (
@@ -152,9 +170,3 @@ const useLayers = Boolean(heroLayers && heroLayers.length > 0);
 		</figure>
 	</div>
 </header>
-
-<script>
-	import { initMagneticTypeAll } from '../../scripts/magnetic-type';
-
-	initMagneticTypeAll();
-</script>

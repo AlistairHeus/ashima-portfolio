@@ -18,7 +18,7 @@ import MaahiCaseStudyBody from '../../components/case-study/MaahiCaseStudyBody.a
 import CaseStudyNav from '../../components/case-study/CaseStudyNav.astro';
 import {
 	publishedCaseStudies,
-	getAdjacentProjects,
+	getCaseStudyNavProjects,
 	getCaseStudyById,
 	allWorkProjects,
 } from '../../data/case-studies';
@@ -37,7 +37,7 @@ if (!study) {
 }
 
 const catalogueProject = allWorkProjects.find((project) => project.id === study.id);
-const { previous, next } = getAdjacentProjects(study.id);
+const navProjects = getCaseStudyNavProjects(study.id);
 
 const pageTitle = `${study.title} — Ashima Kaushik`;
 const pageDescription = study.description[0] ?? study.title;
@@ -102,6 +102,6 @@ const jsonLd = {
 			)
 		}
 
-		<CaseStudyNav previous={previous} next={next} />
+		<CaseStudyNav projects={navProjects} />
 	</main>
 </Layout>

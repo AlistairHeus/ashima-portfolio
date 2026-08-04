@@ -22,7 +22,7 @@ const { projects, class: className } = Astro.props;
 >
 	{
 		projects.map((project) => (
-			<li class="min-w-0">
+			<li class="min-w-0" data-work-intro="card">
 				<ProjectCard project={project} />
 			</li>
 		))

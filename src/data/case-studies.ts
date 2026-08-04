@@ -2472,18 +2472,21 @@ export const publishedCaseStudies: readonly CaseStudy[] = caseStudyDetails.filte
 );
 
 /**
- * Returns adjacent catalogue projects for case study navigation.
+ * Catalogue projects for the case-study footer carousel (excludes the current study).
+ * Order follows the published list, starting with the study after `currentId`.
  */
-export const getAdjacentProjects = (
-	id: string,
-): { readonly previous: WorkProject | undefined; readonly next: WorkProject | undefined } => {
-	const index = allWorkProjects.findIndex((project) => project.id === id);
-	if (index < 0) {
-		return { previous: undefined, next: undefined };
-	}
+export const getCaseStudyNavProjects = (
+	currentId: string,
+): readonly WorkProject[] => {
+	const navProjects = publishedCaseStudies
+		.map((study) => allWorkProjects.find((project) => project.id === study.id))
+		.filter((project): project is WorkProject => project !== undefined);
 
-	return {
-		previous: index > 0 ? allWorkProjects[index - 1] : undefined,
-		next: index < allWorkProjects.length - 1 ? allWorkProjects[index + 1] : undefined,
-	};
+	const index = navProjects.findIndex((project) => project.id === currentId);
+	if (index < 0 || navProjects.length < 2) return [];
+
+	return [
+		...navProjects.slice(index + 1),
+		...navProjects.slice(0, index),
+	];
 };

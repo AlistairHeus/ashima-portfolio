@@ -1,144 +1,140 @@
 ---
 /**
- * Previous / next projects — Figma Group 214:289.
- *
- * Wider than the 75rem page column (~1440px) so long titles stay on one line
- * and descriptions wrap to ~two lines. Arrows share the folder row only so
- * they center on the folder, not the copy below.
+ * Case study footer carousel — always two projects; arrows rotate the pair.
+ * Folders link to case studies; arrows only advance the carousel (circular).
  */
 import Chip from '../Chip.astro';
 import ProjectFolder from '../ProjectFolder.astro';
 import type { WorkProject } from '../../data/work';
 
 interface Props {
-	readonly previous?: WorkProject;
-	readonly next?: WorkProject;
+	readonly projects: readonly WorkProject[];
 }
 
-const { previous, next } = Astro.props;
+const { projects } = Astro.props;
+/** Start on circular neighbors of the current page: [previous, next]. */
+const initialLeft = projects.length >= 2 ? projects[projects.length - 1] : projects[0];
+const initialRight = projects[0];
+const canCarousel = projects.length >= 2 && initialLeft && initialRight;
+const initialOffset = projects.length >= 2 ? projects.length - 1 : 0;
 
-const arrowLinkClass =
-	'hidden items-center justify-center no-underline transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:flex';
+const arrowBtnClass =
+	'inline-flex items-center justify-center border-0 bg-transparent p-0 no-underline transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-default disabled:opacity-40';
 ---
 
 {
-	(previous || next) && (
+	canCarousel && (
 		<nav
 			class="case-study-nav mx-auto mt-20 w-full max-w-[90rem] px-[clamp(1rem,3vw,2rem)] pb-16 md:mt-28 md:pb-24"
 			aria-label="More projects"
+			data-case-study-nav
+			data-nav-projects={JSON.stringify(projects)}
+			data-nav-offset={String(initialOffset)}
 		>
 			{/*
 			  Desktop: 4 columns × 2 rows
 			  Row 1 — arrow | folder | folder | arrow
 			  Row 2 —       | copy   | copy   |
-			  Card columns share remaining width (1fr) so copy can breathe.
 			*/}
 			<div
 				class="grid grid-cols-1 gap-y-6 md:grid-cols-[2.75rem_minmax(0,1fr)_minmax(0,1fr)_2.75rem] md:items-center md:gap-x-8 md:gap-y-6 lg:gap-x-12 xl:gap-x-16"
 			>
-				{previous ? (
-					<a
-						href={previous.href ?? '/work'}
-						class:list={[arrowLinkClass, 'md:col-start-1 md:row-start-1']}
-						aria-label={`Previous project: ${previous.title}`}
-					>
-						{/* Figma 189:2135 — asset faces right; flip for previous */}
-						<img
-							src="/icons/arrow-left.svg"
-							alt=""
-							width="59"
-							height="64"
-							class="h-11 w-auto rotate-180 lg:h-12"
-							aria-hidden="true"
-						/>
-					</a>
-				) : (
-					<span
-						class="hidden md:col-start-1 md:row-start-1 md:block"
+				<button
+					type="button"
+					class:list={[arrowBtnClass, 'justify-self-start md:col-start-1 md:row-start-1 md:justify-self-center']}
+					data-nav-dir="-1"
+					aria-label="Show previous projects"
+				>
+					<img
+						src="/icons/arrow-left.svg"
+						alt=""
+						width="59"
+						height="64"
+						class="h-11 w-auto rotate-180 lg:h-12"
 						aria-hidden="true"
 					/>
-				)}
+				</button>
 
-				{previous && (
-					<>
-						<div class="w-full md:col-start-2 md:row-start-1">
-							<p class="sr-only">Previous project</p>
-							<ProjectFolder
-								number={previous.number}
-								imageSrc={previous.imageSrc}
-								imageAlt={previous.imageAlt}
-								linkLabel={previous.title}
-								href={previous.href}
-								class="mx-auto max-w-none"
-							/>
-						</div>
-						<div class="flex w-full flex-col items-center gap-3 text-center md:col-start-2 md:row-start-2">
-							<h3 class="type-h6 w-full text-heading text-balance">
-								{previous.title}
-							</h3>
-							<p class="type-body w-full text-ink text-pretty">
-								{previous.description}
-							</p>
-							<div class="mt-1 flex flex-wrap justify-center gap-2">
-								{previous.chips.map((chip) => (
-									<Chip label={chip} class="border-outline" />
-								))}
-							</div>
-						</div>
-					</>
-				)}
+				{/* Left slot */}
+				<div class="w-full md:col-start-2 md:row-start-1" data-nav-slot="0">
+					<ProjectFolder
+						number={initialLeft.number}
+						imageSrc={initialLeft.imageSrc}
+						imageAlt={initialLeft.imageAlt}
+						linkLabel={initialLeft.title}
+						href={initialLeft.href}
+						showNumber={false}
+						class="mx-auto max-w-none"
+					/>
+				</div>
+				<div
+					class="flex w-full flex-col items-center gap-3 text-center md:col-start-2 md:row-start-2"
+					data-nav-copy="0"
+				>
+					<h3 class="type-h6 w-full text-heading text-balance" data-nav-title>
+						{initialLeft.title}
+					</h3>
+					<p class="type-body w-full text-ink text-pretty" data-nav-description>
+						{initialLeft.description}
+					</p>
+					<div class="mt-1 flex flex-wrap justify-center gap-2" data-nav-chips>
+						{initialLeft.chips.map((chip) => (
+							<Chip label={chip} class="border-outline" />
+						))}
+					</div>
+				</div>
 
-				{next && (
-					<>
-						<div class="w-full md:col-start-3 md:row-start-1">
-							<p class="sr-only">Next project</p>
-							<ProjectFolder
-								number={next.number}
-								imageSrc={next.imageSrc}
-								imageAlt={next.imageAlt}
-								linkLabel={next.title}
-								href={next.href}
-								class="mx-auto max-w-none"
-							/>
-						</div>
-						<div class="flex w-full flex-col items-center gap-3 text-center md:col-start-3 md:row-start-2">
-							<h3 class="type-h6 w-full text-heading text-balance">
-								{next.title}
-							</h3>
-							<p class="type-body w-full text-ink text-pretty">
-								{next.description}
-							</p>
-							<div class="mt-1 flex flex-wrap justify-center gap-2">
-								{next.chips.map((chip) => (
-									<Chip label={chip} class="border-outline" />
-								))}
-							</div>
-						</div>
-					</>
-				)}
+				{/* Right slot */}
+				<div class="w-full md:col-start-3 md:row-start-1" data-nav-slot="1">
+					<ProjectFolder
+						number={initialRight.number}
+						imageSrc={initialRight.imageSrc}
+						imageAlt={initialRight.imageAlt}
+						linkLabel={initialRight.title}
+						href={initialRight.href}
+						showNumber={false}
+						class="mx-auto max-w-none"
+					/>
+				</div>
+				<div
+					class="flex w-full flex-col items-center gap-3 text-center md:col-start-3 md:row-start-2"
+					data-nav-copy="1"
+				>
+					<h3 class="type-h6 w-full text-heading text-balance" data-nav-title>
+						{initialRight.title}
+					</h3>
+					<p class="type-body w-full text-ink text-pretty" data-nav-description>
+						{initialRight.description}
+					</p>
+					<div class="mt-1 flex flex-wrap justify-center gap-2" data-nav-chips>
+						{initialRight.chips.map((chip) => (
+							<Chip label={chip} class="border-outline" />
+						))}
+					</div>
+				</div>
 
-				{next ? (
-					<a
-						href={next.href ?? '/work'}
-						class:list={[arrowLinkClass, 'md:col-start-4 md:row-start-1']}
-						aria-label={`Next project: ${next.title}`}
-					>
-						<img
-							src="/icons/arrow-right.svg"
-							alt=""
-							width="59"
-							height="64"
-							class="h-11 w-auto lg:h-12"
-							aria-hidden="true"
-						/>
-					</a>
-				) : (
-					<span
-						class="hidden md:col-start-4 md:row-start-1 md:block"
+				<button
+					type="button"
+					class:list={[arrowBtnClass, 'justify-self-end md:col-start-4 md:row-start-1 md:justify-self-center']}
+					data-nav-dir="1"
+					aria-label="Show next projects"
+				>
+					<img
+						src="/icons/arrow-right.svg"
+						alt=""
+						width="59"
+						height="64"
+						class="h-11 w-auto lg:h-12"
 						aria-hidden="true"
 					/>
-				)}
+				</button>
 			</div>
 		</nav>
 	)
 }
+
+<script>
+	import { initCaseStudyNav } from '../../scripts/case-study-nav';
+
+	initCaseStudyNav();
+</script>

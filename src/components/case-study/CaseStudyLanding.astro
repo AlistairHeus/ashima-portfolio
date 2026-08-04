@@ -19,7 +19,7 @@ interface Props {
 const { study, number, currentPath = '/work' } = Astro.props;
 ---
 
-<div class="case-study-landing">
+<div class="case-study-landing" data-case-study-landing data-case-study-intro="pending">
 	<CaseStudyHero
 		number={number}
 		category={study.category}
@@ -35,9 +35,51 @@ const { study, number, currentPath = '/work' } = Astro.props;
 		overlayNavbar={false}
 	/>
 
-	<CaseStudyIntro
-		description={study.description}
-		skills={study.skills}
-		tools={study.tools}
-	/>
+	<div data-cs-intro="overview">
+		<CaseStudyIntro
+			description={study.description}
+			skills={study.skills}
+			tools={study.tools}
+		/>
+	</div>
 </div>
+
+<style>
+	@media (prefers-reduced-motion: no-preference) {
+		[data-case-study-landing][data-case-study-intro='pending'] [data-cs-intro],
+		[data-case-study-landing][data-case-study-intro='pending']
+			#case-study-title
+			[data-magnetic-char],
+		[data-case-study-landing][data-case-study-intro='running'] [data-cs-intro],
+		[data-case-study-landing][data-case-study-intro='running']
+			#case-study-title
+			[data-magnetic-char] {
+			opacity: 0;
+		}
+	}
+</style>
+
+<script is:inline>
+	(() => {
+		const root = document.querySelector('[data-case-study-landing]');
+		if (!root) return;
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			root.setAttribute('data-case-study-intro', 'done');
+			return;
+		}
+		root.setAttribute('data-case-study-intro', 'pending');
+	})();
+</script>
+
+<script>
+	import { initCaseStudyIntro } from '../../scripts/case-study-intro';
+	import { initMagneticTypeAll } from '../../scripts/magnetic-type';
+
+	const boot = () => {
+		initCaseStudyIntro(() => {
+			initMagneticTypeAll();
+		});
+	};
+
+	void Promise.all([document.fonts?.ready ?? Promise.resolve()]).then(boot);
+</script>

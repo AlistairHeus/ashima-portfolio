@@ -407,7 +407,8 @@ export const initMagneticType = (
 
 /**
  * Initialize every `[data-magnetic-root]` on the page that is not already live.
- * Roots with `data-magnetic-invert` rest bold and thin out toward the cursor.
+ * Roots with `data-magnetic-invert` rest heavier and thin toward the cursor.
+ * Optional `data-magnetic-rest` sets the resting weight (default 700).
  */
 export const initMagneticTypeAll = (
 	overrides: Omit<InitMagneticTypeOptions, 'root'> = {},
@@ -417,14 +418,19 @@ export const initMagneticTypeAll = (
 		if (root.dataset.magneticInit === 'true') return;
 		root.dataset.magneticInit = 'true';
 		const inverted = root.hasAttribute('data-magnetic-invert');
+		const restAttr = root.dataset.magneticRest;
+		const restWeight = restAttr
+			? Number.parseInt(restAttr, 10)
+			: DEFAULT_WEIGHT_MAX;
+		const peakWeight = DEFAULT_WEIGHT_MIN;
 		initMagneticType({
 			...overrides,
 			root,
 			weightMin: inverted
-				? DEFAULT_WEIGHT_MAX
+				? (Number.isFinite(restWeight) ? restWeight : DEFAULT_WEIGHT_MAX)
 				: (overrides.weightMin ?? DEFAULT_WEIGHT_MIN),
 			weightMax: inverted
-				? DEFAULT_WEIGHT_MIN
+				? peakWeight
 				: (overrides.weightMax ?? DEFAULT_WEIGHT_MAX),
 		});
 	});

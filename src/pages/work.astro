@@ -14,10 +14,12 @@ import { caseStudies, otherWorkProjects } from '../data/work';
 	description="Selected case studies and projects by Ashima Kaushik — brand identity, typography, editorial and design research."
 	currentPath="/work"
 >
-	<main class="bg-canvas">
+	<main class="bg-canvas" data-work-page data-work-intro="pending">
 		<div class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pb-20 pt-10 md:pb-28 md:pt-14">
 			<section aria-labelledby="case-studies-heading" class="scroll-mt-8">
-				<SectionHeading id="case-studies-heading" title="Case Studies" />
+				<div data-work-intro="heading">
+					<SectionHeading id="case-studies-heading" title="Case Studies" />
+				</div>
 				<div class="mt-10 md:mt-14">
 					<WorkProjectGrid projects={caseStudies} />
 				</div>
@@ -27,7 +29,9 @@ import { caseStudies, otherWorkProjects } from '../data/work';
 				aria-labelledby="other-projects-heading"
 				class="mt-20 scroll-mt-8 md:mt-28"
 			>
-				<SectionHeading id="other-projects-heading" title="Other Projects" />
+				<div data-work-intro="heading">
+					<SectionHeading id="other-projects-heading" title="Other Projects" />
+				</div>
 				<div class="mt-10 md:mt-14">
 					<WorkProjectGrid projects={otherWorkProjects} />
 				</div>
@@ -35,3 +39,36 @@ import { caseStudies, otherWorkProjects } from '../data/work';
 		</div>
 	</main>
 </Layout>
+
+<style>
+	@media (prefers-reduced-motion: no-preference) {
+		[data-work-page][data-work-intro='pending'] [data-work-intro='heading'],
+		[data-work-page][data-work-intro='pending'] [data-work-intro='card'],
+		[data-work-page][data-work-intro='running'] [data-work-intro='heading'],
+		[data-work-page][data-work-intro='running'] [data-work-intro='card'] {
+			opacity: 0;
+		}
+	}
+</style>
+
+<script is:inline>
+	(() => {
+		const root = document.querySelector('[data-work-page]');
+		if (!root) return;
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			root.setAttribute('data-work-intro', 'done');
+			return;
+		}
+		root.setAttribute('data-work-intro', 'pending');
+	})();
+</script>
+
+<script>
+	import { initWorkIntro } from '../scripts/work-intro';
+
+	const boot = () => {
+		initWorkIntro();
+	};
+
+	void Promise.all([document.fonts?.ready ?? Promise.resolve()]).then(boot);
+</script>
