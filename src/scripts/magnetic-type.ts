@@ -180,9 +180,17 @@ const smoothPush = (values: readonly number[]): number[] => {
 };
 
 /**
- * Smoothstep ease — soft acceleration into / out of the autoplay sweep.
+ * Ease-out-in (≈ GSAP `power3.outIn`) — fast entry, linger mid-sweep, fast exit.
+ * Inverse feel of smoothstep / ease-in-out.
  */
-const smoothstep = (t: number): number => t * t * (3 - 2 * t);
+const easeOutIn = (t: number): number => {
+	if (t < 0.5) {
+		const u = t * 2;
+		return 0.5 * (1 - (1 - u) ** 3);
+	}
+	const u = (t - 0.5) * 2;
+	return 0.5 + 0.5 * u ** 3;
+};
 
 /**
  * Attach magnetic hover to a heading (or any root that contains magnetic chars).
@@ -418,7 +426,7 @@ export const initMagneticType = (
 					1,
 					(now - autoplay.startTime) / autoplay.duration,
 				);
-				const eased = smoothstep(t);
+				const eased = easeOutIn(t);
 				const x =
 					autoplay.startX + (autoplay.endX - autoplay.startX) * eased;
 				// Live midline — stays correct if layout shifts mid-sweep.

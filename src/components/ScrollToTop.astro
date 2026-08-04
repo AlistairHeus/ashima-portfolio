@@ -1,0 +1,104 @@
+---
+/**
+ * Fixed scroll-to-top control — appears after leaving the first viewport.
+ * Hand-drawn circle + arrow assets, both tinted #4c4c4c.
+ */
+---
+
+<button
+	type="button"
+	class="scroll-top fixed right-4 bottom-4 z-[90] flex size-[5.5rem] items-center justify-center text-[#4c4c4c] opacity-0 transition-[opacity,transform] duration-300 ease-out pointer-events-none md:right-6 md:bottom-6"
+	data-scroll-top
+	aria-label="Scroll to top"
+	hidden
+>
+	<span class="scroll-top__circle" aria-hidden="true"></span>
+	<span class="scroll-top__arrow" aria-hidden="true"></span>
+</button>
+
+<style>
+	.scroll-top__circle,
+	.scroll-top__arrow {
+		background-color: currentColor;
+		-webkit-mask-size: contain;
+		mask-size: contain;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-position: center;
+		mask-position: center;
+	}
+
+	.scroll-top__circle {
+		position: absolute;
+		inset: 0;
+		-webkit-mask-image: url('/icons/scroll-to-top-circle.svg');
+		mask-image: url('/icons/scroll-to-top-circle.svg');
+	}
+
+	.scroll-top__arrow {
+		position: relative;
+		z-index: 1;
+		display: block;
+		width: 3.25rem;
+		height: 3.5rem;
+		-webkit-mask-image: url('/icons/arrow-right.svg');
+		mask-image: url('/icons/arrow-right.svg');
+		transform: rotate(-90deg);
+	}
+
+	.scroll-top[data-visible='true'] {
+		opacity: 1;
+		pointer-events: auto;
+		transform: translateY(0);
+	}
+
+	.scroll-top:not([data-visible='true']) {
+		transform: translateY(0.5rem);
+	}
+
+	.scroll-top[data-visible='true']:hover {
+		opacity: 0.75;
+	}
+
+	.scroll-top:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 3px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.scroll-top {
+			transition: opacity 0.2s ease;
+		}
+	}
+</style>
+
+<script>
+	const initScrollToTop = (): void => {
+		const button = document.querySelector<HTMLButtonElement>('[data-scroll-top]');
+		if (!button || button.dataset.init === 'true') return;
+		button.dataset.init = 'true';
+		button.hidden = false;
+
+		const threshold = () => Math.min(window.innerHeight * 0.6, 480);
+
+		const sync = () => {
+			const show = window.scrollY > threshold();
+			button.dataset.visible = show ? 'true' : 'false';
+			button.setAttribute('aria-hidden', show ? 'false' : 'true');
+			button.tabIndex = show ? 0 : -1;
+		};
+
+		button.addEventListener('click', () => {
+			const reduce = window.matchMedia(
+				'(prefers-reduced-motion: reduce)',
+			).matches;
+			window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+		});
+
+		window.addEventListener('scroll', sync, { passive: true });
+		window.addEventListener('resize', sync, { passive: true });
+		sync();
+	};
+
+	initScrollToTop();
+</script>
