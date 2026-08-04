@@ -1,7 +1,8 @@
 /**
  * Other-projects polaroid stack.
  * Hovering / focusing a list item promotes that project's polaroid to the front
- * and lightly shuffles the cards underneath.
+ * and lightly shuffles the cards underneath. The last hovered item stays active;
+ * the first project is active by default.
  */
 
 interface StackSlot {
@@ -110,26 +111,19 @@ export const initOtherProjectsStack = (): void => {
 		});
 	};
 
-	const clearActive = (): void => {
-		items.forEach((item) => {
-			item.dataset.active = 'false';
-		});
-	};
-
 	items.forEach((item) => {
 		const projectId = item.dataset.otherProjectId;
 		if (!projectId) return;
 
 		item.addEventListener('mouseenter', () => activate(projectId));
 		item.addEventListener('focusin', () => activate(projectId));
-		item.addEventListener('mouseleave', clearActive);
-		item.addEventListener('focusout', (event) => {
-			const next = event.relatedTarget;
-			if (next instanceof Node && item.contains(next)) return;
-			clearActive();
-		});
 	});
 
-	// Initial layout: catalogue order, last card on top.
-	layoutFromOrder(order);
+	// Default: first list item stays active until another is hovered.
+	const firstId = items[0]?.dataset.otherProjectId;
+	if (firstId) {
+		activate(firstId);
+	} else {
+		layoutFromOrder(order);
+	}
 };

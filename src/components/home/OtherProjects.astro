@@ -2,7 +2,8 @@
 /**
  * Other projects — list + stacked Polaroids (Figma home, ~149:921).
  * Background continues #FDFBF9 from Featured (no dots).
- * Each polaroid shows a project image; hover/focus promotes that card to the front.
+ * First item is active by default; last hovered/focused item stays active.
+ * Non-active rows render as inactive (dimmed).
  */
 import Chip from '../Chip.astro';
 import Polaroid from '../Polaroid.astro';
@@ -52,13 +53,14 @@ const stackSlots = [
 		>
 			<ul class="m-0 list-none divide-y divide-muted/30 border-y border-muted/30 p-0">
 				{
-					projects.map((project) => (
+					projects.map((project, index) => (
 						<li
 							class:list={[
 								'other-projects__item py-5 transition-opacity duration-200',
-								project.muted && 'opacity-60',
+								project.muted && 'other-projects__item--muted',
 							]}
 							data-other-project-id={project.id}
+							data-active={index === 0 ? 'true' : 'false'}
 						>
 							{project.href ? (
 								<a
@@ -113,8 +115,20 @@ const stackSlots = [
 </section>
 
 <style>
+	.other-projects__item {
+		opacity: 0.4;
+	}
+
+	.other-projects__item--muted {
+		opacity: 0.28;
+	}
+
 	.other-projects__item[data-active='true'] {
 		opacity: 1;
+	}
+
+	.other-projects__item--muted[data-active='true'] {
+		opacity: 0.7;
 	}
 
 	.other-projects__polaroid {

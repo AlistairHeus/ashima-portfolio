@@ -57,7 +57,7 @@ const isNavItemActive = (href: string) => {
 
 <header
 	class:list={[
-		'site-nav fixed inset-x-0 top-0 z-[100] w-full bg-transparent pt-[var(--spacing-page-top)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform',
+		'site-nav fixed inset-x-0 top-0 z-[100] w-full bg-transparent transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform',
 		className,
 	]}
 	data-site-nav
@@ -66,7 +66,6 @@ const isNavItemActive = (href: string) => {
 		<div
 			class:list={[
 				'flex min-h-14 flex-col items-stretch justify-between gap-0 sm:min-h-[60px] sm:flex-row sm:items-stretch sm:gap-[clamp(1rem,3vw,2rem)]',
-				// showDivider && 'border-b-2 border-on-surface/35',
 			]}
 		>
 			<!-- <a
@@ -76,7 +75,7 @@ const isNavItemActive = (href: string) => {
 				{brandLabel}
 			</a> -->
 
-			<nav class="flex min-w-0 items-stretch self-stretch sm:w-auto" aria-label="Primary">
+			<nav class="mx-auto flex min-w-0 items-stretch self-stretch sm:w-auto" aria-label="Primary">
 				<ul
 					class="m-0 flex h-full list-none flex-wrap items-stretch justify-start gap-y-1 p-0 sm:justify-end"
 				>
