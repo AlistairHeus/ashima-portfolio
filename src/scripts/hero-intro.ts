@@ -3,34 +3,9 @@
  * Hands off to scroll polaroids + magnetic name once complete.
  */
 import gsap from 'gsap';
+import { lockMagneticCharWidths } from './magnetic-type';
 
 export type HeroIntroComplete = () => void;
-
-/** Matches the magnetic name interaction weight range. */
-const WEIGHT_MIN = 100;
-const WEIGHT_MAX = 700;
-
-/**
- * Freeze each glyph's advance at bold width (same as magnetic hover).
- * Keeps intro letter-spacing identical to the post-intro resting layout.
- */
-const lockCharWidths = (
-	root: HTMLElement,
-	chars: readonly HTMLElement[],
-): void => {
-	for (const el of chars) {
-		el.style.fontWeight = String(WEIGHT_MAX);
-		el.style.fontVariationSettings = `'wght' ${WEIGHT_MAX}`;
-	}
-	void root.offsetWidth;
-	for (const el of chars) {
-		el.style.width = `${el.getBoundingClientRect().width}px`;
-	}
-	for (const el of chars) {
-		el.style.fontWeight = String(WEIGHT_MIN);
-		el.style.fontVariationSettings = `'wght' ${WEIGHT_MIN}`;
-	}
-};
 
 /**
  * Play the home-hero intro, then invoke `onComplete`.
@@ -56,7 +31,7 @@ export const initHeroIntro = (onComplete?: HeroIntroComplete): void => {
 
 	const nameRoot = hero.querySelector<HTMLElement>('#hero-heading');
 	const chars = Array.from(
-		hero.querySelectorAll<HTMLElement>('[data-hero-char]'),
+		hero.querySelectorAll<HTMLElement>('[data-magnetic-char]'),
 	);
 	const subtitles = Array.from(
 		hero.querySelectorAll<HTMLElement>(
@@ -72,7 +47,7 @@ export const initHeroIntro = (onComplete?: HeroIntroComplete): void => {
 
 	// Match magnetic layout before any motion so spacing never jumps at handoff.
 	if (nameRoot && chars.length > 0) {
-		lockCharWidths(nameRoot, chars);
+		lockMagneticCharWidths(nameRoot, chars);
 	}
 
 	if (prefersReduced) {

@@ -6,6 +6,7 @@
  * Content from work catalogue case studies (first four).
  */
 import Chip from '../Chip.astro';
+import MagneticChars from '../MagneticChars.astro';
 import { caseStudies } from '../../data/work';
 
 interface FolderMeta {
@@ -162,10 +163,12 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 
 											<div class="min-w-0 px-1 pb-4 lg:px-0 lg:pb-0">
 												<h3
-													class="font-display text-[clamp(1.75rem,3vw+0.5rem,3.5rem)] font-bold leading-[1.15] tracking-normal"
+													class="font-display cursor-default text-[clamp(1.75rem,3vw+0.5rem,3.5rem)] leading-[1.15] tracking-normal"
 													style={`color: ${project.titleColor}`}
+													data-magnetic-root
+													data-magnetic-invert
 												>
-													{project.title}
+													<MagneticChars text={project.title} />
 												</h3>
 												<p class="type-body mt-5 max-w-md text-ink">
 													{project.description}
@@ -238,6 +241,8 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 
 <script>
 	import { initFeaturedScroll } from '../../scripts/featured-scroll';
+	import { initMagneticTypeAll } from '../../scripts/magnetic-type';
 
 	initFeaturedScroll();
+	initMagneticTypeAll();
 </script>

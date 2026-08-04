@@ -175,3 +175,29 @@
 	letter-spacing: 0.00625rem;
 	line-height: 1.25rem;
 }
+
+/* Magnetic variable-type hover (see scripts/magnetic-type.ts) */
+.magnetic-type__word {
+	white-space: nowrap;
+}
+
+.magnetic-type__char {
+	display: inline-block;
+	font-weight: 100;
+	font-variation-settings: 'wght' 100;
+	text-align: center;
+	will-change: transform, font-variation-settings;
+}
+
+.magnetic-type__space {
+	display: inline-block;
+	white-space: pre;
+	will-change: transform, font-variation-settings;
+}
+
+/* Bold rest → thin near cursor (case study + featured headings) */
+[data-magnetic-invert] .magnetic-type__char,
+[data-magnetic-invert] .magnetic-type__space {
+	font-weight: 700;
+	font-variation-settings: 'wght' 700;
+}

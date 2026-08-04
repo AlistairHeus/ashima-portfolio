@@ -16,6 +16,7 @@
  * Set `overlayNavbar` only for rare standalone surfaces without Layout nav.
  */
 import Navbar from '../Navbar.astro';
+import MagneticChars from '../MagneticChars.astro';
 import type { CaseStudyHeroLayer } from '../../data/case-studies';
 
 interface Props {
@@ -104,9 +105,11 @@ const useLayers = Boolean(heroLayers && heroLayers.length > 0);
 
 			<h1
 				id="case-study-title"
-				class="type-h1 mx-auto mt-3 max-w-[65rem] uppercase text-ink md:mt-4"
+				class="type-h1 mx-auto mt-3 max-w-[65rem] cursor-default uppercase text-ink md:mt-4"
+				data-magnetic-root
+				data-magnetic-invert
 			>
-				{title}
+				<MagneticChars text={title} />
 			</h1>
 
 			{client ? <p class="type-label-lg mt-3 font-normal text-ink md:mt-4">{client}</p> : null}
@@ -149,3 +152,9 @@ const useLayers = Boolean(heroLayers && heroLayers.length > 0);
 		</figure>
 	</div>
 </header>
+
+<script>
+	import { initMagneticTypeAll } from '../../scripts/magnetic-type';
+
+	initMagneticTypeAll();
+</script>

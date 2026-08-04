@@ -1,0 +1,30 @@
+---
+/**
+ * Split a string into per-glyph spans for {@link initMagneticType}.
+ * Words wrap as units; spaces stay as separate magnetic chars.
+ */
+interface Props {
+	readonly text: string;
+}
+
+const { text } = Astro.props;
+const tokens = text.split(/(\s+)/u).filter((token) => token.length > 0);
+---
+
+{
+	tokens.map((token) =>
+		/^\s+$/u.test(token) ? (
+			<span class="magnetic-type__space" data-magnetic-char>
+				{token}
+			</span>
+		) : (
+			<span class="magnetic-type__word" data-magnetic-word>
+				{Array.from(token).map((ch) => (
+					<span class="magnetic-type__char" data-magnetic-char>
+						{ch}
+					</span>
+				))}
+			</span>
+		),
+	)
+}
