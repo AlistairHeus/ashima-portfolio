@@ -623,7 +623,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		},
 		/** Soft rose — Figma Project 01 hero band */
 		heroBandColor: '#E7C7CB',
-		folderColor: '#E7C7CB',
+		folderColor: '#D79E9E',
 		body: 'air-india',
 		airIndia: {
 			brandIdentity: {
@@ -894,7 +894,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			alt: 'Cheraw Bamboo Dance open book spread from The Celebration Map chapter',
 		},
 		heroBandColor: '#DDC8D0',
-		folderColor: '#DDC8D0',
+		folderColor: '#C991A0',
 		body: 'gallery',
 	},
 	{
@@ -936,7 +936,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			},
 		],
 		heroBandColor: '',
-		folderColor: '#006c65',
+		folderColor: '#619996',
 		body: 'mythila',
 		mythila: {
 			tagline: [
@@ -1089,7 +1089,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		},
 		/** Figma Project 02 hero band */
 		heroBandColor: '#bcceb8',
-		folderColor: '#bcceb8',
+		folderColor: '#799C72',
 		body: 'igl',
 		igl: {
 			brandToday: {
@@ -1463,7 +1463,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		},
 		/** Figma Project 04 hero band */
 		heroBandColor: '#f1cdc1',
-		folderColor: '#f1cdc1',
+		folderColor: '#DDA38F',
 		body: 'akshar-chitra',
 		aksharChitra: {
 			typecraft: {
@@ -2090,7 +2090,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			alt: 'Way of the Witch hardcover with gold foil lettering on a textured surface',
 		},
 		heroBandColor: '#CCC094',
-		folderColor: '#CCC094',
+		folderColor: '#C2B37C',
 		body: 'way-of-the-witch',
 		witch: {
 			brief: {
@@ -2173,7 +2173,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			alt: 'Woman in bridal attire braiding a girl’s hair by warm lamp light',
 		},
 		heroBandColor: '#eed8c2',
-		folderColor: '#F9D7A9',
+		folderColor: '#D2A76C',
 		body: 'maahi',
 		maahi: {
 			drivers: {
