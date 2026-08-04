@@ -90,9 +90,9 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 			data-featured-pin
 		>
 			<div class="mx-auto flex w-full max-w-[75rem] min-h-0 flex-1 flex-col">
-				<div class="flex min-h-0 flex-1 flex-col justify-center py-4 md:py-5">
+				<div class="flex min-h-0 flex-1 flex-col justify-center py-4 md:pt-10">
 				<div
-					class="featured__stage relative mx-auto w-full max-w-[92.5rem]"
+					class="featured__stage relative mx-auto w-full max-w-[70rem]"
 					data-featured-stage
 				>
 					{/* overflow-visible so cards aren’t clipped inside the folder frame */}
@@ -124,13 +124,23 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 										{project.label}
 									</span>
 
-									<div class="absolute top-[14%] right-[6%] bottom-[6%] left-[6%] overflow-visible md:top-[16%] md:right-[8%] md:bottom-[8%] md:left-[8%]">
+									{/* Content area links to the case study; tabs stay scroll-only */}
+									<a
+										href={project.href}
+										class="absolute top-[14%] right-[6%] bottom-[6%] left-[6%] overflow-visible outline-offset-4 focus-visible:outline-2 focus-visible:outline-primary md:top-[16%] md:right-[8%] md:bottom-[8%] md:left-[8%]"
+										style={`pointer-events: ${index === 0 ? 'auto' : 'none'}`}
+										tabindex={index === 0 ? 0 : -1}
+										data-featured-link={project.id}
+										aria-label={`View ${project.title} case study`}
+										aria-hidden={index === 0 ? 'false' : 'true'}
+									>
 										<div class="grid h-full items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12 xl:gap-16">
 											<div class="relative z-10 mx-auto w-full max-w-[43rem]">
 												<div class="overflow-hidden rounded-xl shadow-[0px_1px_6.6px_0_rgba(0,0,0,0.25)]">
 													<img
 														src={project.imageSrc}
-														alt={project.imageAlt}
+														alt=""
+														aria-hidden="true"
 														class="aspect-square size-full object-cover"
 														loading={index === 0 ? 'eager' : 'lazy'}
 														decoding="async"
@@ -165,12 +175,9 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 														<Chip label={chip} />
 													))}
 												</div>
-												<a href={project.href} class="sr-only">
-													View {project.title} case study
-												</a>
 											</div>
 										</div>
-									</div>
+									</a>
 								</article>
 							))
 						}

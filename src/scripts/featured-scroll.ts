@@ -25,6 +25,9 @@ export const initFeaturedScroll = (): void => {
 	const tabs = Array.from(
 		root.querySelectorAll<HTMLButtonElement>('[data-featured-tab]'),
 	);
+	const links = Array.from(
+		root.querySelectorAll<HTMLAnchorElement>('[data-featured-link]'),
+	);
 	const count = cards.length;
 	if (!track || count === 0) return;
 
@@ -42,7 +45,7 @@ export const initFeaturedScroll = (): void => {
 		tab.tabIndex = enabled ? 0 : -1;
 	};
 
-	/** Sync tab aria-selected and card aria-hidden to the active index. */
+	/** Sync tab aria-selected, card aria-hidden, and case-study link focus. */
 	const setActive = (activeIndex: number): void => {
 		tabs.forEach((tab, index) => {
 			tab.setAttribute(
@@ -53,8 +56,14 @@ export const initFeaturedScroll = (): void => {
 		cards.forEach((card, index) => {
 			card.setAttribute(
 				'aria-hidden',
-				index <= activeIndex ? 'false' : 'true',
+				index === activeIndex ? 'false' : 'true',
 			);
+		});
+		links.forEach((link, index) => {
+			const isActive = index === activeIndex;
+			link.tabIndex = isActive ? 0 : -1;
+			link.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+			link.style.pointerEvents = isActive ? 'auto' : 'none';
 		});
 	};
 
