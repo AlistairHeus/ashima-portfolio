@@ -1,6 +1,6 @@
 ---
 /**
- * Reusable project folder visual (Figma node 149:561).
+ * Reusable project folder visual (Figma node 405:1224).
  *
  * Layers (back → front):
  * 1. Tabbed back silhouette (SVG)
@@ -55,8 +55,8 @@ const innerShadowId = `pf-inner-${crypto.randomUUID()}`;
 		{/* Frame: 510 × 370.5 */}
 		<div class="relative w-full pt-[72.65%]">
 			{/*
-			  Figma text Inner Shadow on 149:564:
-			  X 0 · Y −2 · Blur 16 · Spread 0 · #90A9C8 @ 100%
+			  Figma text Inner Shadow on 405:1227:
+			  X 0 · Y −2 · Blur 13 · Spread 0 · #C1A48D @ 100%
 			  CSS text-shadow cannot do inset glyphs — SVG filter matches Figma.
 			*/}
 			<svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
@@ -70,7 +70,7 @@ const innerShadowId = `pf-inner-${crypto.randomUUID()}`;
 						color-interpolation-filters="sRGB"
 					>
 						<feOffset dx="0" dy="-2" in="SourceAlpha" result="offset" />
-						<feGaussianBlur in="offset" stdDeviation="8" result="blur" />
+						<feGaussianBlur in="offset" stdDeviation="6.5" result="blur" />
 						<feComposite
 							in="blur"
 							in2="SourceAlpha"
@@ -79,7 +79,7 @@ const innerShadowId = `pf-inner-${crypto.randomUUID()}`;
 							k3="1"
 							result="shadowMask"
 						/>
-						<feFlood flood-color="#90A9C8" flood-opacity="1" result="shadowColor" />
+						<feFlood flood-color="#C1A48D" flood-opacity="1" result="shadowColor" />
 						<feComposite
 							in="shadowColor"
 							in2="shadowMask"
@@ -103,11 +103,11 @@ const innerShadowId = `pf-inner-${crypto.randomUUID()}`;
 				/>
 			</div>
 
-			{/* 2. Index number — Figma 149:564 · Lato Bold 70 · #AAD0F1 */}
+			{/* 2. Index number — Figma 405:1227 · Lato Bold 70 · #FFEFE2 */}
 			{
 				showNumber && (
 					<p
-						class="absolute top-[1.9%] left-[7.45%] z-[1] w-[18.2%] font-label text-[clamp(2.5rem,8vw,4.375rem)] font-bold leading-none text-primary-soft"
+						class="absolute top-[1.9%] left-[7.45%] z-[1] w-[18.2%] font-label text-[clamp(2.5rem,8vw,4.375rem)] font-bold leading-none text-[#FFEFE2]"
 						style={`filter: url(#${innerShadowId})`}
 						aria-hidden="true"
 					>
@@ -117,7 +117,7 @@ const innerShadowId = `pf-inner-${crypto.randomUUID()}`;
 			}
 
 			{/*
-			  3. Front flap — Figma 149:565
+			  3. Front flap — Figma 405:1228
 			  top 69 / 370.5 ≈ 18.6%, height 302 / 370.5 ≈ 81.5%
 			  Covers the body so the photo sits in a pocket.
 			*/}
@@ -170,8 +170,8 @@ const innerShadowId = `pf-inner-${crypto.randomUUID()}`;
 	.project-folder__flap {
 		background-image: linear-gradient(
 			180.41deg,
-			rgb(190, 215, 237) 17.9%,
-			rgb(145, 165, 198) 164.13%
+			rgb(243, 234, 227) 2.53%,
+			rgb(191, 166, 147) 196.18%
 		);
 	}
 </style>

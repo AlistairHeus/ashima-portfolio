@@ -1,5 +1,5 @@
 <svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="523.6" height="384.1" viewBox="0 0 523.6 384.1" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Vector 18" filter="url(#filter0_d_0_5)">
+<g id="Vector 19" filter="url(#filter0_d_0_5)">
 <path d="M5.8 24.8V84.6221V351.3C5.8 363.45 15.6497 373.3 27.8 373.3H493.8C505.95 373.3 515.8 363.45 515.8 351.3V50.9028C515.8 38.7525 506.086 28.9028 493.936 28.9028H205.604C193.594 28.9028 184.982 22.071 179.435 15.3976C173.693 8.48939 165.751 2.8 156.768 2.8H27.8C15.6497 2.8 5.8 12.6498 5.8 24.8Z" fill="url(#paint0_linear_0_5)"/>
 </g>
 <defs>
@@ -14,8 +14,8 @@
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_5" result="shape"/>
 </filter>
 <linearGradient id="paint0_linear_0_5" x1="260.8" y1="-106.2" x2="260.8" y2="215.3" gradientUnits="userSpaceOnUse">
-<stop offset="0.379507" stop-color="#BED7ED"/>
-<stop offset="0.778846" stop-color="#91A5C6"/>
+<stop offset="0.230769" stop-color="#F3EAE3"/>
+<stop offset="0.996469" stop-color="#DDC3AE"/>
 </linearGradient>
 </defs>
 </svg>
