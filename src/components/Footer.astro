@@ -1,115 +1,166 @@
 ---
 /**
- * Site footer matching Figma Group 1000016089 (node 226:1282).
- * Left: What's next? — Right: Contact + Socials as one group.
+ * Site footer — full-bleed ruler + huge magnetic name + contact.
+ * Left: ASHIMA / KAUSHIK · Right: email + socials (tight stack, bottom-aligned).
  */
+import MagneticChars from './MagneticChars.astro';
+
 interface SocialLink {
 	readonly label: string;
 	readonly href: string;
-	readonly iconSrc: string;
-	readonly iconAlt: string;
 }
 
 interface Props {
-	readonly nextHeading?: string;
-	readonly nextBody?: string;
-	readonly contactHeading?: string;
 	readonly email?: string;
 	readonly emailHref?: string;
-	readonly socialsHeading?: string;
 	readonly socials?: readonly SocialLink[];
 	readonly class?: string;
 }
 
 const {
-	nextHeading = "What's next?",
-	nextBody = 'Hopefully, something we build together.',
-	contactHeading = 'Contact',
 	email = 'ashimakaushik.design@gmail.com',
 	emailHref = 'mailto:ashimakaushik.design@gmail.com',
-	socialsHeading = 'Socials',
 	socials = [
 		{
-			label: '/ashimakaushik17',
-			href: 'https://www.linkedin.com/in/ashimakaushik17',
-			iconSrc: '/icons/linkedin.png',
-			iconAlt: 'LinkedIn',
+			label: 'Behance',
+			href: 'https://www.behance.net/ashimakaushik',
 		},
 		{
-			label: '/ashimakaushik',
-			href: 'https://www.behance.net/ashimakaushik',
-			iconSrc: '/icons/behance.png',
-			iconAlt: 'Behance',
+			label: 'LinkedIn',
+			href: 'https://www.linkedin.com/in/ashimakaushik17',
 		},
 	],
 	class: className,
 } = Astro.props;
+
+const nameLines = ['ASHIMA', 'KAUSHIK'] as const;
+
+const linkClass =
+	'site-footer__link text-ink no-underline transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
 ---
 
-<footer id="contact" class:list={['relative z-20 w-full bg-footer', className]}>
-	<div
-		class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pb-16 pt-[clamp(4rem,8vw,9.125rem)] md:pb-20"
-	>
-		{/*
-		  Desktop: col1 grows (What's next), cols 2–3 hug content and sit as
-		  a right-hand Contact + Socials group. Shared heading/body rows.
-		*/}
+<footer
+	id="contact"
+	class:list={[
+		'site-footer relative z-20 w-full overflow-x-hidden border-t-[1.5px] border-ink bg-[#e8e4db]',
+		className,
+	]}
+>
+	<div class="flex min-h-0 flex-col pb-14 md:pb-24">
 		<div
-			class="grid grid-cols-1 gap-y-3 md:grid-cols-[1fr_auto_auto] md:grid-rows-[auto_auto] md:gap-x-16 lg:gap-x-24 px-[clamp(1rem,3vw,2rem)]"
+			class="site-footer__scale relative h-[2.1875rem] w-full"
+			aria-hidden="true"
 		>
-				<p
-					class="font-display text-[clamp(1.5rem,2vw+0.75rem,2.25rem)] font-bold uppercase leading-none  text-footer-ink md:col-start-1 md:row-start-1"
-				>
-					{nextHeading}
-				</p>
-				<p
-					class="font-body text-xl font-normal leading-normal tracking-[0.1rem] text-muted md:col-start-1 md:row-start-2"
-				>
-					{nextBody}
-				</p>
+			<div class="site-footer__ticks absolute inset-x-0 top-0 h-full"></div>
+		</div>
 
-				<p
-					class="mt-8 font-label text-2xl font-bold uppercase leading-none tracking-[0.27rem] text-footer-ink md:col-start-2 md:row-start-1 md:mt-0"
-				>
-					{contactHeading}
-				</p>
+		<div
+			class="mx-auto flex w-full max-w-[75rem] flex-col gap-8 pt-10 md:flex-row md:items-end md:justify-between md:gap-12 md:pt-14"
+		>
+			<h2
+				class="site-footer__name m-0 cursor-default font-display text-[#242424]"
+				data-magnetic-root
+			>
+				{
+					nameLines.map((line) => (
+						<span class="site-footer__name-line">
+							<MagneticChars text={line} />
+						</span>
+					))
+				}
+			</h2>
+
+			<div
+				class="site-footer__contact flex flex-col gap-8 font-display text-[clamp(1.125rem,1.2vw+0.75rem,1.5rem)]  tracking-[0.08rem] uppercase md:items-end md:text-right"
+			>
 				<a
 					href={emailHref}
-					class="font-body text-xl font-normal lowercase leading-[1.6875rem] text-muted no-underline transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:col-start-2 md:row-start-2"
+					class:list={[linkClass, 'max-w-full break-all sm:break-normal']}
 				>
 					{email}
 				</a>
 
-				<p
-					class="mt-8 font-label text-2xl font-bold uppercase leading-none tracking-[0.27rem] text-footer-ink md:col-start-3 md:row-start-1 md:mt-0"
-				>
-					{socialsHeading}
-				</p>
-				<ul
-					class="flex list-none flex-col gap-[0.875rem] p-0 md:col-start-3 md:row-start-2"
-				>
+				<div class="flex flex-wrap gap-x-10 gap-y-3 md:justify-end social-links">
 					{
 						socials.map((social) => (
-							<li>
-								<a
-									href={social.href}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="inline-flex items-center gap-3 font-body text-xl font-normal lowercase leading-[1.6875rem] text-muted no-underline transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-								>
-									<img
-										src={social.iconSrc}
-										alt={social.iconAlt}
-										width="26"
-										height="26"
-										class="size-[26px] shrink-0 object-cover"
-									/>
-									<span>{social.label}</span>
-								</a>
-							</li>
+							<a
+								href={social.href}
+								target="_blank"
+								rel="noopener noreferrer"
+								class={linkClass}
+							>
+								{social.label}
+							</a>
 						))
 					}
-				</ul>
+				</div>
 			</div>
+		</div>
 	</div>
 </footer>
+
+<style>
+	.site-footer__name {
+		/* Match hero size; tight lh for stacked caps */
+		font-size: clamp(3.5rem, 10vw, 8rem);
+		line-height: 1;
+		letter-spacing: -0.03em;
+	}
+
+	.site-footer__name-line {
+		display: block;
+	}
+
+	/*
+	  All-caps leave empty em-box below the glyph. Pull the last line up so
+	  items-end lines the contact stack up with KAUSHIK’s visual bottom.
+	*/
+	.site-footer__name-line:last-child {
+		margin-bottom: -0.2em;
+	}
+
+	/* Major / mid / minor ruler ticks */
+	.site-footer__ticks {
+		background-image:
+			repeating-linear-gradient(
+				90deg,
+				#111 0,
+				#111 1.5px,
+				transparent 1.5px,
+				transparent 100px
+			),
+			repeating-linear-gradient(
+				90deg,
+				#555 0,
+				#555 1px,
+				transparent 1px,
+				transparent 50px
+			),
+			repeating-linear-gradient(
+				90deg,
+				#999 0,
+				#999 1px,
+				transparent 1px,
+				transparent 10px
+			);
+		background-size:
+			100% 35px,
+			100% 25px,
+			100% 15px;
+		background-repeat: no-repeat;
+	}
+
+	.site-footer__link:hover {
+		color: #b54a4a;
+	}
+
+	.social-links a {
+		line-height: 0.8;
+	}
+</style>
+
+<script>
+	import { initMagneticTypeAll } from '../scripts/magnetic-type';
+
+	initMagneticTypeAll();
+</script>

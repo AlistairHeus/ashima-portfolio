@@ -20,6 +20,34 @@ export interface InitMagneticTypeOptions {
 	readonly charSelector?: string;
 }
 
+/** Options for the post-intro left→right magnetic sweep. */
+export interface MagneticAutoplayOptions {
+	/** Delay before the sweep starts (ms). Default 0. */
+	readonly delay?: number;
+	/** Sweep duration (ms). Default 1200. */
+	readonly duration?: number;
+}
+
+/** Controller returned by {@link initMagneticType}. */
+export interface MagneticTypeController {
+	readonly dispose: () => void;
+	/** Drive a virtual cursor left→right through the midline between lines. */
+	readonly playAutoplay: (options?: MagneticAutoplayOptions) => void;
+}
+
+interface AutoplayState {
+	readonly startTime: number;
+	readonly duration: number;
+	readonly startX: number;
+	readonly endX: number;
+	readonly y: number;
+}
+
+const noopController: MagneticTypeController = {
+	dispose: () => undefined,
+	playAutoplay: () => undefined,
+};
+
 interface CharRect {
 	readonly left: number;
 	readonly top: number;
@@ -152,13 +180,18 @@ const smoothPush = (values: readonly number[]): number[] => {
 };
 
 /**
+ * Smoothstep ease — soft acceleration into / out of the autoplay sweep.
+ */
+const smoothstep = (t: number): number => t * t * (3 - 2 * t);
+
+/**
  * Attach magnetic hover to a heading (or any root that contains magnetic chars).
  * No-ops when reduced motion is preferred or when no chars are found.
- * Returns a disposer that removes listeners and cancels the animation frame.
+ * Returns a controller with dispose + optional autoplay sweep.
  */
 export const initMagneticType = (
 	options: InitMagneticTypeOptions,
-): (() => void) => {
+): MagneticTypeController => {
 	const {
 		root,
 		weightMin = DEFAULT_WEIGHT_MIN,
@@ -170,23 +203,25 @@ export const initMagneticType = (
 	const prefersReduced = window.matchMedia(
 		'(prefers-reduced-motion: reduce)',
 	).matches;
-	if (prefersReduced) return () => undefined;
+	if (prefersReduced) return noopController;
 
 	const chars = Array.from(
 		root.querySelectorAll<HTMLElement>(charSelector),
 	);
 	const count = chars.length;
-	if (count === 0) return () => undefined;
+	if (count === 0) return noopController;
 
 	const wordRanges =
 		options.wordRanges ?? buildWordRangesFromDom(root, charSelector);
-	if (wordRanges.length === 0) return () => undefined;
+	if (wordRanges.length === 0) return noopController;
 
 	/** Softer than a hard follow — keeps motion creamy. */
 	const LERP_ACTIVE = 0.07;
 	const LERP_SETTLE = 0.045;
 	const MOUSE_LERP = 0.1;
 	const EPSILON = 0.02;
+	const AUTOPLAY_DELAY_DEFAULT = 0;
+	const AUTOPLAY_DURATION_DEFAULT = 1200;
 
 	const targetProx = new Float32Array(count);
 	const targetPush = new Float32Array(count);
@@ -202,6 +237,7 @@ export const initMagneticType = (
 	let smoothY = 0;
 	let mouseInitialized = false;
 	let disposed = false;
+	let autoplay: AutoplayState | null = null;
 
 	const lockCharWidths = (): void => {
 		const needsLock = chars.some((el) => !el.style.width);
@@ -230,6 +266,60 @@ export const initMagneticType = (
 	const ensureRects = (): CharRect[] => {
 		if (!rects) captureRects();
 		return rects!;
+	};
+
+	/**
+	 * Virtual cursor path: left→right along the gap between stacked lines
+	 * (falls back to a single-line midline when only one range exists).
+	 */
+	const buildAutoplayPath = (): Omit<
+		AutoplayState,
+		'startTime' | 'duration'
+	> | null => {
+		const bounds = ensureRects();
+		const topRange = wordRanges[0];
+		if (!topRange) return null;
+		const bottomRange = wordRanges[1] ?? topRange;
+
+		let minLeft = Infinity;
+		let maxRight = -Infinity;
+		let topEdge = -Infinity;
+		let bottomEdge = Infinity;
+		let sampleWidth = 0;
+
+		for (let i = topRange.startIdx; i <= topRange.endIdx; i++) {
+			const rect = bounds[i];
+			if (!rect) continue;
+			minLeft = Math.min(minLeft, rect.left);
+			maxRight = Math.max(maxRight, rect.left + rect.width);
+			topEdge = Math.max(topEdge, rect.top + rect.height);
+			sampleWidth = Math.max(sampleWidth, rect.width);
+		}
+
+		for (let i = bottomRange.startIdx; i <= bottomRange.endIdx; i++) {
+			const rect = bounds[i];
+			if (!rect) continue;
+			minLeft = Math.min(minLeft, rect.left);
+			maxRight = Math.max(maxRight, rect.left + rect.width);
+			bottomEdge = Math.min(bottomEdge, rect.top);
+			sampleWidth = Math.max(sampleWidth, rect.width);
+		}
+
+		if (!Number.isFinite(minLeft) || !Number.isFinite(maxRight)) return null;
+
+		const pad = sampleWidth * 1.25;
+		const midY =
+			wordRanges.length > 1 &&
+			Number.isFinite(topEdge) &&
+			Number.isFinite(bottomEdge)
+				? (topEdge + bottomEdge) / 2
+				: (bounds[topRange.startIdx]?.cy ?? 0);
+
+		return {
+			startX: minLeft - pad,
+			endX: maxRight + pad,
+			y: midY,
+		};
 	};
 
 	const computeTargets = (clientX: number, clientY: number): void => {
@@ -288,7 +378,7 @@ export const initMagneticType = (
 	};
 
 	const stillMoving = (): boolean => {
-		if (pointerInside) return true;
+		if (pointerInside || autoplay) return true;
 		for (let i = 0; i < count; i++) {
 			if (
 				Math.abs(currentProx[i]!) > EPSILON ||
@@ -306,7 +396,8 @@ export const initMagneticType = (
 		if (disposed) return;
 
 		if (pointerInside) {
-			// Sticky / transformed parents move under the pointer — refresh bounds.
+			// Real hover wins — cancel any autoplay sweep.
+			autoplay = null;
 			invalidateRects();
 			if (!mouseInitialized) {
 				smoothX = rawX;
@@ -317,12 +408,30 @@ export const initMagneticType = (
 				smoothY += (rawY - smoothY) * MOUSE_LERP;
 			}
 			computeTargets(smoothX, smoothY);
+		} else if (autoplay) {
+			const now = performance.now();
+			if (now < autoplay.startTime) {
+				targetProx.fill(0);
+				targetPush.fill(0);
+			} else {
+				const t = Math.min(
+					1,
+					(now - autoplay.startTime) / autoplay.duration,
+				);
+				const eased = smoothstep(t);
+				const x =
+					autoplay.startX + (autoplay.endX - autoplay.startX) * eased;
+				// Live midline — stays correct if layout shifts mid-sweep.
+				const livePath = buildAutoplayPath();
+				computeTargets(x, livePath?.y ?? autoplay.y);
+				if (t >= 1) autoplay = null;
+			}
 		} else {
 			targetProx.fill(0);
 			targetPush.fill(0);
 		}
 
-		const settling = !pointerInside;
+		const settling = !pointerInside && !autoplay;
 		const lerp = settling ? LERP_SETTLE : LERP_ACTIVE;
 
 		for (let i = 0; i < count; i++) {
@@ -347,6 +456,27 @@ export const initMagneticType = (
 		rafId = requestAnimationFrame(tick);
 	};
 
+	const playAutoplay = (autoplayOptions: MagneticAutoplayOptions = {}): void => {
+		if (disposed || prefersReduced) return;
+		if (window.innerWidth < minDesktopWidth) return;
+
+		invalidateRects();
+		const path = buildAutoplayPath();
+		if (!path) return;
+
+		const delay = autoplayOptions.delay ?? AUTOPLAY_DELAY_DEFAULT;
+		const duration = autoplayOptions.duration ?? AUTOPLAY_DURATION_DEFAULT;
+
+		autoplay = {
+			startTime: performance.now() + delay,
+			duration,
+			startX: path.startX,
+			endX: path.endX,
+			y: path.y,
+		};
+		startLoop();
+	};
+
 	const onMove = (event: MouseEvent): void => {
 		if (window.innerWidth < minDesktopWidth) return;
 		rawX = event.clientX;
@@ -362,6 +492,7 @@ export const initMagneticType = (
 	};
 
 	const onResize = (): void => {
+		autoplay = null;
 		for (const el of chars) {
 			el.style.width = '';
 			el.style.transform = '';
@@ -392,8 +523,9 @@ export const initMagneticType = (
 	window.addEventListener('resize', onResize);
 	window.addEventListener('scroll', onScroll, { passive: true, capture: true });
 
-	return () => {
+	const dispose = (): void => {
 		disposed = true;
+		autoplay = null;
 		if (rafId) cancelAnimationFrame(rafId);
 		rafId = 0;
 		root.removeEventListener('mousemove', onMove);
@@ -403,6 +535,8 @@ export const initMagneticType = (
 			capture: true,
 		} as EventListenerOptions);
 	};
+
+	return { dispose, playAutoplay };
 };
 
 /**

@@ -11,7 +11,15 @@ const roleLabel = 'VISUAL DESIGNER';
 const locationLabel = 'BASED IN INDIA';
 
 const gridSrc = '/images/home/grid.webp';
-const folderSrc = '/images/folder-shape.svg';
+
+/**
+ * Folder silhouette (objectBoundingBox) — same path as ProjectFolder.
+ * Hero paints blue chrome; shared ProjectFolder / folder-shape.svg stay beige.
+ */
+const folderClipPath =
+	'M0 0.05938V0.22084V0.94062C0 0.97341 0.01931 1 0.04314 1H0.95686C0.98069 1 1 0.97341 1 0.94062V0.12983C1 0.09704 0.98095 0.07045 0.95713 0.07045H0.39177C0.36822 0.07045 0.35134 0.05201 0.34046 0.034C0.3292 0.01536 0.31363 0 0.29602 0H0.04314C0.01931 0 0 0.02659 0 0.05938Z';
+
+const heroFolderClipId = 'hero-folder-clip';
 
 interface HeroPolaroid {
 	readonly src: string;
@@ -199,19 +207,28 @@ const folderStuff: readonly FolderStuffCard[] = [
 		aria-hidden="true"
 	>
 		<div class="relative w-full pt-[72.65%]">
-			{/* 1. Tabbed back */}
-			<div
-				class="absolute inset-[-0.76%_-1.53%_-2.91%_-1.14%] z-0"
-				data-hero-folder-back
+			<svg
+				class="pointer-events-none absolute h-px w-px overflow-hidden opacity-0"
+				aria-hidden="true"
+				focusable="false"
 			>
-				<img
-					src={folderSrc}
-					alt=""
-					class="size-full object-fill select-none"
-					draggable="false"
-					loading="eager"
-					decoding="async"
-				/>
+				<defs>
+					<clipPath id={heroFolderClipId} clipPathUnits="objectBoundingBox">
+						<path d={folderClipPath}></path>
+					</clipPath>
+				</defs>
+			</svg>
+
+			{/* 1. Tabbed back — blue chrome (hero-only) */}
+			<div
+				class="hero-folder-back-shadow pointer-events-none absolute inset-0 z-0"
+				data-hero-folder-back
+				aria-hidden="true"
+			>
+				<div
+					class="hero-folder-back absolute inset-0"
+					style={`clip-path: url(#${heroFolderClipId})`}
+				></div>
 			</div>
 
 			{/* 2. Mid pocket — scatter + stuffed cards sit under the flap */}
@@ -360,14 +377,22 @@ const folderStuff: readonly FolderStuffCard[] = [
 		pointer-events: none;
 	}
 
+	.hero-folder-back-shadow {
+		filter: drop-shadow(1px 4px 6.8px rgb(0 0 0 / 0.25));
+	}
+
+	.hero-folder-back {
+		background-image: linear-gradient(180.41deg, #d6e8f6 -9%, #9bb8d4 57%);
+	}
+
 	.hero-folder-flap {
 		background-image: linear-gradient(
 			180.41deg,
-			rgb(243, 234, 227) 2.53%,
-			rgb(191, 166, 147) 196.18%
+			#bed7ed 2.53%,
+			#7a9fbe 196.18%
 		);
 		box-shadow:
-			0 1px 2px rgb(93 64 51 / 0.1),
+			0 1px 2px rgb(59 87 110 / 0.12),
 			0 4px 14px rgb(0 0 0 / 0.1);
 	}
 
@@ -454,10 +479,13 @@ const folderStuff: readonly FolderStuffCard[] = [
 		if (!(root instanceof HTMLElement)) return;
 		if (root.dataset.magneticInit === 'true') return;
 		root.dataset.magneticInit = 'true';
-		initMagneticType({
+		const magnetic = initMagneticType({
 			root,
 			wordRanges: buildLineRanges(nameLines),
 		});
+		// Phantom cursor sweeps the gap between ASHIMA / KAUSHIK, then settles.
+		// Real hover still interrupts and takes over.
+		magnetic.playAutoplay({ delay: 0, duration: 1200 });
 	};
 
 	const boot = () => {
