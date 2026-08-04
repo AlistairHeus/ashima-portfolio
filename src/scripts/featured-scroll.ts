@@ -2,7 +2,7 @@
  * Scroll-driven featured folder stack.
  * Folders rise from below the viewport with their tab labels.
  * A tab becomes clickable only after its folder has landed — and stays clickable.
- * Covered folders (below the centered top) switch to neutral beige chrome.
+ * Covered folders switch to neutral beige once the next reaches ~2/3 of the page.
  */
 
 /** Offset below the viewport used as the enter position for stacking folders. */
@@ -10,6 +10,9 @@ const ENTER_VH = 100;
 
 /** Local progress at which a folder counts as landed (tab unlocks). */
 const LAND_THRESHOLD = 0.92;
+
+/** Local progress at which covered folders fade to neutral beige (~2/3 up the page). */
+const INACTIVE_THRESHOLD = 2 / 3;
 
 /**
  * Initialize the featured case-studies scroll stack on the page.
@@ -78,15 +81,15 @@ export const initFeaturedScroll = (): void => {
 		return Math.min(1, Math.max(0, (progress - start) / (end - start || 1)));
 	};
 
-	/**
-	 * Map 0–1 track progress → folder transforms + inactive chrome.
-	 * Folder 1 stays put; folders 2–4 each rise from below the viewport.
-	 * Once a folder centers on top, earlier folders fade to neutral beige.
-	 */
+/**
+ * Map 0–1 track progress → folder transforms + inactive chrome.
+ * Folder 1 stays put; folders 2–4 each rise from below the viewport.
+ * Covered folders fade to beige once the next one reaches ~2/3 of the page.
+ */
 	const applyProgress = (progress: number): void => {
 		const stackCount = Math.max(1, count - 1);
 
-		/** Highest folder that has reached (near) center — keeps brand; below it go neutral. */
+		/** Highest folder past the inactive threshold — keeps brand; below it go neutral. */
 		let topIndex = 0;
 
 		cards.forEach((card, index) => {
@@ -104,10 +107,10 @@ export const initFeaturedScroll = (): void => {
 				}
 			}
 
-			if (local >= LAND_THRESHOLD) topIndex = index;
+			if (local >= INACTIVE_THRESHOLD) topIndex = index;
 		});
 
-		// Covered folders → neutral ProjectFolder beige; rising/top keep band color.
+		// Covered folders → neutral ProjectFolder beige; rising/top keep band gradient.
 		cards.forEach((card, index) => {
 			card.dataset.inactive = index < topIndex ? 'true' : 'false';
 		});

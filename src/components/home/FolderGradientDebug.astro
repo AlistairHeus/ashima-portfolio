@@ -1,0 +1,238 @@
+---
+/**
+ * Dev-only floating panel to live-tune FeaturedCaseStudies folder gradients.
+ * Copy CSS / vars or download a .css file to paste back into the component.
+ */
+---
+
+<aside
+	class="fg-debug"
+	data-folder-gradient-debug
+	data-collapsed="false"
+	aria-label="Folder gradient debug"
+>
+	<header class="fg-debug__head">
+		<strong class="fg-debug__title">Folder gradients</strong>
+		<button type="button" class="fg-debug__icon-btn" data-fg-toggle aria-label="Collapse panel">
+			☰
+		</button>
+	</header>
+
+	<div class="fg-debug__body">
+		<section class="fg-debug__section">
+			<h4>Shared</h4>
+			<label class="fg-debug__row">
+				<span>Angle <em data-fg-val="angle">180.6</em>°</span>
+				<input data-fg="angle" type="range" min="0" max="360" step="0.01" value="180.6" />
+			</label>
+			<div class="fg-debug__actions">
+				<button type="button" data-fg-flip-angle>Flip angle +180°</button>
+				<button type="button" data-fg-flip>Swap brand stops</button>
+			</div>
+		</section>
+
+		<section class="fg-debug__section">
+			<h4>Inactive underlay</h4>
+			<label class="fg-debug__row fg-debug__row--color">
+				<span>Fill</span>
+				<input data-fg="inactive" type="color" value="#f7f1ec" />
+				<input data-fg-hex="inactive" type="text" value="#f7f1ec" spellcheck="false" />
+			</label>
+		</section>
+
+		<section class="fg-debug__section">
+			<h4>Brand layer (color-mix over accent)</h4>
+			<label class="fg-debug__row">
+				<span>Mix 1 (accent %) <em data-fg-val="bMix1">100</em>%</span>
+				<input data-fg="bMix1" type="range" min="0" max="100" step="1" value="100" />
+			</label>
+			<label class="fg-debug__row fg-debug__row--color">
+				<span>Mix with 1</span>
+				<input data-fg="bWith1" type="color" value="#7a5c45" />
+				<input data-fg-hex="bWith1" type="text" value="#7a5c45" spellcheck="false" />
+			</label>
+			<label class="fg-debug__row">
+				<span>Stop 1 pos <em data-fg-val="bP1">-9</em>%</span>
+				<input data-fg="bP1" type="range" min="-40" max="100" step="1" value="-9" />
+			</label>
+			<label class="fg-debug__row">
+				<span>Mix 2 (accent %) <em data-fg-val="bMix2">49</em>%</span>
+				<input data-fg="bMix2" type="range" min="0" max="100" step="1" value="49" />
+			</label>
+			<label class="fg-debug__row fg-debug__row--color">
+				<span>Mix with 2</span>
+				<input data-fg="bWith2" type="color" value="#ffffff" />
+				<input data-fg-hex="bWith2" type="text" value="#ffffff" spellcheck="false" />
+			</label>
+			<label class="fg-debug__row">
+				<span>Stop 2 pos <em data-fg-val="bP2">74</em>%</span>
+				<input data-fg="bP2" type="range" min="0" max="140" step="1" value="74" />
+			</label>
+			<label class="fg-debug__row">
+				<span>Stroke mix <em data-fg-val="strokeMix">32</em>%</span>
+				<input data-fg="strokeMix" type="range" min="0" max="100" step="1" value="32" />
+			</label>
+		</section>
+
+		<section class="fg-debug__section">
+			<h4>Export</h4>
+			<div class="fg-debug__actions">
+				<button type="button" data-fg-copy-css>Copy CSS</button>
+				<button type="button" data-fg-copy-vars>Copy vars</button>
+				<button type="button" data-fg-download>Download .css</button>
+				<button type="button" data-fg-reset>Reset</button>
+			</div>
+			<pre class="fg-debug__preview" data-fg-preview></pre>
+		</section>
+	</div>
+</aside>
+
+<style>
+	.fg-debug {
+		position: fixed;
+		right: 12px;
+		bottom: 12px;
+		z-index: 9999;
+		width: min(22rem, calc(100vw - 24px));
+		max-height: min(85vh, 44rem);
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		border: 1px solid rgb(0 0 0 / 0.18);
+		background: rgb(255 252 248 / 0.96);
+		color: #2a1f18;
+		font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		font-size: 11px;
+		line-height: 1.35;
+		box-shadow: 0 8px 28px rgb(0 0 0 / 0.18);
+		backdrop-filter: blur(8px);
+	}
+
+	.fg-debug[data-collapsed='true'] {
+		max-height: none;
+	}
+
+	.fg-debug[data-collapsed='true'] .fg-debug__body {
+		display: none;
+	}
+
+	.fg-debug__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		padding: 8px 10px;
+		border-bottom: 1px solid rgb(0 0 0 / 0.1);
+		background: #efe4d8;
+		cursor: default;
+	}
+
+	.fg-debug__title {
+		font-size: 11px;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.fg-debug__icon-btn {
+		border: 1px solid rgb(0 0 0 / 0.2);
+		background: #fff;
+		padding: 2px 6px;
+		cursor: pointer;
+		line-height: 1;
+	}
+
+	.fg-debug__body {
+		overflow: auto;
+		padding: 8px 10px 10px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.fg-debug__section h4 {
+		margin: 0 0 6px;
+		font-size: 10px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		opacity: 0.7;
+	}
+
+	.fg-debug__row {
+		display: grid;
+		gap: 4px;
+		margin-bottom: 6px;
+	}
+
+	.fg-debug__row span {
+		display: flex;
+		justify-content: space-between;
+		gap: 8px;
+	}
+
+	.fg-debug__row em {
+		font-style: normal;
+		opacity: 0.75;
+	}
+
+	.fg-debug__row input[type='range'] {
+		width: 100%;
+	}
+
+	.fg-debug__row--color {
+		grid-template-columns: 1fr auto minmax(5.5rem, 1fr);
+		align-items: center;
+	}
+
+	.fg-debug__row--color span {
+		display: block;
+	}
+
+	.fg-debug__row--color input[type='color'] {
+		width: 2rem;
+		height: 1.4rem;
+		padding: 0;
+		border: 1px solid rgb(0 0 0 / 0.2);
+		background: none;
+		cursor: pointer;
+	}
+
+	.fg-debug__row--color input[type='text'] {
+		width: 100%;
+		border: 1px solid rgb(0 0 0 / 0.2);
+		padding: 2px 4px;
+		font: inherit;
+		background: #fff;
+	}
+
+	.fg-debug__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px;
+		margin-bottom: 6px;
+	}
+
+	.fg-debug__actions button {
+		border: 1px solid rgb(0 0 0 / 0.22);
+		background: #fff;
+		padding: 4px 7px;
+		font: inherit;
+		cursor: pointer;
+	}
+
+	.fg-debug__actions button:hover {
+		background: #f3eae3;
+	}
+
+	.fg-debug__preview {
+		margin: 0;
+		max-height: 10rem;
+		overflow: auto;
+		padding: 6px;
+		border: 1px solid rgb(0 0 0 / 0.12);
+		background: #2a1f18;
+		color: #f3eae3;
+		white-space: pre-wrap;
+		word-break: break-word;
+		font-size: 10px;
+	}
+</style>

@@ -7,48 +7,42 @@
  */
 import Chip from '../Chip.astro';
 import MagneticChars from '../MagneticChars.astro';
+import FolderGradientDebug from './FolderGradientDebug.astro';
 import { caseStudies } from '../../data/work';
 import { getCaseStudyById } from '../../data/case-studies';
 
+const showGradientDebug = import.meta.env.DEV;
+
 interface FolderMeta {
 	readonly folderSrc: string;
-	readonly labelColor: string;
-	readonly titleColor: string;
 }
 
-/** Per-folder chrome (SVG + ink colors matched to each tab). */
+/** Per-folder SVG silhouette (tab cutouts differ by index). */
 const folderMeta: readonly FolderMeta[] = [
-	{
-		folderSrc: '/images/home/folder-1.svg',
-		labelColor: '#3b576e',
-		titleColor: '#4a3a06',
-	},
-	{
-		folderSrc: '/images/home/folder-2.svg',
-		labelColor: '#7c340a',
-		titleColor: '#7c340a',
-	},
-	{
-		folderSrc: '/images/home/folder-3.svg',
-		labelColor: '#4a3a06',
-		titleColor: '#4a3a06',
-	},
-	{
-		folderSrc: '/images/home/folder-4.svg',
-		labelColor: '#2e3716',
-		titleColor: '#2e3716',
-	},
+	{ folderSrc: '/images/home/folder-1.svg' },
+	{ folderSrc: '/images/home/folder-2.svg' },
+	{ folderSrc: '/images/home/folder-3.svg' },
+	{ folderSrc: '/images/home/folder-4.svg' },
 ];
 
 const projects = caseStudies.slice(0, folderMeta.length).map((study, index) => {
 	const folder = folderMeta[index]!;
 	const detail = getCaseStudyById(study.id);
+	/** Hero band — drives ProjectFolder-style gradient fill. */
+	const bandColor = detail?.heroBandColor || '#efe8e0';
+	/** Folder accent — solid SVG outline / edge color. */
+	const folderColor = detail?.folderColor || bandColor;
+	/**
+	 * Fill accent for the brand gradient layer.
+	 * Mythila: old kraft inactive (`#ddc3ae`) reads better than teal folder / empty hero.
+	 */
+	const accentColor = study.id === 'mythila' ? '#ddc3ae' : bandColor;
 	return {
 		id: study.id,
 		label: `PROJECT ${index + 1}`,
 		folderSrc: folder.folderSrc,
-		labelColor: folder.labelColor,
-		titleColor: folder.titleColor,
+		bandColor: accentColor,
+		folderColor,
 		/** Case-study page naming: category above, short title below. */
 		category: detail?.category ?? '',
 		title: detail?.title ?? study.title,
@@ -86,6 +80,18 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 	class="featured bg-surface-warm"
 	aria-label="Featured case studies"
 	data-featured
+	data-folder-gradient-root
+	style="
+		--fg-angle: 180.6deg;
+		--fg-inactive: #f7f1ec;
+		--fg-b-mix1: 100%;
+		--fg-b-with1: #7a5c45;
+		--fg-b-p1: -9%;
+		--fg-b-mix2: 49%;
+		--fg-b-with2: #ffffff;
+		--fg-b-p2: 74%;
+		--fg-stroke-mix: 32%;
+	"
 >
 	{/* Tall track creates scroll distance; stage sticks while folders stack */}
 	<div
@@ -101,7 +107,9 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 			class="featured__sticky sticky top-0 flex min-h-svh flex-col overflow-hidden px-[clamp(1rem,3vw,2rem)] pt-6 pb-8 md:pt-8 md:pb-10"
 			data-featured-pin
 		>
-			<div class="mx-auto flex w-full max-w-[75rem] min-h-0 flex-1 flex-col">
+			{/* Soft dotted field — pinned with the stage so it stays put while folders stack */}
+			<div class="featured__dots pointer-events-none absolute inset-0 z-0" aria-hidden="true"></div>
+			<div class="relative z-10 mx-auto flex w-full max-w-[75rem] min-h-0 flex-1 flex-col">
 				<div class="flex min-h-0 flex-1 flex-col justify-center py-4 md:pt-10">
 				<div
 					class="featured__stage relative mx-auto w-full max-w-[70rem]"
@@ -117,30 +125,27 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 									data-featured-index={index}
 									data-inactive="false"
 									class="featured__card absolute inset-0 size-full"
-									style={`z-index: ${index + 1}; transform: translate3d(0, ${index === 0 ? 0 : 100}vh, 0); --featured-label: ${project.labelColor}; --featured-folder-mask: url('${project.folderSrc}');`}
+									style={`z-index: ${index + 1}; transform: translate3d(0, ${index === 0 ? 0 : 100}vh, 0); --featured-accent: ${project.bandColor}; --featured-outline: ${project.folderColor}; --featured-folder-mask: url('${project.folderSrc}'); filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));`}
 									aria-hidden={index === 0 ? 'false' : 'true'}
 								>
 									{/*
-									  Brand folder + neutral ProjectFolder beige underlay.
-									  Once a later folder centers on top, the brand fades out
-									  so covered folders read as inactive chrome.
+									  Beige underlay always opaque; brand gradient fades over it.
+									  Avoids a see-through hole to n-2 when scrolling back up.
 									*/}
 									<div
 										class="featured__folder-neutral pointer-events-none absolute inset-0"
 										aria-hidden="true"
 									></div>
-									<img
-										src={project.folderSrc}
-										alt=""
+									<div
+										class="featured__folder-brand pointer-events-none absolute inset-0"
 										aria-hidden="true"
-										class="featured__folder-brand pointer-events-none absolute inset-0 size-full object-fill select-none"
-									/>
+									></div>
 
 									{/* Visual tab label — travels with this folder (not the click target) */}
 									<span
 										aria-hidden="true"
 										data-featured-tab-label={project.id}
-										class="featured__tab featured__tab-label pointer-events-none absolute top-[0.85%] z-20 flex h-[5.7%] items-center justify-center truncate px-1 font-label font-bold leading-none tracking-[0.18em] uppercase"
+										class="featured__tab featured__tab-label pointer-events-none absolute top-[0.85%] z-20 flex h-[5.7%] items-center justify-center truncate px-1 font-label font-bold leading-none tracking-[0.18em] text-ink uppercase"
 										style={`left: ${tabSlots[index].left}; width: ${tabSlots[index].width}`}
 									>
 										{project.label}
@@ -185,20 +190,16 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 											<div class="min-w-0 px-1 pb-4 lg:px-0 lg:pb-0">
 												{
 													project.category ? (
-														<p
-															class="font-label text-[clamp(0.75rem,1.4vw+0.35rem,1.5rem)] font-light uppercase leading-none tracking-[0.18em]"
-															style={`color: ${project.titleColor}`}
-														>
+														<p class="font-label text-[clamp(0.75rem,1.4vw+0.35rem,1.5rem)] font-light uppercase leading-none tracking-[0.18em] text-ink">
 															{project.category}
 														</p>
 													) : null
 												}
 												<h3
 													class:list={[
-														'font-display cursor-default text-[clamp(1.75rem,3vw+0.5rem,3.5rem)] leading-[1.15] tracking-normal',
+														'font-display cursor-default text-[clamp(1.75rem,3vw+0.5rem,3.5rem)] leading-[1.15] tracking-normal text-ink',
 														project.category && 'mt-1 md:mt-2',
 													]}
-													style={`color: ${project.titleColor}`}
 													data-magnetic-root
 													data-magnetic-invert
 												>
@@ -258,7 +259,16 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 	</div>
 </section>
 
+{showGradientDebug && <FolderGradientDebug />}
+
 <style>
+	.featured__dots {
+		background-image: url('/images/home/dots.svg');
+		background-size: 14px 14px;
+		background-position: 0 0;
+		background-repeat: repeat;
+	}
+
 	.featured__stage {
 		container-type: inline-size;
 	}
@@ -273,14 +283,12 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 	}
 
 	/*
-	  Neutral underlay — same beige gradient as ProjectFolder back-base.
-	  Masked to the brand SVG silhouette so tab cutouts stay correct.
+	  Folder chrome — masked to SVG silhouette so tab cutouts stay correct.
+	  Neutral beige stays fully opaque underneath; only the brand layer fades.
+	  That way reactivation never punches a hole through to n-2.
 	*/
-	.featured__folder-neutral {
-		background-image: linear-gradient(180.41deg, #f3eae3 -9%, #ddc3ae 57%);
-		opacity: 0;
-		transition: opacity 0.45s ease;
-		filter: drop-shadow(1px 0 3.75px rgb(0 0 0 / 0.25));
+	.featured__folder-neutral,
+	.featured__folder-brand {
 		-webkit-mask-image: var(--featured-folder-mask);
 		mask-image: var(--featured-folder-mask);
 		-webkit-mask-size: 100% 100%;
@@ -291,20 +299,54 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 		mask-position: center;
 	}
 
+	.featured__folder-neutral {
+		/* Covered / inactive fill — solid so stacked tabs read as paper, not brand tint */
+		background: var(--fg-inactive, #f7f1ec);
+		filter: drop-shadow(1px 0 3.75px rgb(0 0 0 / 0.25));
+	}
+
 	.featured__folder-brand {
+		background-image: linear-gradient(
+			var(--fg-angle, 180.6deg),
+			color-mix(
+				in srgb,
+				var(--featured-accent, #ddc3ae) var(--fg-b-mix1, 100%),
+				var(--fg-b-with1, #7a5c45)
+			)
+				var(--fg-b-p1, -9%),
+			color-mix(
+				in srgb,
+				var(--featured-accent, #f3eae3) var(--fg-b-mix2, 49%),
+				var(--fg-b-with2, #ffffff)
+			)
+				var(--fg-b-p2, 74%)
+		);
+		/*
+		  Darker folder-color outline — 2px ring + diagonals so the edge
+		  reads clearly on light bands (e.g. Akshar peach on warm page).
+		*/
+		--featured-stroke: color-mix(
+			in srgb,
+			var(--featured-outline, var(--featured-accent)) var(--fg-stroke-mix, 32%),
+			black
+		);
+		filter:
+			drop-shadow(0 2px 0 var(--featured-stroke))
+			drop-shadow(0 -2px 0 var(--featured-stroke))
+			drop-shadow(2px 0 0 var(--featured-stroke))
+			drop-shadow(-2px 0 0 var(--featured-stroke))
+			drop-shadow(1px 1px 0 var(--featured-stroke))
+			drop-shadow(-1px -1px 0 var(--featured-stroke))
+			drop-shadow(1px -1px 0 var(--featured-stroke))
+			drop-shadow(-1px 1px 0 var(--featured-stroke));
 		transition: opacity 0.45s ease;
 	}
 
 	.featured__tab-label {
-		color: var(--featured-label);
 		transition: color 0.45s ease;
 	}
 
-	/* Covered folders: beige chrome + muted tab ink */
-	.featured__card[data-inactive='true'] .featured__folder-neutral {
-		opacity: 1;
-	}
-
+	/* Covered folders: brand fades out over always-opaque beige; muted tab ink */
 	.featured__card[data-inactive='true'] .featured__folder-brand {
 		opacity: 0;
 	}
@@ -314,7 +356,6 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.featured__folder-neutral,
 		.featured__folder-brand,
 		.featured__tab-label {
 			transition: none;
@@ -328,4 +369,9 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 
 	initFeaturedScroll();
 	initMagneticTypeAll();
+
+	if (import.meta.env.DEV) {
+		const { initFolderGradientDebug } = await import('../../scripts/folder-gradient-debug');
+		initFolderGradientDebug();
+	}
 </script>

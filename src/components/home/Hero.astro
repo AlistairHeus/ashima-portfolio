@@ -314,10 +314,6 @@ const folderStuff: readonly FolderStuffCard[] = [
 							data-hero-polaroid
 							data-rotate={card.rotate}
 							data-mobile-show={card.mobileShow ? 'true' : undefined}
-							data-src={card.src}
-							data-alt={card.alt}
-							data-aspect-ratio={card.aspectRatio}
-							data-z={card.z ?? index + 1}
 							style={`position: fixed; top: ${card.top}; left: ${card.left}; width: ${card.width}; z-index: ${card.z ?? index + 1}; transform: rotate(${card.rotate}deg);`}
 						>
 							<Polaroid
@@ -348,7 +344,7 @@ const folderStuff: readonly FolderStuffCard[] = [
 		{/* Desktop: role label */}
 		<div
 			class="hero-lines absolute hidden items-center md:flex"
-			style="left: 5%; right: 50%; margin-right: min(25vw, 400px);"
+			style="left: 5%; right: 50%; margin-right: min(25vw, 365px);"
 		>
 			<span
 				class="hero-subtitle-text ml-auto whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] font-bold uppercase leading-none tracking-[0.06em] text-[#242424]"
@@ -381,7 +377,7 @@ const folderStuff: readonly FolderStuffCard[] = [
 		{/* Desktop: location label */}
 		<div
 			class="hero-lines absolute hidden items-center md:flex"
-			style="right: 5%; left: 50%; margin-left: min(25vw, 400px);"
+			style="right: 5%; left: 50%; margin-left: min(25vw, 365px);"
 		>
 			<span
 				class="hero-subtitle-text whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] font-bold uppercase leading-none tracking-[0.06em] text-[#242424]"
@@ -525,260 +521,6 @@ const folderStuff: readonly FolderStuffCard[] = [
 			opacity: 0;
 		}
 	}
-
-	/* Debug mode — lift cards + selection frame with resize handles */
-	.hero[data-hero-debug='true'] .hero-polaroid {
-		opacity: 1 !important;
-		outline: none;
-	}
-
-	:global(.hero-debug-frame) {
-		position: absolute;
-		inset: -3px;
-		z-index: 5;
-		pointer-events: none;
-		border: 1.5px solid #60728c;
-		box-sizing: border-box;
-	}
-
-	:global(.hero-debug-handle) {
-		position: absolute;
-		width: 10px;
-		height: 10px;
-		padding: 0;
-		border: 1.5px solid #60728c;
-		border-radius: 1px;
-		background: #fff;
-		box-shadow: 0 0 0 1px rgb(255 255 255 / 0.8);
-		pointer-events: auto;
-		transform: translate(-50%, -50%);
-	}
-
-	:global(.hero-debug-handle:hover),
-	:global(.hero-debug-handle:focus-visible) {
-		background: #60728c;
-		outline: none;
-	}
-
-	:global(.hero-debug-handle[data-handle='nw']) {
-		top: 0;
-		left: 0;
-	}
-	:global(.hero-debug-handle[data-handle='n']) {
-		top: 0;
-		left: 50%;
-	}
-	:global(.hero-debug-handle[data-handle='ne']) {
-		top: 0;
-		left: 100%;
-	}
-	:global(.hero-debug-handle[data-handle='e']) {
-		top: 50%;
-		left: 100%;
-	}
-	:global(.hero-debug-handle[data-handle='se']) {
-		top: 100%;
-		left: 100%;
-	}
-	:global(.hero-debug-handle[data-handle='s']) {
-		top: 100%;
-		left: 50%;
-	}
-	:global(.hero-debug-handle[data-handle='sw']) {
-		top: 100%;
-		left: 0;
-	}
-	:global(.hero-debug-handle[data-handle='w']) {
-		top: 50%;
-		left: 0;
-	}
-
-	:global(.hero-debug-panel) {
-		position: fixed;
-		top: calc(var(--spacing-page-chrome) + 0.75rem);
-		right: 0.75rem;
-		z-index: 200;
-		width: min(22rem, calc(100vw - 1.5rem));
-		max-height: calc(100svh - var(--spacing-page-chrome) - 1.5rem);
-		overflow: auto;
-		padding: 0.85rem 0.95rem 1rem;
-		border: 1px solid rgb(24 24 24 / 0.18);
-		background: rgb(253 251 249 / 0.96);
-		box-shadow: 0 8px 28px rgb(0 0 0 / 0.14);
-		font-family: var(--font-label);
-		font-size: 0.8125rem;
-		color: var(--color-ink);
-		backdrop-filter: blur(8px);
-	}
-
-	:global(.hero-debug-panel__head) {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: 0.5rem;
-		margin: -0.85rem -0.95rem 0.5rem;
-		padding: 0.65rem 0.95rem;
-		border-bottom: 1px solid rgb(24 24 24 / 0.1);
-		cursor: grab;
-		user-select: none;
-		touch-action: none;
-	}
-
-	:global(.hero-debug-panel[data-dragging='true'] .hero-debug-panel__head) {
-		cursor: grabbing;
-	}
-
-	:global(.hero-debug-panel__head span) {
-		color: var(--color-muted);
-		font-size: 0.7rem;
-	}
-
-	:global(.hero-debug-panel__hint) {
-		margin: 0 0 0.75rem;
-		color: var(--color-muted);
-		line-height: 1.35;
-	}
-
-	:global(.hero-debug-panel__field) {
-		display: grid;
-		gap: 0.25rem;
-		margin-bottom: 0.65rem;
-	}
-
-	:global(.hero-debug-panel__field span) {
-		display: flex;
-		justify-content: space-between;
-		gap: 0.5rem;
-	}
-
-	:global(.hero-debug-panel__field em) {
-		font-style: normal;
-		color: var(--color-muted);
-	}
-
-	:global(.hero-debug-panel__field select),
-	:global(.hero-debug-panel__field input[type='range']),
-	:global(.hero-debug-panel__field input[type='text']) {
-		width: 100%;
-		box-sizing: border-box;
-	}
-
-	:global(.hero-debug-panel__field input[type='text']) {
-		padding: 0.35rem 0.45rem;
-		border: 1px solid rgb(24 24 24 / 0.18);
-		background: #fff;
-		font: inherit;
-	}
-
-	:global(.hero-debug-panel__field input[type='text'][readonly]) {
-		background: rgb(24 24 24 / 0.04);
-		color: var(--color-muted);
-	}
-
-	:global(.hero-debug-panel__add) {
-		margin-bottom: 0.75rem;
-		padding-bottom: 0.75rem;
-		border-bottom: 1px solid rgb(24 24 24 / 0.1);
-	}
-
-	:global(.hero-debug-panel__file) {
-		display: grid;
-		gap: 0.3rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-	}
-
-	:global(.hero-debug-panel__file input[type='file']) {
-		width: 100%;
-		font: inherit;
-		font-weight: 400;
-		text-transform: none;
-		letter-spacing: normal;
-	}
-
-	:global(.hero-debug-panel__aspect) {
-		display: flex;
-		align-items: end;
-		gap: 0.4rem;
-		margin-bottom: 0.65rem;
-	}
-
-	:global(.hero-debug-panel__aspect label) {
-		display: grid;
-		flex: 1;
-		gap: 0.2rem;
-	}
-
-	:global(.hero-debug-panel__aspect label span) {
-		color: var(--color-muted);
-		font-size: 0.7rem;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-	}
-
-	:global(.hero-debug-panel__aspect input) {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 0.35rem 0.45rem;
-		border: 1px solid rgb(24 24 24 / 0.18);
-		background: #fff;
-		font: inherit;
-	}
-
-	:global(.hero-debug-panel__aspect-sep) {
-		padding-bottom: 0.4rem;
-		color: var(--color-muted);
-	}
-
-	:global(.hero-debug-panel__check) {
-		display: flex;
-		align-items: center;
-		gap: 0.45rem;
-		margin-bottom: 0.75rem;
-	}
-
-	:global(.hero-debug-panel__actions) {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.4rem;
-		margin-bottom: 0.65rem;
-	}
-
-	:global(.hero-debug-panel__actions button) {
-		flex: 1 1 auto;
-		min-width: 6.5rem;
-		padding: 0.45rem 0.6rem;
-		border: 1px solid rgb(24 24 24 / 0.2);
-		background: #fff;
-		color: var(--color-ink);
-		font: inherit;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		cursor: pointer;
-	}
-
-	:global(.hero-debug-panel__actions button:hover) {
-		border-color: rgb(24 24 24 / 0.4);
-	}
-
-	:global(.hero-debug-panel__out) {
-		width: 100%;
-		resize: vertical;
-		padding: 0.5rem;
-		border: 1px solid rgb(24 24 24 / 0.15);
-		background: #fff;
-		font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-		font-size: 0.65rem;
-		line-height: 1.35;
-	}
-
-	:global(.hero-debug-panel__status) {
-		min-height: 1.1em;
-		margin: 0.4rem 0 0;
-		color: var(--color-primary);
-	}
 </style>
 
 <script is:inline>
@@ -796,10 +538,6 @@ const folderStuff: readonly FolderStuffCard[] = [
 <script>
 	import { initHeroIntro } from '../../scripts/hero-intro';
 	import { initHeroPolaroids } from '../../scripts/hero-polaroids';
-	import {
-		initHeroPolaroidDebug,
-		isHeroPolaroidDebug,
-	} from '../../scripts/hero-polaroid-debug';
 	import {
 		buildLineRanges,
 		initMagneticType,
@@ -855,11 +593,6 @@ const folderStuff: readonly FolderStuffCard[] = [
 		const nameRoot = document.getElementById('hero-heading');
 		if (nameRoot instanceof HTMLElement) {
 			enhanceHeroName(nameRoot);
-		}
-
-		if (isHeroPolaroidDebug()) {
-			initHeroPolaroidDebug();
-			return;
 		}
 
 		const scrollHint = document.querySelector<HTMLElement>(

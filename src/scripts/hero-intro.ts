@@ -94,9 +94,9 @@ export const initHeroIntro = (onComplete?: HeroIntroComplete): void => {
 	tl.to(chars, {
 		opacity: 1,
 		y: 0,
-		duration: 0.72,
-		stagger: { each: 0.028, from: 'start' },
-		ease: 'power3.out',
+		duration: 0.78,
+		stagger: { each: 0.022, from: 'start' },
+		ease: 'power2.out',
 	});
 
 	if (desktopSubtitles.length > 0) {

@@ -180,17 +180,10 @@ const smoothPush = (values: readonly number[]): number[] => {
 };
 
 /**
- * Ease-out-in (≈ GSAP `power3.outIn`) — fast entry, linger mid-sweep, fast exit.
- * Inverse feel of smoothstep / ease-in-out.
+ * Smooth ease-in-out cubic — even acceleration, no mid-sweep linger.
  */
-const easeOutIn = (t: number): number => {
-	if (t < 0.5) {
-		const u = t * 2;
-		return 0.5 * (1 - (1 - u) ** 3);
-	}
-	const u = (t - 0.5) * 2;
-	return 0.5 + 0.5 * u ** 3;
-};
+const easeInOutCubic = (t: number): number =>
+	t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
 
 /**
  * Attach magnetic hover to a heading (or any root that contains magnetic chars).
@@ -426,7 +419,7 @@ export const initMagneticType = (
 					1,
 					(now - autoplay.startTime) / autoplay.duration,
 				);
-				const eased = easeOutIn(t);
+				const eased = easeInOutCubic(t);
 				const x =
 					autoplay.startX + (autoplay.endX - autoplay.startX) * eased;
 				// Live midline — stays correct if layout shifts mid-sweep.
