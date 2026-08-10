@@ -5,8 +5,11 @@
  * White matte + media + optional handwritten caption.
  * Pass `imageSrc` for a photo, or use the default slot for custom media (logos, etc.).
  */
+import type { ImageMetadata } from 'astro';
+import OptimizedImage from './OptimizedImage.astro';
+
 interface Props {
-	readonly imageSrc?: string;
+	readonly imageSrc?: string | ImageMetadata;
 	readonly imageAlt?: string;
 	readonly caption?: string;
 	/** Rotation in degrees. Figma defaults around −2 / +2 / +4. */
@@ -24,6 +27,9 @@ interface Props {
 	readonly class?: string;
 	/** Aspect ratio of the media well, e.g. "341 / 493". */
 	readonly aspectRatio?: string;
+	readonly loading?: 'lazy' | 'eager';
+	readonly sizes?: string;
+	readonly widths?: number[];
 }
 
 const {
@@ -36,6 +42,9 @@ const {
 	href,
 	class: className,
 	aspectRatio,
+	loading = 'lazy',
+	sizes = '(max-width: 768px) 42vw, 16vw',
+	widths = [240, 400, 640],
 } = Astro.props;
 
 const Wrapper = href ? 'a' : 'div';
@@ -61,12 +70,14 @@ const hasSlot = Astro.slots.has('default');
 				hasSlot ? (
 					<slot />
 				) : imageSrc ? (
-					<img
+					<OptimizedImage
 						src={imageSrc}
 						alt={imageAlt}
 						class="block size-full object-cover"
-						loading="lazy"
+						loading={loading}
 						decoding="async"
+						widths={widths}
+						sizes={sizes}
 					/>
 				) : null
 			}

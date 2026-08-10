@@ -3,6 +3,7 @@
  * Case study image gallery — 2×2 grid plus a full-width feature image.
  */
 import type { CaseStudyImage } from '../../data/case-studies';
+import OptimizedImage from '../OptimizedImage.astro';
 
 interface Props {
 	readonly gallery: readonly CaseStudyImage[];
@@ -20,14 +21,16 @@ const { gallery, feature } = Astro.props;
 		{
 			gallery.map((image) => (
 				<figure class="m-0 overflow-hidden">
-					<img
+					<OptimizedImage
 						src={image.src}
 						alt={image.alt}
 						class="aspect-[588/370] w-full object-cover"
-						width="588"
-						height="370"
+						width={588}
+						height={370}
 						loading="lazy"
 						decoding="async"
+						widths={[480, 640, 960]}
+						sizes="(min-width: 768px) 50vw, 100vw"
 					/>
 				</figure>
 			))
@@ -35,14 +38,16 @@ const { gallery, feature } = Astro.props;
 	</div>
 
 	<figure class="mt-4 m-0 overflow-hidden sm:mt-5 md:mt-6">
-		<img
+		<OptimizedImage
 			src={feature.src}
 			alt={feature.alt}
 			class="aspect-[1197/815] w-full object-cover"
-			width="1197"
-			height="815"
+			width={1197}
+			height={815}
 			loading="lazy"
 			decoding="async"
+			widths={[640, 960, 1280, 1600]}
+			sizes="(min-width: 75rem) 75rem, 100vw"
 		/>
 	</figure>
 </section>

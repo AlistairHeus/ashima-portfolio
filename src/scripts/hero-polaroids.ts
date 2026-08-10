@@ -12,6 +12,10 @@
  * folder reads as populated (peeking under the flap) before chrome fades out.
  *
  * Spacer is 200svh: first half = swallow, second half = Featured covers.
+ *
+ * Perf: desktop flies at most 6 cards (markup-capped). Spent flyers use
+ * autoAlpha so opacity 0 also sets visibility:hidden (drops compositor layers).
+ * Scrub reverse restores visibility automatically.
  */
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -41,6 +45,27 @@ interface CardTarget {
 	readonly rotate: number;
 }
 
+type NavigatorWithHints = Navigator & {
+	readonly deviceMemory?: number;
+	readonly connection?: { readonly saveData?: boolean };
+};
+
+/**
+ * Heuristic for devices that struggle with many scrubbed layers + filters.
+ * Kept conservative so mid-range laptops keep the full desktop choreography.
+ */
+const prefersLiteMotion = (): boolean => {
+	const nav = navigator as NavigatorWithHints;
+	if (nav.connection?.saveData) return true;
+	if (typeof nav.deviceMemory === 'number' && nav.deviceMemory <= 2) {
+		return true;
+	}
+	if (navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 2) {
+		return true;
+	}
+	return false;
+};
+
 /**
  * Initialize polaroid scatter → pocket animation.
  */
@@ -61,6 +86,7 @@ export const initHeroPolaroids = (): void => {
 	const prefersReduced = window.matchMedia(
 		'(prefers-reduced-motion: reduce)',
 	).matches;
+	const lite = prefersLiteMotion();
 
 	const allPolaroids = Array.from(
 		hero.querySelectorAll<HTMLElement>('[data-hero-polaroid]'),
@@ -73,15 +99,16 @@ export const initHeroPolaroids = (): void => {
 
 	const visiblePolaroids = () =>
 		allPolaroids.filter((el) => {
-			if (isDesktop()) return true;
-			return el.dataset.mobileShow === 'true';
+			// Lite / mobile: keep the curated mobile set so fewer layers scrub.
+			if (lite || !isDesktop()) return el.dataset.mobileShow === 'true';
+			return true;
 		});
 
 	const folderChrome = [folderBack, folderFlap];
 
 	if (prefersReduced) {
-		gsap.set(folderChrome, { opacity: 0, visibility: 'hidden' });
-		gsap.set(stuffCards, { opacity: 0, visibility: 'hidden' });
+		gsap.set(folderChrome, { autoAlpha: 0 });
+		gsap.set(stuffCards, { autoAlpha: 0 });
 		return;
 	}
 
@@ -91,7 +118,13 @@ export const initHeroPolaroids = (): void => {
 	const measureTargets = (cards: HTMLElement[]): CardTarget[] => {
 		for (const el of cards) {
 			const rotate = Number(el.dataset.rotate ?? 0);
-			gsap.set(el, { x: 0, y: 0, scale: 1, rotation: rotate, opacity: 1 });
+			gsap.set(el, {
+				x: 0,
+				y: 0,
+				scale: 1,
+				rotation: rotate,
+				autoAlpha: 1,
+			});
 		}
 
 		// Measure against the risen folder — cards swallow once it has settled.
@@ -140,11 +173,10 @@ export const initHeroPolaroids = (): void => {
 		const cards = visiblePolaroids();
 		const hide = allPolaroids.filter((el) => !cards.includes(el));
 
-		gsap.set(hide, { opacity: 0 });
-		gsap.set(folderChrome, {
-			opacity: 0,
-			visibility: 'visible',
-		});
+		// autoAlpha:0 → opacity 0 + visibility:hidden (out of compositor).
+		gsap.set(hide, { autoAlpha: 0 });
+		gsap.set(cards, { autoAlpha: 1 });
+		gsap.set(folderChrome, { autoAlpha: 0 });
 		// Rise via `bottom` (not transform) so fixed polaroids stay viewport-pinned.
 		gsap.set(folder, { bottom: '-18%' });
 
@@ -152,7 +184,7 @@ export const initHeroPolaroids = (): void => {
 		for (const el of stuffCards) {
 			const rotate = Number(el.dataset.rotate ?? 0);
 			gsap.set(el, {
-				opacity: 0,
+				autoAlpha: 0,
 				yPercent: 55,
 				scale: 0.92,
 				rotation: rotate * 0.35,
@@ -169,7 +201,11 @@ export const initHeroPolaroids = (): void => {
 				trigger: spacer,
 				start: 'top top',
 				end: '50% top',
-				scrub: 0.7,
+				// Short scrub = less trailing lag on slower devices.
+				scrub: lite ? true : 0.25,
+				onToggle: (self) => {
+					hero.classList.toggle('is-animating', self.isActive);
+				},
 			},
 		});
 
@@ -186,7 +222,7 @@ export const initHeroPolaroids = (): void => {
 		timeline.to(
 			folderChrome,
 			{
-				opacity: 1,
+				autoAlpha: 1,
 				duration: 0.14,
 				ease: 'power2.out',
 			},
@@ -197,6 +233,9 @@ export const initHeroPolaroids = (): void => {
 			const stagger = 0.14 + i * 0.05;
 			const tip = (i % 2 === 0 ? -8 : 8) * 0.45;
 			const settle = (i % 2 === 0 ? -6 : 6) * 0.4;
+
+			// Ensure layer is live before flight (handles scrub reverse from hidden).
+			timeline!.set(target.el, { autoAlpha: 1 }, stagger);
 
 			// Path: clear above the mouth → center over the opening → drop in.
 			// Never skim the left/right edges of the folder silhouette.
@@ -209,7 +248,7 @@ export const initHeroPolaroids = (): void => {
 						y: target.gatherY * 0.2,
 						scale: FLY_SCALE * 1.5,
 						rotation: tip,
-						opacity: 1,
+						autoAlpha: 1,
 						duration: 0.22,
 						ease: 'power2.in',
 					},
@@ -236,7 +275,7 @@ export const initHeroPolaroids = (): void => {
 						y: target.liftY,
 						scale: FLY_SCALE * 1.6,
 						rotation: tip,
-						opacity: 1,
+						autoAlpha: 1,
 						duration: 0.22,
 						ease: 'power2.in',
 					},
@@ -269,13 +308,13 @@ export const initHeroPolaroids = (): void => {
 				},
 				dropAt,
 			);
-			// Finish under the flap
+			// Finish under the flap — autoAlpha hides the layer once spent.
 			timeline!.to(
 				target.el,
 				{
 					scale: FLY_SCALE * 0.5,
 					y: target.y + 12,
-					opacity: 0,
+					autoAlpha: 0,
 					duration: 0.14,
 					ease: 'power1.in',
 				},
@@ -284,22 +323,27 @@ export const initHeroPolaroids = (): void => {
 		});
 
 		// Populate: cards rise from inside the pocket while flyers are mid-drop.
-		stuffCards.forEach((el, i) => {
-			const rotate = Number(el.dataset.rotate ?? 0);
-			const popAt = 0.32 + i * 0.055;
-			timeline!.to(
-				el,
-				{
-					opacity: 1,
-					yPercent: 0,
-					scale: 1,
-					rotation: rotate,
-					duration: 0.28,
-					ease: 'power2.out',
-				},
-				popAt,
-			);
-		});
+		// Lite devices skip pocket stuff to cut animated layer count.
+		if (!lite) {
+			stuffCards.forEach((el, i) => {
+				const rotate = Number(el.dataset.rotate ?? 0);
+				const popAt = 0.32 + i * 0.055;
+				timeline!.to(
+					el,
+					{
+						autoAlpha: 1,
+						yPercent: 0,
+						scale: 1,
+						rotation: rotate,
+						duration: 0.28,
+						ease: 'power2.out',
+					},
+					popAt,
+				);
+			});
+		} else {
+			gsap.set(stuffCards, { autoAlpha: 0 });
+		}
 
 		// Keep folder + stuffed cards fully opaque; Featured covers them on scroll.
 		timeline.to(

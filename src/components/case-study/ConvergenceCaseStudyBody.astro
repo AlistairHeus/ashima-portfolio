@@ -11,6 +11,7 @@
  * 5. Final spread pair
  */
 import type { ConvergenceCaseStudyContent } from '../../data/case-studies';
+import OptimizedImage from '../OptimizedImage.astro';
 
 interface Props {
 	readonly content: ConvergenceCaseStudyContent;
@@ -24,14 +25,16 @@ const rowGap = 'mt-[clamp(0.75rem,1.5vw,1.5rem)]';
 <div class="convergence-body mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16">
 	<section aria-label="Book cover">
 		<figure class="m-0 overflow-hidden">
-			<img
+			<OptimizedImage
 				src={content.cover.src}
 				alt={content.cover.alt}
 				class="block h-auto w-full"
-				width="1197"
-				height="898"
+				width={1197}
+				height={898}
 				loading="lazy"
 				decoding="async"
+				widths={[640, 960, 1280, 1600]}
+				sizes="(min-width: 75rem) 75rem, 100vw"
 			/>
 		</figure>
 
@@ -54,15 +57,17 @@ const rowGap = 'mt-[clamp(0.75rem,1.5vw,1.5rem)]';
 		{
 			content.spreads.slice(0, 2).map((image) => (
 				<figure class="m-0 overflow-hidden">
-					<img
+					<OptimizedImage
 						src={image.src}
 						alt={image.alt}
 						class="block h-auto w-full"
-						width="588"
-						height="441"
+						width={588}
+						height={441}
 						loading="lazy"
 						decoding="async"
-					/>
+				widths={[480, 640, 960]}
+				sizes="(min-width: 768px) 50vw, 100vw"
+			/>
 				</figure>
 			))
 		}
@@ -72,15 +77,17 @@ const rowGap = 'mt-[clamp(0.75rem,1.5vw,1.5rem)]';
 		{
 			content.spreads.slice(2, 4).map((image) => (
 				<figure class="m-0 overflow-hidden">
-					<img
+					<OptimizedImage
 						src={image.src}
 						alt={image.alt}
 						class="block h-auto w-full"
-						width="588"
-						height="441"
+						width={588}
+						height={441}
 						loading="lazy"
 						decoding="async"
-					/>
+				widths={[480, 640, 960]}
+				sizes="(min-width: 768px) 50vw, 100vw"
+			/>
 				</figure>
 			))
 		}
@@ -88,14 +95,16 @@ const rowGap = 'mt-[clamp(0.75rem,1.5vw,1.5rem)]';
 
 	<section class={rowGap} aria-label="Feature spread">
 		<figure class="m-0 overflow-hidden">
-			<img
+			<OptimizedImage
 				src={content.feature.src}
 				alt={content.feature.alt}
 				class="block h-auto w-full"
-				width="1200"
-				height="900"
+				width={1200}
+				height={900}
 				loading="lazy"
 				decoding="async"
+				widths={[640, 960, 1280, 1600]}
+				sizes="(min-width: 75rem) 75rem, 100vw"
 			/>
 		</figure>
 	</section>
@@ -104,15 +113,17 @@ const rowGap = 'mt-[clamp(0.75rem,1.5vw,1.5rem)]';
 		{
 			content.spreads.slice(4, 6).map((image) => (
 				<figure class="m-0 overflow-hidden">
-					<img
+					<OptimizedImage
 						src={image.src}
 						alt={image.alt}
 						class="block h-auto w-full"
-						width="588"
-						height="441"
+						width={588}
+						height={441}
 						loading="lazy"
 						decoding="async"
-					/>
+				widths={[480, 640, 960]}
+				sizes="(min-width: 768px) 50vw, 100vw"
+			/>
 				</figure>
 			))
 		}

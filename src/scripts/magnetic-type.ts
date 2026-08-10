@@ -228,9 +228,15 @@ export const initMagneticType = (
 	const targetPush = new Float32Array(count);
 	const currentProx = new Float32Array(count);
 	const currentPush = new Float32Array(count);
+	/** Last applied values — skip DOM writes when unchanged. */
+	const lastProx = new Float32Array(count);
+	const lastPush = new Float32Array(count);
+	lastProx.fill(Number.NaN);
+	lastPush.fill(Number.NaN);
 
 	let rects: CharRect[] | null = null;
 	let rafId = 0;
+	let scrollRafId = 0;
 	let pointerInside = false;
 	let rawX = 0;
 	let rawY = 0;
@@ -239,6 +245,8 @@ export const initMagneticType = (
 	let mouseInitialized = false;
 	let disposed = false;
 	let autoplay: AutoplayState | null = null;
+
+	const STYLE_EPSILON = 0.015;
 
 	const lockCharWidths = (): void => {
 		const needsLock = chars.some((el) => !el.style.width);
@@ -371,10 +379,19 @@ export const initMagneticType = (
 			if (!el) continue;
 			const prox = currentProx[i]!;
 			const push = currentPush[i]!;
+			// Skip writes when the glyph hasn't moved enough to matter visually.
+			if (
+				Math.abs(prox - lastProx[i]!) < STYLE_EPSILON &&
+				Math.abs(push - lastPush[i]!) < STYLE_EPSILON
+			) {
+				continue;
+			}
+			lastProx[i] = prox;
+			lastPush[i] = push;
 			const weight = weightMin + (weightMax - weightMin) * prox;
 			el.style.transform = `translate3d(${push.toFixed(2)}px, 0, 0)`;
-			el.style.fontWeight = String(weight);
-			el.style.fontVariationSettings = `'wght' ${weight.toFixed(1)}`;
+			el.style.fontWeight = String(Math.round(weight));
+			el.style.fontVariationSettings = `'wght' ${weight.toFixed(0)}`;
 		}
 	};
 
@@ -399,7 +416,8 @@ export const initMagneticType = (
 		if (pointerInside) {
 			// Real hover wins — cancel any autoplay sweep.
 			autoplay = null;
-			invalidateRects();
+			// Reuse cached rects (invalidated on scroll/resize only).
+			// Measuring every glyph every frame was the main cost.
 			if (!mouseInitialized) {
 				smoothX = rawX;
 				smoothY = rawY;
@@ -448,6 +466,8 @@ export const initMagneticType = (
 			rafId = 0;
 			currentProx.fill(0);
 			currentPush.fill(0);
+			lastProx.fill(Number.NaN);
+			lastPush.fill(Number.NaN);
 			applyStyles();
 		}
 	};
@@ -501,10 +521,17 @@ export const initMagneticType = (
 		lockMagneticCharWidths(root, chars, weightMin, weightMax);
 		invalidateRects();
 		captureRects();
+		lastProx.fill(Number.NaN);
+		lastPush.fill(Number.NaN);
 	};
 
 	const onScroll = (): void => {
-		invalidateRects();
+		// Coalesce scroll invalidation to one measure per frame.
+		if (scrollRafId) return;
+		scrollRafId = requestAnimationFrame(() => {
+			scrollRafId = 0;
+			invalidateRects();
+		});
 	};
 
 	const boot = (): void => {
@@ -528,7 +555,9 @@ export const initMagneticType = (
 		disposed = true;
 		autoplay = null;
 		if (rafId) cancelAnimationFrame(rafId);
+		if (scrollRafId) cancelAnimationFrame(scrollRafId);
 		rafId = 0;
+		scrollRafId = 0;
 		root.removeEventListener('mousemove', onMove);
 		root.removeEventListener('mouseleave', onLeave);
 		window.removeEventListener('resize', onResize);

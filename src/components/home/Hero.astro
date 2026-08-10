@@ -5,12 +5,12 @@
  * Folder matches ProjectFolder (back → cards → front flap).
  */
 import Polaroid from '../Polaroid.astro';
+import { getAsset } from '../../lib/images';
 
-/** Left / right subtitles — single-line, Lato Bold, all caps. */
+/** Role eyebrow above the name — single-line, Lato Bold, all caps. */
 const roleLabel = 'VISUAL DESIGNER';
-const locationLabel = 'BASED IN INDIA';
 
-const gridSrc = '/images/home/grid.webp';
+const gridSrc = getAsset('/images/home/grid.webp').src;
 
 /**
  * Folder silhouette (objectBoundingBox) — same path as ProjectFolder.
@@ -49,7 +49,7 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		mobileShow: true,
 	},
 	{
-		src: '/images/case-studies/mythila/animation.gif',
+		src: '/images/work/03-mythila.png',
 		alt: 'Mythila typeface',
 		top: '64.6%',
 		left: '85.7%',
@@ -111,7 +111,7 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		z: 7,
 	},
 	{
-		src: '/images/case-studies/convergence/convergence_cover.gif',
+		src: '/images/case-studies/convergence/cover.png',
 		alt: 'Convergence',
 		top: '40.9%',
 		left: '83.8%',
@@ -140,7 +140,7 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		aspectRatio: '5 / 4',
 		rotate: 9,
 		z: 50,
-	}
+	},
 ];
 /**
  * Absolute cards that live in the pocket (back → stuff → flap).
@@ -179,7 +179,7 @@ const folderStuff: readonly FolderStuffCard[] = [
 		z: 3,
 	},
 	{
-		src: '/images/case-studies/mythila/animation.gif',
+		src: '/images/work/03-mythila.png',
 		alt: '',
 		left: '48%',
 		top: '1%',
@@ -338,24 +338,11 @@ const folderStuff: readonly FolderStuffCard[] = [
 	</div>
 
 	<div
-		class="hero-title-group relative z-10 flex w-full items-center justify-center"
+		class="hero-title-group relative z-10 flex w-full flex-col items-center justify-center"
 		style="margin-top: auto; margin-bottom: 40vh;"
 	>
-		{/* Desktop: role label */}
-		<div
-			class="hero-lines absolute hidden items-center md:flex"
-			style="left: 5%; right: 50%; margin-right: min(25vw, 365px);"
-		>
-			<span
-				class="hero-subtitle-text ml-auto whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] font-bold uppercase leading-none tracking-[0.06em] text-[#242424]"
-			>
-				{roleLabel}
-			</span>
-		</div>
-
-		{/* Mobile role */}
 		<p
-			class="hero-mobile-subtitle mb-3 whitespace-nowrap text-center font-label text-sm font-bold uppercase leading-none tracking-[0.06em] text-[#242424] md:hidden"
+			class="hero-subtitle mb-3 whitespace-nowrap text-center font-label text-[clamp(0.875rem,1.1vw,1.125rem)] font-bold uppercase leading-none tracking-[0.06em] text-[#242424]"
 		>
 			{roleLabel}
 		</p>
@@ -366,25 +353,6 @@ const folderStuff: readonly FolderStuffCard[] = [
 		>
 			Ashima Kaushik
 		</h1>
-
-		{/* Mobile location */}
-		<p
-			class="hero-mobile-subtitle mt-3 whitespace-nowrap text-center font-label text-sm font-bold uppercase leading-none tracking-[0.06em] text-[#242424] md:hidden"
-		>
-			{locationLabel}
-		</p>
-
-		{/* Desktop: location label */}
-		<div
-			class="hero-lines absolute hidden items-center md:flex"
-			style="right: 5%; left: 50%; margin-left: min(25vw, 365px);"
-		>
-			<span
-				class="hero-subtitle-text whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] font-bold uppercase leading-none tracking-[0.06em] text-[#242424]"
-			>
-				{locationLabel}
-			</span>
-		</div>
 	</div>
 
 </section>
@@ -409,17 +377,24 @@ const folderStuff: readonly FolderStuffCard[] = [
 	}
 
 	:global(.hero-name-char) {
-		will-change: transform, font-variation-settings, opacity;
+		display: inline-block;
 	}
 
-	.hero-polaroid {
-		will-change: transform, opacity;
-	}
-
+	.hero-polaroid,
 	.hero-stuff {
-		will-change: transform, opacity;
 		opacity: 0;
 		pointer-events: none;
+	}
+
+	.hero[data-hero-intro='done'] .hero-polaroid {
+		opacity: 1;
+		pointer-events: none;
+	}
+
+	.hero.is-animating .hero-polaroid,
+	.hero.is-animating .hero-stuff,
+	.hero.is-animating :global(.hero-name-char) {
+		will-change: transform, opacity;
 	}
 
 	.hero-scroll-hint {
@@ -499,7 +474,6 @@ const folderStuff: readonly FolderStuffCard[] = [
 
 	[data-hero-folder-back],
 	[data-hero-folder-flap] {
-		will-change: opacity;
 		opacity: 0;
 	}
 
@@ -511,12 +485,10 @@ const folderStuff: readonly FolderStuffCard[] = [
 		.hero[data-hero-intro='pending']
 			.hero-name:not([data-hero-name-enhanced='true']),
 		.hero[data-hero-intro='pending'] :global(.hero-name-char),
-		.hero[data-hero-intro='pending'] .hero-subtitle-text,
-		.hero[data-hero-intro='pending'] .hero-mobile-subtitle,
+		.hero[data-hero-intro='pending'] .hero-subtitle,
 		.hero[data-hero-intro='pending'] .hero-polaroid,
 		.hero[data-hero-intro='running'] :global(.hero-name-char),
-		.hero[data-hero-intro='running'] .hero-subtitle-text,
-		.hero[data-hero-intro='running'] .hero-mobile-subtitle,
+		.hero[data-hero-intro='running'] .hero-subtitle,
 		.hero[data-hero-intro='running'] .hero-polaroid {
 			opacity: 0;
 		}

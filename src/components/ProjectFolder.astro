@@ -15,6 +15,8 @@
  *
  * Optional default slot for title / description / chips below.
  */
+import OptimizedImage from './OptimizedImage.astro';
+
 interface Props {
 	readonly number: string;
 	readonly imageSrc: string;
@@ -145,12 +147,14 @@ const folderClipPath =
 				<div
 					class="project-folder__photo relative aspect-[402/238] w-[96.3%] -rotate-4 overflow-hidden rounded-xl shadow-[0px_1px_5.5px_0px_rgba(0,0,0,0.25)] transition-transform duration-300 ease-out group-hover/folder:rotate-0 group-hover/card:rotate-0 motion-reduce:transition-none"
 				>
-					<img
+					<OptimizedImage
 						src={imageSrc}
 						alt={imageAlt}
 						class="absolute inset-0 size-full object-cover"
 						loading="lazy"
 						decoding="async"
+						widths={[400, 640, 960]}
+						sizes="(min-width: 768px) 30vw, 80vw"
 					/>
 				</div>
 			</div>

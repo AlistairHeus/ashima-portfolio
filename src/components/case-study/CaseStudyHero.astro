@@ -18,6 +18,7 @@
 import Navbar from '../Navbar.astro';
 import MagneticChars from '../MagneticChars.astro';
 import type { CaseStudyHeroLayer } from '../../data/case-studies';
+import OptimizedImage from '../OptimizedImage.astro';
 
 interface Props {
 	readonly number: string;
@@ -71,10 +72,14 @@ const useLayers = Boolean(heroLayers && heroLayers.length > 0);
 	>
 		{
 			watermarkSrc && (
-				<img
+				<OptimizedImage
 					src={watermarkSrc}
 					alt=""
-					class="absolute inset-x-0 -bottom-15  w-full object-cover object-bottom select-none opacity-90"
+					aria-hidden="true"
+					class="absolute inset-x-0 -bottom-15 w-full object-cover object-bottom select-none opacity-90"
+					widths={[640, 960, 1280, 1600]}
+					sizes="100vw"
+					decoding="async"
 				/>
 			)
 		}
@@ -146,24 +151,30 @@ const useLayers = Boolean(heroLayers && heroLayers.length > 0);
 						aria-label={imageAlt}
 					>
 						{heroLayers!.map((layer) => (
-							<img
+							<OptimizedImage
 								src={layer.src}
 								alt={layer.alt}
 								class={layer.className}
+								loading="eager"
 								decoding="async"
 								fetchpriority="high"
+								widths={[640, 960, 1280, 1600]}
+								sizes="(min-width: 75rem) 75rem, 100vw"
 							/>
 						))}
 					</div>
 				) : (
-					<img
+					<OptimizedImage
 						src={imageSrc}
 						alt={imageAlt}
 						class="mx-auto block aspect-[1200/420] h-auto w-full object-cover object-center"
-						width="1200"
-						height="420"
+						width={1200}
+						height={420}
+						loading="eager"
 						fetchpriority="high"
 						decoding="async"
+						widths={[640, 960, 1280, 1600]}
+						sizes="(min-width: 75rem) 75rem, 100vw"
 					/>
 				)
 			}

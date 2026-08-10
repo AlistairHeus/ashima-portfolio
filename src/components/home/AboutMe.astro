@@ -3,6 +3,7 @@
  * About me + what shapes my work — scrapbook panel between Hero and Featured.
  * Figma 458:1260. Assets: torn-page, torn-description (avatar baked in), binder-clip.
  */
+import OptimizedImage from '../OptimizedImage.astro';
 
 interface Pillar {
 	readonly title: string;
@@ -60,15 +61,15 @@ const pillars: readonly Pillar[] = [
 <section class="about-me relative z-20 overflow-x-clip" aria-label="About me" data-about-me>
 	{/* Full scrapbook sheet — bottom tear extends over Featured */}
 	<div class="about-me__sheet pointer-events-none absolute inset-x-0 top-0 -z-10 w-full select-none">
-		<img
+		<OptimizedImage
 			src="/images/home/torn-page.png"
 			alt=""
 			aria-hidden="true"
 			class="about-me__sheet-img absolute inset-0 size-full object-fill [filter:drop-shadow(0_4px_12px_rgb(0_0_0_/0.1))_drop-shadow(0_-4px_12px_rgb(0_0_0_/_0.1))]"
 			decoding="async"
+			widths={[960, 1440, 1920, 2560]}
+			sizes="100vw"
 		/>
-		{/* Paper grain — masked to the torn silhouette so tears stay clean */}
-		<div class="about-me__texture absolute inset-0" aria-hidden="true"></div>
 	</div>
 
 	<div
@@ -85,12 +86,14 @@ const pillars: readonly Pillar[] = [
 		  Quote sits on the paper area to the right of the badge.
 		*/}
 		<figure class="about-me__blurb relative  w-full max-w-[50rem]">
-			<img
+			<OptimizedImage
 				src="/images/home/torn-description.png"
 				alt=""
 				aria-hidden="true"
 				class="pointer-events-none relative z-0 w-full select-none drop-shadow-[0_2px_2px_rgb(0_0_0_/_0.2)]"
 				decoding="async"
+				widths={[640, 960, 1280, 1600]}
+				sizes="(min-width: 50rem) 50rem, 100vw"
 			/>
 			<figcaption
 				class="about-me__quote absolute ml-8 pb-4 z-10 font-label text-[clamp(0.8125rem,1.1vw+0.45rem,1.25rem)] leading-[1.35] text-[#2e2f38]"
@@ -116,14 +119,20 @@ const pillars: readonly Pillar[] = [
 						class="about-me__pillar relative mx-auto w-full max-w-[17.625rem] pt-[2.65rem]"
 						style={`transform: rotate(${pillar.rotate}deg)`}
 					>
-						<img
-							src="/images/home/binder-clip.png"
-							alt=""
-							aria-hidden="true"
+						<div
 							class="about-me__clip pointer-events-none absolute -top-2 left-1/2 z-20 w-[clamp(3.75rem,8vw,5.75rem)] select-none drop-shadow-[0_4px_4px_rgb(0_0_0_/_0.33)]"
 							style={`transform: translateX(-50%) rotate(${pillar.clipRotate}deg)`}
-							decoding="async"
-						/>
+						>
+							<OptimizedImage
+								src="/images/home/binder-clip.png"
+								alt=""
+								aria-hidden="true"
+								class="block h-auto w-full"
+								decoding="async"
+								widths={[96, 160, 240]}
+								sizes="5.75rem"
+							/>
+						</div>
 						<article
 							class="flex min-h-[clamp(10.5rem,22vw,12.375rem)] flex-col items-center justify-center gap-3 px-5 py-6 text-center shadow-[0_4px_4px_rgb(0_0_0_/_0.25)]"
 							style={`background: ${pillar.bg}`}
@@ -162,23 +171,6 @@ const pillars: readonly Pillar[] = [
 
 	.about-me__sheet {
 		height: calc(100% + var(--about-tear-overlap));
-	}
-
-	.about-me__texture {
-		background-image: url('/images/home/paper-texture.jpeg');
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-		mix-blend-mode: multiply;
-		opacity: 0.55;
-		-webkit-mask-image: url('/images/home/torn-page.png');
-		mask-image: url('/images/home/torn-page.png');
-		-webkit-mask-size: 100% 100%;
-		mask-size: 100% 100%;
-		-webkit-mask-repeat: no-repeat;
-		mask-repeat: no-repeat;
-		-webkit-mask-position: center;
-		mask-position: center;
 	}
 
 	/* Quote sits on the paper band — left clears the baked-in avatar badge */

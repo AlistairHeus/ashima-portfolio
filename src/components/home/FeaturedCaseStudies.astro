@@ -7,6 +7,7 @@
  */
 import Chip from '../Chip.astro';
 import MagneticChars from '../MagneticChars.astro';
+import OptimizedImage from '../OptimizedImage.astro';
 import { caseStudies } from '../../data/work';
 import { getCaseStudyById } from '../../data/case-studies';
 
@@ -14,13 +15,19 @@ interface FolderMeta {
 	readonly folderSrc: string;
 }
 
-/** Per-folder SVG silhouette (tab cutouts differ by index). */
+/**
+ * Per-folder SVG silhouette (tab cutouts differ by index).
+ * Kept in `public/images` — CSS mask-image breaks on Vite data-URI SVGs
+ * (attribute quotes truncate `url('...')`).
+ */
 const folderMeta: readonly FolderMeta[] = [
 	{ folderSrc: '/images/home/folder-1.svg' },
 	{ folderSrc: '/images/home/folder-2.svg' },
 	{ folderSrc: '/images/home/folder-3.svg' },
 	{ folderSrc: '/images/home/folder-4.svg' },
 ];
+
+const dotsUrl = '/images/home/dots.svg';
 
 const projects = caseStudies.slice(0, folderMeta.length).map((study, index) => {
 	const folder = folderMeta[index]!;
@@ -93,7 +100,11 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 			data-featured-pin
 		>
 			{/* Soft dotted field — pinned with the stage so it stays put while folders stack */}
-			<div class="featured__dots pointer-events-none absolute inset-0 z-0" aria-hidden="true"></div>
+			<div
+				class="featured__dots pointer-events-none absolute inset-0 z-0"
+				aria-hidden="true"
+				style={`background-image: url('${dotsUrl}')`}
+			></div>
 
 			{/*
 			  Scroll cue — bottom-center, under the folders (z-1 < content z-10)
@@ -130,7 +141,7 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 									data-featured-index={index}
 									data-inactive="false"
 									class="featured__card absolute inset-0 size-full"
-									style={`z-index: ${index + 1}; transform: translate3d(0, ${index === 0 ? 0 : 100}vh, 0); --featured-accent: ${project.bandColor}; --featured-outline: ${project.folderColor}; --featured-folder-mask: url('${project.folderSrc}'); filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));`}
+									style={`z-index: ${index + 1}; transform: translate3d(0, ${index === 0 ? 0 : 100}vh, 0); --featured-accent: ${project.bandColor}; --featured-outline: ${project.folderColor}; --featured-folder-mask: url('${project.folderSrc}');`}
 									aria-hidden={index === 0 ? 'false' : 'true'}
 								>
 									{/*
@@ -169,26 +180,32 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 										<div class="grid h-full items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12 xl:gap-16">
 											<div class="relative z-10 mx-auto w-full max-w-[43rem]">
 												<div class="overflow-hidden rounded-xl shadow-[0px_1px_6.6px_0_rgba(0,0,0,0.25)]">
-													<img
+													<OptimizedImage
 														src={project.imageSrc}
 														alt=""
 														aria-hidden="true"
 														class="aspect-square size-full object-cover"
 														loading={index === 0 ? 'eager' : 'lazy'}
 														decoding="async"
+														widths={[480, 720, 960, 1200]}
+														sizes="(min-width: 1024px) 43rem, 90vw"
 													/>
 												</div>
-												<img
+												<OptimizedImage
 													src="/images/home/kraft-tape.png"
 													alt=""
 													aria-hidden="true"
 													class="pointer-events-none absolute -top-6 -right-4 z-20 w-[28%] max-w-[10rem] -rotate-[140deg] select-none md:-top-5 md:-right-10"
+													widths={[160, 240, 320]}
+													sizes="10rem"
 												/>
-												<img
+												<OptimizedImage
 													src="/images/home/kraft-tape.png"
 													alt=""
 													aria-hidden="true"
 													class="pointer-events-none absolute -bottom-4 -left-4 z-20 w-[28%] max-w-[10rem] rotate-[40deg] select-none md:-bottom-5 md:-left-10"
+													widths={[160, 240, 320]}
+													sizes="10rem"
 												/>
 											</div>
 
@@ -266,7 +283,6 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 
 <style>
 	.featured__dots {
-		background-image: url('/images/home/dots.svg');
 		background-size: 14px 14px;
 		background-position: 0 0;
 		background-repeat: repeat;
@@ -283,6 +299,7 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 
 	.featured__card {
 		will-change: transform;
+		contain: layout paint;
 	}
 
 	.featured-scroll-hint {
@@ -338,6 +355,7 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 	  Folder chrome — masked to SVG silhouette so tab cutouts stay correct.
 	  Neutral beige stays fully opaque underneath; only the brand layer fades.
 	  That way reactivation never punches a hole through to n-2.
+	  No drop-shadow / box-shadow: masks + filters while transforming are costly.
 	*/
 	.featured__folder-neutral,
 	.featured__folder-brand {
@@ -354,7 +372,6 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 	.featured__folder-neutral {
 		/* Covered / inactive fill — solid so stacked tabs read as paper, not brand tint */
 		background: #f7f1ec;
-		filter: drop-shadow(1px 0 3.75px rgb(0 0 0 / 0.25));
 	}
 
 	.featured__folder-brand {
@@ -363,24 +380,6 @@ const trackHeightVh = Math.max(1, projects.length) * 100;
 			color-mix(in srgb, var(--featured-accent, #ddc3ae) 100%, #7a5c45) -9%,
 			color-mix(in srgb, var(--featured-accent, #f3eae3) 49%, #ffffff) 74%
 		);
-		/*
-		  Darker folder-color outline — 2px ring + diagonals so the edge
-		  reads clearly on light bands (e.g. Akshar peach on warm page).
-		*/
-		--featured-stroke: color-mix(
-			in srgb,
-			var(--featured-outline, var(--featured-accent)) 32%,
-			black
-		);
-		filter:
-			drop-shadow(0 2px 0 var(--featured-stroke))
-			drop-shadow(0 -2px 0 var(--featured-stroke))
-			drop-shadow(2px 0 0 var(--featured-stroke))
-			drop-shadow(-2px 0 0 var(--featured-stroke))
-			drop-shadow(1px 1px 0 var(--featured-stroke))
-			drop-shadow(-1px -1px 0 var(--featured-stroke))
-			drop-shadow(1px -1px 0 var(--featured-stroke))
-			drop-shadow(-1px 1px 0 var(--featured-stroke));
 		transition: opacity 0.45s ease;
 	}
 

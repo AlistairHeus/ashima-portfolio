@@ -20,6 +20,7 @@ export const initHeroIntro = (onComplete?: HeroIntroComplete): void => {
 	hero.dataset.heroIntroInit = 'true';
 
 	const finish = (): void => {
+		hero.classList.remove('is-animating');
 		hero.dataset.heroIntro = 'done';
 		hero.dispatchEvent(new CustomEvent('herointrodone', { bubbles: true }));
 		onComplete?.();
@@ -33,11 +34,7 @@ export const initHeroIntro = (onComplete?: HeroIntroComplete): void => {
 	const chars = Array.from(
 		hero.querySelectorAll<HTMLElement>('[data-magnetic-char]'),
 	);
-	const subtitles = Array.from(
-		hero.querySelectorAll<HTMLElement>(
-			'.hero-subtitle-text, .hero-mobile-subtitle',
-		),
-	);
+	const subtitle = hero.querySelector<HTMLElement>('.hero-subtitle');
 	const polaroids = Array.from(
 		hero.querySelectorAll<HTMLElement>('[data-hero-polaroid]'),
 	).filter((el) => {
@@ -52,32 +49,22 @@ export const initHeroIntro = (onComplete?: HeroIntroComplete): void => {
 
 	if (prefersReduced) {
 		gsap.set(chars, { opacity: 1, y: 0, clearProps: 'transform' });
-		gsap.set(subtitles, { opacity: 1, x: 0, y: 0 });
-		gsap.set(polaroids, { opacity: 1, scale: 1, y: 0 });
+		if (subtitle) gsap.set(subtitle, { opacity: 1, y: 0 });
+		gsap.set(polaroids, { autoAlpha: 1, scale: 1, y: 0 });
 		finish();
 		return;
 	}
 
 	hero.dataset.heroIntro = 'running';
-
-	const desktopSubtitles = Array.from(
-		hero.querySelectorAll<HTMLElement>('.hero-subtitle-text'),
-	);
-	const mobileSubtitles = Array.from(
-		hero.querySelectorAll<HTMLElement>('.hero-mobile-subtitle'),
-	);
+	hero.classList.add('is-animating');
 
 	gsap.set(chars, { opacity: 0, y: '0.4em' });
-	gsap.set(desktopSubtitles, {
-		opacity: 0,
-		x: (i) => (i === 0 ? -28 : 28),
-	});
-	gsap.set(mobileSubtitles, { opacity: 0, y: 12 });
+	if (subtitle) gsap.set(subtitle, { opacity: 0, y: 12 });
 
 	polaroids.forEach((el) => {
 		const rotate = Number(el.dataset.rotate ?? 0);
 		gsap.set(el, {
-			opacity: 0,
+			autoAlpha: 0,
 			scale: 0.82,
 			y: 36,
 			rotation: rotate * 1.55,
@@ -90,48 +77,37 @@ export const initHeroIntro = (onComplete?: HeroIntroComplete): void => {
 		onComplete: finish,
 	});
 
-	// Name first — brand is the hero signal.
-	tl.to(chars, {
-		opacity: 1,
-		y: 0,
-		duration: 0.78,
-		stagger: { each: 0.022, from: 'start' },
-		ease: 'power2.out',
-	});
-
-	if (desktopSubtitles.length > 0) {
+	if (subtitle) {
 		tl.to(
-			desktopSubtitles,
-			{
-				opacity: 1,
-				x: 0,
-				duration: 0.65,
-				stagger: 0.08,
-				ease: 'power2.out',
-			},
-			0.32,
-		);
-	}
-
-	if (mobileSubtitles.length > 0) {
-		tl.to(
-			mobileSubtitles,
+			subtitle,
 			{
 				opacity: 1,
 				y: 0,
 				duration: 0.55,
-				stagger: 0.06,
 				ease: 'power2.out',
 			},
-			0.28,
+			0,
 		);
 	}
+
+	// Name first — brand is the hero signal.
+	tl.to(
+		chars,
+		{
+			opacity: 1,
+			y: 0,
+			duration: 0.78,
+			stagger: { each: 0.022, from: 'start' },
+			ease: 'power2.out',
+		},
+		0.12,
+	);
 
 	if (polaroids.length > 0) {
 		tl.to(
 			polaroids,
 			{
-				opacity: 1,
+				autoAlpha: 1,
 				scale: 1,
 				y: 0,
 				rotation: (_i, el) => Number((el as HTMLElement).dataset.rotate ?? 0),

@@ -4,6 +4,7 @@
  * Matches Figma Project 10 (376:357): brief + moodboard, iterations, selected, details.
  */
 import type { WitchCaseStudyContent } from '../../data/case-studies';
+import OptimizedImage from '../OptimizedImage.astro';
 
 interface Props {
 	readonly content: WitchCaseStudyContent;
@@ -38,14 +39,16 @@ const selectedBand = '#e8ddd6';
 		</p>
 
 		<figure class="m-0 mt-8 md:mt-10">
-			<img
+			<OptimizedImage
 				src={moodboard.src}
 				alt={moodboard.alt}
 				class="block h-auto w-full"
-				width="1204"
-				height="624"
+				width={1204}
+				height={624}
 				loading="lazy"
 				decoding="async"
+				widths={[640, 960, 1280, 1600]}
+				sizes="(min-width: 75rem) 75rem, 100vw"
 			/>
 		</figure>
 	</section>
@@ -68,15 +71,17 @@ const selectedBand = '#e8ddd6';
 			{
 				iterations.map((image) => (
 					<figure class="m-0 overflow-hidden">
-						<img
+						<OptimizedImage
 							src={image.src}
 							alt={image.alt}
 							class="block h-auto w-full"
-							width="349"
-							height="540"
+							width={349}
+							height={540}
 							loading="lazy"
 							decoding="async"
-						/>
+				widths={[200, 400, 640]}
+				sizes="(min-width: 768px) 25vw, 40vw"
+			/>
 					</figure>
 				))
 			}
@@ -91,14 +96,16 @@ const selectedBand = '#e8ddd6';
 	>
 		
 		<figure class="m-0 mt-6">
-			<img
+			<OptimizedImage
 				src={selected.src}
 				alt={selected.alt}
 				class="block h-auto w-full"
-				width="1920"
-				height="1218"
+				width={1920}
+				height={1218}
 				loading="lazy"
 				decoding="async"
+				widths={[640, 960, 1280, 1600]}
+				sizes="(min-width: 75rem) 75rem, 100vw"
 			/>
 		</figure>
 	</section>
@@ -109,14 +116,16 @@ const selectedBand = '#e8ddd6';
 		aria-label="Cover design details"
 	>
 		<figure class="m-0">
-			<img
+			<OptimizedImage
 				src={details.src}
 				alt={details.alt}
 				class="block h-auto w-full"
-				width="1035"
-				height="557"
+				width={1035}
+				height={557}
 				loading="lazy"
 				decoding="async"
+				widths={[640, 960, 1280, 1600]}
+				sizes="(min-width: 75rem) 75rem, 100vw"
 			/>
 		</figure>
 	</section>

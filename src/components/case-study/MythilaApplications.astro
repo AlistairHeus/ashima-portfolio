@@ -4,17 +4,17 @@
  * Click / keyboard on a thumb swaps the left preview.
  */
 import type { CaseStudyImage } from '../../data/case-studies';
+import OptimizedImage from '../OptimizedImage.astro';
 
 interface Props {
 	readonly images: readonly CaseStudyImage[];
 }
 
 const { images } = Astro.props;
-const initial = images[0];
 ---
 
 {
-	images.length > 0 && initial && (
+	images.length > 0 && (
 		<div
 			class="mythila-apps"
 			data-mythila-apps
@@ -27,19 +27,32 @@ const initial = images[0];
 			<div
 				class="grid grid-cols-1 gap-[var(--mythila-apps-gap)] md:grid-cols-[minmax(0,1fr)_minmax(6.5rem,18%)] md:grid-rows-4"
 			>
-				{/* Active preview — spans all thumbnail rows on desktop */}
+				{/* Active preview — stacked OptimizedImages; JS toggles visibility */}
 				<div
 					class="relative aspect-square overflow-hidden bg-[#e8e4de] md:row-span-4 md:aspect-auto md:min-h-0"
+					data-mythila-apps-preview-stage
 				>
-					<img
-						data-mythila-apps-preview
-						src={initial.src}
-						alt={initial.alt}
-						class="absolute inset-0 size-full object-cover transition-opacity duration-200"
-						width="1130"
-						height="797"
-						decoding="async"
-					/>
+					{images.map((image, index) => (
+						<div
+							class="absolute inset-0 transition-opacity duration-200"
+							data-mythila-apps-preview
+							data-preview-index={index}
+							aria-hidden={index === 0 ? 'false' : 'true'}
+							style={index === 0 ? undefined : 'opacity: 0; pointer-events: none;'}
+						>
+							<OptimizedImage
+								src={image.src}
+								alt={image.alt}
+								class="absolute inset-0 size-full object-cover"
+								width={1130}
+								height={797}
+								loading={index === 0 ? 'eager' : 'lazy'}
+								decoding="async"
+								widths={[640, 960, 1280]}
+								sizes="(min-width: 768px) 70vw, 100vw"
+							/>
+						</div>
+					))}
 				</div>
 
 				{/* Thumbnails — row on mobile, column on desktop via md:contents */}
@@ -55,18 +68,19 @@ const initial = images[0];
 							aria-selected={index === 0 ? 'true' : 'false'}
 							aria-label={`View specimen ${index + 1} of ${images.length}`}
 							data-mythila-apps-thumb
-							data-src={image.src}
-							data-alt={image.alt}
+							data-preview-index={index}
 							class="mythila-apps__thumb relative aspect-square overflow-hidden bg-[#e8e4de] p-0"
 						>
-							<img
+							<OptimizedImage
 								src={image.src}
 								alt=""
 								class="absolute inset-0 size-full object-cover"
-								width="797"
-								height="797"
+								width={797}
+								height={797}
 								loading="lazy"
 								decoding="async"
+								widths={[160, 240, 400]}
+								sizes="(min-width: 768px) 12vw, 22vw"
 							/>
 							<span class="mythila-apps__thumb-frame" aria-hidden="true" />
 						</button>
@@ -92,7 +106,7 @@ const initial = images[0];
 		outline: 2px solid var(--color-primary);
 	}
 
-	.mythila-apps__thumb img {
+	.mythila-apps__thumb :global(img) {
 		transition: filter 160ms ease;
 		filter: brightness(0.72) saturate(0.85);
 	}
@@ -109,7 +123,7 @@ const initial = images[0];
 		background-color: rgb(0 0 0 / 0.12);
 	}
 
-	.mythila-apps__thumb:hover img {
+	.mythila-apps__thumb:hover :global(img) {
 		filter: brightness(0.88) saturate(0.95);
 	}
 
@@ -126,7 +140,7 @@ const initial = images[0];
 		z-index: 1;
 	}
 
-	.mythila-apps__thumb[aria-selected='true'] img {
+	.mythila-apps__thumb[aria-selected='true'] :global(img) {
 		filter: none;
 	}
 
@@ -146,21 +160,24 @@ const initial = images[0];
 			if (root.dataset.ready === 'true') return;
 			root.dataset.ready = 'true';
 
-			const preview = root.querySelector<HTMLImageElement>('[data-mythila-apps-preview]');
-			const thumbs = [...root.querySelectorAll<HTMLButtonElement>('[data-mythila-apps-thumb]')];
-			if (!preview || thumbs.length === 0) return;
+			const previews = [
+				...root.querySelectorAll<HTMLElement>('[data-mythila-apps-preview]'),
+			];
+			const thumbs = [
+				...root.querySelectorAll<HTMLButtonElement>('[data-mythila-apps-thumb]'),
+			];
+			if (previews.length === 0 || thumbs.length === 0) return;
 
 			const activate = (thumb: HTMLButtonElement) => {
-				const src = thumb.dataset.src;
-				const alt = thumb.dataset.alt ?? '';
-				if (!src || thumb.getAttribute('aria-selected') === 'true') return;
+				const index = thumb.dataset.previewIndex;
+				if (index == null || thumb.getAttribute('aria-selected') === 'true') return;
 
-				preview.style.opacity = '0';
-				window.setTimeout(() => {
-					preview.src = src;
-					preview.alt = alt;
-					preview.style.opacity = '1';
-				}, 120);
+				previews.forEach((preview) => {
+					const active = preview.dataset.previewIndex === index;
+					preview.style.opacity = active ? '1' : '0';
+					preview.style.pointerEvents = active ? 'auto' : 'none';
+					preview.setAttribute('aria-hidden', active ? 'false' : 'true');
+				});
 
 				thumbs.forEach((item) => {
 					item.setAttribute('aria-selected', item === thumb ? 'true' : 'false');
@@ -170,7 +187,12 @@ const initial = images[0];
 			thumbs.forEach((thumb, index) => {
 				thumb.addEventListener('click', () => activate(thumb));
 				thumb.addEventListener('keydown', (event) => {
-					if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
+					if (
+						event.key !== 'ArrowDown' &&
+						event.key !== 'ArrowUp' &&
+						event.key !== 'ArrowRight' &&
+						event.key !== 'ArrowLeft'
+					) {
 						return;
 					}
 					event.preventDefault();

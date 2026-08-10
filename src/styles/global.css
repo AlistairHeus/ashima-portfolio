@@ -196,13 +196,11 @@
 	font-weight: 100;
 	font-variation-settings: 'wght' 100;
 	text-align: center;
-	will-change: transform, font-variation-settings;
 }
 
 .magnetic-type__space {
 	display: inline-block;
 	white-space: pre;
-	will-change: transform, font-variation-settings;
 }
 
 /* Heavier rest → thin near cursor (featured defaults 700; case study sets --magnetic-rest) */

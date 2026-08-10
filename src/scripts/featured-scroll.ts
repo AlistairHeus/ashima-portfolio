@@ -45,6 +45,14 @@ export const initFeaturedScroll = (): void => {
 	const unlocked = new Array<boolean>(count).fill(false);
 	unlocked[0] = true;
 
+	/** Cache last applied transform / inactive / active to skip redundant writes. */
+	const lastY = new Array<number>(count).fill(Number.NaN);
+	const lastInactive = new Array<boolean>(count).fill(false);
+	let lastActive = -1;
+	let lastHintHidden: boolean | null = null;
+	let rafId = 0;
+	let needsUpdate = false;
+
 	/** Enable/disable a tab hit-target. */
 	const setTabEnabled = (index: number, enabled: boolean): void => {
 		const tab = tabs[index];
@@ -57,6 +65,9 @@ export const initFeaturedScroll = (): void => {
 
 	/** Sync tab aria-selected, card aria-hidden, and case-study link focus. */
 	const setActive = (activeIndex: number): void => {
+		if (activeIndex === lastActive) return;
+		lastActive = activeIndex;
+
 		tabs.forEach((tab, index) => {
 			tab.setAttribute(
 				'aria-selected',
@@ -80,18 +91,22 @@ export const initFeaturedScroll = (): void => {
 	/**
 	 * Local 0–1 progress for folder `index` (folder 0 is always settled).
 	 */
-	const localProgress = (progress: number, index: number, stackCount: number): number => {
+	const localProgress = (
+		progress: number,
+		index: number,
+		stackCount: number,
+	): number => {
 		if (index === 0) return 1;
 		const start = (index - 1) / stackCount;
 		const end = index / stackCount;
 		return Math.min(1, Math.max(0, (progress - start) / (end - start || 1)));
 	};
 
-/**
- * Map 0–1 track progress → folder transforms + inactive chrome.
- * Folder 1 stays put; folders 2–4 each rise from below the viewport.
- * Covered folders fade to beige once the next one reaches ~2/3 of the page.
- */
+	/**
+	 * Map 0–1 track progress → folder transforms + inactive chrome.
+	 * Folder 1 stays put; folders 2–4 each rise from below the viewport.
+	 * Covered folders fade to beige once the next one reaches ~2/3 of the page.
+	 */
 	const applyProgress = (progress: number): void => {
 		const stackCount = Math.max(1, count - 1);
 
@@ -102,10 +117,18 @@ export const initFeaturedScroll = (): void => {
 			const local = localProgress(progress, index, stackCount);
 
 			if (index === 0) {
-				card.style.transform = 'translate3d(0, 0, 0)';
+				if (lastY[index] !== 0) {
+					card.style.transform = 'translate3d(0, 0, 0)';
+					lastY[index] = 0;
+				}
 			} else {
 				const yVh = ENTER_VH * (1 - local);
-				card.style.transform = `translate3d(0, ${yVh}vh, 0)`;
+				// Quantize to 0.1vh so we skip tiny floating-point churn.
+				const quantized = Math.round(yVh * 10) / 10;
+				if (lastY[index] !== quantized) {
+					card.style.transform = `translate3d(0, ${quantized}vh, 0)`;
+					lastY[index] = quantized;
+				}
 
 				if (local >= LAND_THRESHOLD && !unlocked[index]) {
 					unlocked[index] = true;
@@ -118,7 +141,10 @@ export const initFeaturedScroll = (): void => {
 
 		// Covered folders → neutral ProjectFolder beige; rising/top keep band gradient.
 		cards.forEach((card, index) => {
-			card.dataset.inactive = index < topIndex ? 'true' : 'false';
+			const inactive = index < topIndex;
+			if (lastInactive[index] === inactive) return;
+			lastInactive[index] = inactive;
+			card.dataset.inactive = inactive ? 'true' : 'false';
 		});
 
 		// Keep already-landed tabs enabled (including after scrolling back up).
@@ -153,12 +179,23 @@ export const initFeaturedScroll = (): void => {
 			? otherProjects.getBoundingClientRect().top < window.innerHeight * 0.92
 			: pastTrack;
 		const shouldHide = pastTrack || otherEntering;
+		if (lastHintHidden === shouldHide) return;
+		lastHintHidden = shouldHide;
 		scrollHint.dataset.hidden = shouldHide ? 'true' : 'false';
 	};
 
-	const onScroll = (): void => {
+	const flush = (): void => {
+		rafId = 0;
+		if (!needsUpdate) return;
+		needsUpdate = false;
 		applyProgress(getProgress());
 		updateScrollHint();
+	};
+
+	const onScroll = (): void => {
+		needsUpdate = true;
+		if (rafId !== 0) return;
+		rafId = window.requestAnimationFrame(flush);
 	};
 
 	/** Jump scroll so folder `index` is fully stacked. */

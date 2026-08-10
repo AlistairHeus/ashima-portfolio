@@ -10,6 +10,7 @@
  * 5. Interior photos (690 + 486)
  */
 import type { VivanCaseStudyContent } from '../../data/case-studies';
+import OptimizedImage from '../OptimizedImage.astro';
 
 interface Props {
 	readonly content: VivanCaseStudyContent;
@@ -23,78 +24,90 @@ const gap = 'gap-[clamp(0.75rem,1.5vw,1.5rem)]';
 <div class="vivan-body mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16">
 	<section class={`grid grid-cols-1 ${gap} md:grid-cols-[minmax(0,1.42fr)_minmax(0,1fr)]`} aria-label="Social and poster">
 		<figure class="m-0 overflow-hidden bg-white">
-			<img
+			<OptimizedImage
 				src={content.socialPhones.src}
 				alt={content.socialPhones.alt}
 				class="block h-auto w-full"
-				width="690"
-				height="671"
+				width={690}
+				height={671}
 				loading="lazy"
 				decoding="async"
+				widths={[480, 640, 960]}
+				sizes="(min-width: 768px) 50vw, 100vw"
 			/>
 		</figure>
 		<figure class="m-0 overflow-hidden bg-[#c2e2d7]">
-			<img
+			<OptimizedImage
 				src={content.poster.src}
 				alt={content.poster.alt}
 				class="block h-auto w-full"
-				width="486"
-				height="671"
+				width={486}
+				height={671}
 				loading="lazy"
 				decoding="async"
+				widths={[480, 640, 960]}
+				sizes="(min-width: 768px) 50vw, 100vw"
 			/>
 		</figure>
 	</section>
 
 	<section class={`mt-[clamp(0.75rem,1.5vw,1.5rem)] grid grid-cols-1 ${gap} md:grid-cols-2`} aria-label="Print and ID">
 		<figure class="m-0 overflow-hidden">
-			<img
+			<OptimizedImage
 				src={content.billboardPrint.src}
 				alt={content.billboardPrint.alt}
 				class="block h-auto w-full"
-				width="588"
-				height="446"
+				width={588}
+				height={446}
 				loading="lazy"
 				decoding="async"
+				widths={[480, 640, 960]}
+				sizes="(min-width: 768px) 50vw, 100vw"
 			/>
 		</figure>
 		<figure class="m-0 overflow-hidden bg-[#eadeed]">
-			<img
+			<OptimizedImage
 				src={content.idCards.src}
 				alt={content.idCards.alt}
 				class="block h-auto w-full"
-				width="588"
-				height="446"
+				width={588}
+				height={446}
 				loading="lazy"
 				decoding="async"
+				widths={[480, 640, 960]}
+				sizes="(min-width: 768px) 50vw, 100vw"
 			/>
 		</figure>
 	</section>
 
 	<section class="mt-[clamp(0.75rem,1.5vw,1.5rem)]" aria-label="Brochure">
 		<figure class="m-0 overflow-hidden bg-[#dae6e2]">
-			<img
+			<OptimizedImage
 				src={content.brochure.src}
 				alt={content.brochure.alt}
 				class="block h-auto w-full"
-				width="1200"
-				height="766"
+				width={1200}
+				height={766}
 				loading="lazy"
 				decoding="async"
+				widths={[640, 960, 1280, 1600]}
+				sizes="(min-width: 75rem) 75rem, 100vw"
 			/>
 		</figure>
 	</section>
 
 	<section class="mt-[clamp(0.75rem,1.5vw,1.5rem)]" aria-label="Outdoor billboard">
 		<figure class="m-0 overflow-hidden">
-			<img
+			<OptimizedImage
 				src={content.billboardOutdoor.src}
 				alt={content.billboardOutdoor.alt}
 				class="block h-auto w-full"
-				width="1200"
-				height="526"
+				width={1200}
+				height={526}
 				loading="lazy"
 				decoding="async"
+				widths={[640, 960, 1280, 1600]}
+				sizes="(min-width: 75rem) 75rem, 100vw"
 			/>
 		</figure>
 	</section>
@@ -104,25 +117,29 @@ const gap = 'gap-[clamp(0.75rem,1.5vw,1.5rem)]';
 		aria-label="Environmental graphics"
 	>
 		<figure class="m-0 overflow-hidden">
-			<img
+			<OptimizedImage
 				src={content.interiorLeft.src}
 				alt={content.interiorLeft.alt}
 				class="block h-auto w-full"
-				width="690"
-				height="532"
+				width={690}
+				height={532}
 				loading="lazy"
 				decoding="async"
+				widths={[480, 640, 960]}
+				sizes="(min-width: 768px) 50vw, 100vw"
 			/>
 		</figure>
 		<figure class="m-0 overflow-hidden">
-			<img
+			<OptimizedImage
 				src={content.interiorRight.src}
 				alt={content.interiorRight.alt}
 				class="block h-auto w-full"
-				width="486"
-				height="532"
+				width={486}
+				height={532}
 				loading="lazy"
 				decoding="async"
+				widths={[480, 640, 960]}
+				sizes="(min-width: 768px) 50vw, 100vw"
 			/>
 		</figure>
 	</section>

@@ -10,6 +10,10 @@ export default defineConfig({
 	site: 'https://www.ashimakaushik.in',
 	vite: {
 		plugins: [tailwindcss()],
+		server: {
+			// Allow tunnel hosts (localtunnel / cloudflare) when sharing the dev server
+			allowedHosts: ['.loca.lt', '.trycloudflare.com'],
+		},
 	},
 	integrations: [
 		sitemap({

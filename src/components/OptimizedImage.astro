@@ -1,0 +1,72 @@
+---
+/**
+ * Site-wide optimized image — Astro `<Picture>` for rasters (AVIF/WebP + srcset).
+ * Animated GIFs stay as plain `<img>` so frames are preserved.
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { getAsset } from '../lib/images';
+
+interface Props {
+	readonly src: string | ImageMetadata;
+	readonly alt: string;
+	readonly class?: string;
+	readonly widths?: number[];
+	readonly sizes?: string;
+	readonly loading?: 'lazy' | 'eager';
+	readonly decoding?: 'async' | 'auto' | 'sync';
+	readonly fetchpriority?: 'high' | 'low' | 'auto';
+	readonly width?: number;
+	readonly height?: number;
+	/** Aria / decorative helpers passed through to the img. */
+	readonly 'aria-hidden'?: boolean | 'true' | 'false';
+}
+
+const {
+	src,
+	alt,
+	class: className,
+	widths = [480, 800, 1200, 1600],
+	sizes = '100vw',
+	loading = 'lazy',
+	decoding = 'async',
+	fetchpriority,
+	width,
+	height,
+	'aria-hidden': ariaHidden,
+} = Astro.props;
+
+const meta: ImageMetadata = typeof src === 'string' ? getAsset(src) : src;
+const isGif = meta.format === 'gif';
+---
+
+{
+	isGif ? (
+		<img
+			src={meta.src}
+			alt={alt}
+			width={width ?? meta.width}
+			height={height ?? meta.height}
+			class={className}
+			loading={loading}
+			decoding={decoding}
+			fetchpriority={fetchpriority}
+			aria-hidden={ariaHidden}
+		/>
+	) : (
+		<Picture
+			src={meta}
+			alt={alt}
+			formats={['avif', 'webp']}
+			widths={widths}
+			sizes={sizes}
+			width={width}
+			height={height}
+			class={className}
+			loading={loading}
+			decoding={decoding}
+			fetchpriority={fetchpriority}
+			aria-hidden={ariaHidden}
+		/>
+	)
+}
