@@ -1,0 +1,241 @@
+---
+/**
+ * Resume — HTML reading experience + PDF download for print/ATS.
+ */
+import Layout from '../layouts/Layout.astro';
+import {
+	resumeAwards,
+	resumeCertifications,
+	resumeContact,
+	resumeEducation,
+	resumePdfFilename,
+	resumePdfHref,
+	resumeRoles,
+	resumeStrengths,
+	resumeTools,
+} from '../data/resume';
+
+const downloadClass =
+	'inline-flex items-center justify-center gap-2 border border-ink bg-ink px-5 py-3 type-label-md font-bold text-canvas no-underline transition-colors hover:bg-transparent hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
+
+const sectionTitleClass = 'type-label-md text-primary';
+const metaClass = 'type-body text-muted';
+---
+
+<Layout
+	title="Resume — Ashima Kaushik"
+	description="Experience, education, and skills — Ashima Kaushik, visual designer. Download the PDF resume."
+	currentPath="/resume"
+>
+	<main class="bg-canvas">
+		<div class="page-shell pb-20 pt-[calc(var(--spacing-page-chrome)+1.5rem)] md:pb-28 md:pt-[calc(var(--spacing-page-chrome)+2.5rem)]">
+			<header class="flex flex-col gap-8 border-b border-outline/40 pb-10 md:flex-row md:items-end md:justify-between md:gap-12 md:pb-12">
+				<div class="max-w-[40rem]">
+					<p class="type-label-md text-primary">Resume</p>
+					<h1 class="type-h2 mt-3 text-ink">Ashima Kaushik</h1>
+					<p class="type-body-md mt-4 text-ink text-pretty">
+						Visual designer working across brand identity, typography, editorial,
+						and environmental graphics.
+					</p>
+					<ul class="mt-6 flex flex-col gap-2 type-body text-ink sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
+						<li>
+							<a
+								class="underline-offset-4 transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+								href={`mailto:${resumeContact.email}`}
+							>
+								{resumeContact.email}
+							</a>
+						</li>
+						<li>
+							<a
+								class="underline-offset-4 transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+								href={resumeContact.phoneHref}
+							>
+								{resumeContact.phone}
+							</a>
+						</li>
+						<li>
+							<a
+								class="underline-offset-4 transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+								href={resumeContact.portfolioHref}
+							>
+								{resumeContact.portfolioLabel}
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<a
+					class={downloadClass}
+					href={resumePdfHref}
+					download={resumePdfFilename}
+				>
+					Download PDF
+				</a>
+			</header>
+
+			<div class="mt-12 grid grid-cols-1 gap-14 lg:mt-16 lg:grid-cols-[minmax(0,1fr)_minmax(14rem,18rem)] lg:gap-16 xl:gap-20">
+				<div class="min-w-0 space-y-14">
+					<section aria-labelledby="experience-heading">
+						<h2 id="experience-heading" class={sectionTitleClass}>
+							Experience
+						</h2>
+						<ol class="mt-8 space-y-12">
+							{
+								resumeRoles.map((role) => (
+									<li>
+										<div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+											<div>
+												<h3 class="type-h6 text-ink">
+													{role.org}
+													{role.location ? (
+														<span class="font-normal text-muted">
+															{' '}
+															· {role.location}
+														</span>
+													) : null}
+												</h3>
+												<p class="type-body mt-1 text-ink">
+													{role.title}
+												</p>
+											</div>
+											<p class={`${metaClass} shrink-0`}>{role.dates}</p>
+										</div>
+										<div class="mt-5 space-y-5">
+											{role.groups.map((group) => (
+												<div>
+													{group.title ? (
+														<p class="type-label-md text-ink">
+															{group.title}
+														</p>
+													) : null}
+													<ul
+														class:list={[
+															'm-0 list-disc space-y-2 pl-5 type-body text-ink marker:text-muted',
+															group.title && 'mt-3',
+														]}
+													>
+														{group.bullets.map((bullet) => (
+															<li class="text-pretty">{bullet}</li>
+														))}
+													</ul>
+												</div>
+											))}
+										</div>
+									</li>
+								))
+							}
+						</ol>
+					</section>
+
+					<section aria-labelledby="awards-heading">
+						<h2 id="awards-heading" class={sectionTitleClass}>
+							Awards and Recognition
+						</h2>
+						<ul class="mt-8 space-y-8">
+							{
+								resumeAwards.map((award) => (
+									<li>
+										<h3 class="type-h6 text-ink">{award.title}</h3>
+										<p class="type-body mt-1 text-muted">{award.detail}</p>
+										{award.body ? (
+											<p class="type-body mt-3 max-w-[40rem] text-ink text-pretty">
+												{award.body}
+											</p>
+										) : null}
+									</li>
+								))
+							}
+						</ul>
+					</section>
+				</div>
+
+				<aside class="space-y-12 lg:pt-1">
+					<section aria-labelledby="education-heading">
+						<h2 id="education-heading" class={sectionTitleClass}>
+							Education
+						</h2>
+						<div class="mt-5">
+							<h3 class="type-h6 text-ink">{resumeEducation.field}</h3>
+							<p class="type-body mt-1 text-ink">
+								{resumeEducation.school}
+								{resumeEducation.location
+									? `, ${resumeEducation.location}`
+									: ''}
+							</p>
+							<p class={metaClass}>
+								{resumeEducation.degree} · {resumeEducation.dates}
+							</p>
+						</div>
+					</section>
+
+					<section aria-labelledby="tools-heading">
+						<h2 id="tools-heading" class={sectionTitleClass}>Tools</h2>
+						<ul class="mt-5 flex flex-wrap gap-2">
+							{
+								resumeTools.map((tool) => (
+									<li class="type-chip rounded-lg border border-outline px-3 py-1.5 text-on-surface-variant">
+										{tool}
+									</li>
+								))
+							}
+						</ul>
+					</section>
+
+					<section aria-labelledby="strengths-heading">
+						<h2 id="strengths-heading" class={sectionTitleClass}>
+							Strengths
+						</h2>
+						<ul class="mt-5 flex flex-wrap gap-2">
+							{
+								resumeStrengths.map((strength) => (
+									<li class="type-chip rounded-lg border border-outline px-3 py-1.5 text-on-surface-variant">
+										{strength}
+									</li>
+								))
+							}
+						</ul>
+					</section>
+
+					<section aria-labelledby="certs-heading">
+						<h2 id="certs-heading" class={sectionTitleClass}>
+							Certifications
+						</h2>
+						<ul class="mt-5 space-y-6">
+							{
+								resumeCertifications.map((cert) => (
+									<li>
+										<p class="type-body font-medium text-ink">
+											{cert.issuer}
+											<span class="font-normal text-muted">
+												{' '}
+												· {cert.year}
+											</span>
+										</p>
+										<ul class="mt-2 space-y-1 type-body text-ink">
+											{cert.courses.map((course) => (
+												<li>{course}</li>
+											))}
+										</ul>
+									</li>
+								))
+							}
+						</ul>
+					</section>
+
+					<p class="type-body text-muted">
+						Prefer a printable file?{' '}
+						<a
+							class="text-ink underline underline-offset-4 transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+							href={resumePdfHref}
+							download={resumePdfFilename}
+						>
+							Download the PDF
+						</a>
+						.
+					</p>
+				</aside>
+			</div>
+		</div>
+	</main>
+</Layout>

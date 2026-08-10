@@ -15,6 +15,8 @@ interface NavProject {
 	readonly chips: readonly string[];
 	readonly href?: string;
 	readonly accentColor?: string;
+	/** Pre-resolved URL used when swapping folder photos client-side. */
+	readonly carouselImageSrc?: string;
 }
 
 /** Slide distance in px for exit / enter. */
@@ -58,10 +60,22 @@ const paintSlot = (
 		link.setAttribute('aria-label', project.title);
 	}
 
-	const photo = folderWrap.querySelector('.project-folder__photo img');
-	if (photo instanceof HTMLImageElement) {
-		photo.src = project.imageSrc;
-		photo.alt = project.imageAlt;
+	/**
+	 * Astro `<Picture>` keeps `<source srcset>` that win over `img.src`.
+	 * Strip sources + srcset so the browser actually shows the new project image.
+	 */
+	const photoRoot = folderWrap.querySelector('.project-folder__photo');
+	if (photoRoot instanceof HTMLElement) {
+		photoRoot.querySelectorAll('picture source').forEach((source) => {
+			source.remove();
+		});
+		const photo = photoRoot.querySelector('img');
+		if (photo instanceof HTMLImageElement) {
+			photo.removeAttribute('srcset');
+			photo.removeAttribute('sizes');
+			photo.src = project.carouselImageSrc ?? project.imageSrc;
+			photo.alt = project.imageAlt;
+		}
 	}
 
 	const title = copy.querySelector('[data-nav-title]');

@@ -3,10 +3,12 @@
  * Case study footer carousel — always two projects; arrows rotate the pair.
  * Folders link to case studies; arrows only advance the carousel (circular).
  */
+import { getImage } from 'astro:assets';
 import Chip from '../Chip.astro';
 import ProjectFolder from '../ProjectFolder.astro';
 import SectionHeading from '../SectionHeading.astro';
 import { getCaseStudyById } from '../../data/case-studies';
+import { tryGetAsset } from '../../lib/images';
 import type { WorkProject } from '../../data/work';
 
 interface Props {
@@ -15,14 +17,35 @@ interface Props {
 
 interface NavProject extends WorkProject {
 	readonly accentColor?: string;
+	/** Browser-loadable URL for JS carousel swaps (Picture sources get stripped). */
+	readonly carouselImageSrc: string;
 }
 
 const { projects } = Astro.props;
 
-const navProjects: readonly NavProject[] = projects.map((project) => ({
-	...project,
-	accentColor: getCaseStudyById(project.id)?.folderColor,
-}));
+/**
+ * Resolve a browser-loadable URL for client-side carousel swaps.
+ * Raw `/images/...` paths are not in `public/` (assets live under src/assets).
+ */
+const resolveCarouselImageSrc = async (imageSrc: string): Promise<string> => {
+	const asset = tryGetAsset(imageSrc);
+	if (!asset) return imageSrc;
+	if (asset.format === 'gif') return asset.src;
+	const optimized = await getImage({
+		src: asset,
+		width: 960,
+		format: 'webp',
+	});
+	return optimized.src;
+};
+
+const navProjects: readonly NavProject[] = await Promise.all(
+	projects.map(async (project) => ({
+		...project,
+		accentColor: getCaseStudyById(project.id)?.folderColor,
+		carouselImageSrc: await resolveCarouselImageSrc(project.imageSrc),
+	})),
+);
 
 /** Start on circular neighbors of the current page: [previous, next]. */
 const initialLeft =
