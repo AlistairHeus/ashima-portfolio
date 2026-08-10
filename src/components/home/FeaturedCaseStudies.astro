@@ -76,8 +76,9 @@ const tabSlots = tabFlatRanges.map(({ start, end }) => ({
 	width: `${((end - start) / FOLDER_VB) * 100}%`,
 })) as readonly { readonly left: string; readonly width: string }[];
 
-/** Scroll track height scales with stack depth (one viewport per folder step). */
-const trackHeightVh = Math.max(1, projects.length) * 100;
+/** Scroll track: one viewport per folder step, plus a half-viewport dwell so
+ *  the last folder can settle briefly before Other Projects takes over. */
+const trackHeightVh = Math.max(1, projects.length) * 100 + 50;
 ---
 
 <section

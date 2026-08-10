@@ -77,19 +77,6 @@ export const initHeroIntro = (onComplete?: HeroIntroComplete): void => {
 		onComplete: finish,
 	});
 
-	if (subtitle) {
-		tl.to(
-			subtitle,
-			{
-				opacity: 1,
-				y: 0,
-				duration: 0.55,
-				ease: 'power2.out',
-			},
-			0,
-		);
-	}
-
 	// Name first — brand is the hero signal.
 	tl.to(
 		chars,
@@ -100,8 +87,21 @@ export const initHeroIntro = (onComplete?: HeroIntroComplete): void => {
 			stagger: { each: 0.022, from: 'start' },
 			ease: 'power2.out',
 		},
-		0.12,
+		0,
 	);
+
+	if (subtitle) {
+		tl.to(
+			subtitle,
+			{
+				opacity: 1,
+				y: 0,
+				duration: 0.55,
+				ease: 'power2.out',
+			},
+			0.28,
+		);
+	}
 
 	if (polaroids.length > 0) {
 		tl.to(

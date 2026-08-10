@@ -15,6 +15,13 @@ const LAND_THRESHOLD = 0.92;
 const INACTIVE_THRESHOLD = 2 / 3;
 
 /**
+ * Fraction of the sticky track used for folder stacking.
+ * Remainder is a short dwell so the last folder can rest before unpinning
+ * (without a long empty scroll).
+ */
+const STACK_END = 0.88;
+
+/**
  * Initialize the featured case-studies scroll stack on the page.
  */
 export const initFeaturedScroll = (): void => {
@@ -90,6 +97,8 @@ export const initFeaturedScroll = (): void => {
 
 	/**
 	 * Local 0–1 progress for folder `index` (folder 0 is always settled).
+	 * Stacking is compressed into 0..STACK_END of the track so the last
+	 * folder lands before the sticky section releases.
 	 */
 	const localProgress = (
 		progress: number,
@@ -97,9 +106,10 @@ export const initFeaturedScroll = (): void => {
 		stackCount: number,
 	): number => {
 		if (index === 0) return 1;
+		const stacked = Math.min(1, progress / STACK_END);
 		const start = (index - 1) / stackCount;
 		const end = index / stackCount;
-		return Math.min(1, Math.max(0, (progress - start) / (end - start || 1)));
+		return Math.min(1, Math.max(0, (stacked - start) / (end - start || 1)));
 	};
 
 	/**
@@ -209,7 +219,8 @@ export const initFeaturedScroll = (): void => {
 		let progress = 0;
 		if (index > 0) {
 			const stackCount = Math.max(1, count - 1);
-			progress = index / stackCount;
+			// Land inside the stacking window, not at the absolute track end.
+			progress = STACK_END * (index / stackCount);
 		}
 
 		window.scrollTo({
