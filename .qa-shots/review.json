@@ -1,0 +1,74 @@
+[
+  {
+    "name": "home-hero-375",
+    "broken": 14,
+    "overflow": false,
+    "file": ".qa-shots/r-home-hero-375.png"
+  },
+  {
+    "name": "home-hero-1280",
+    "broken": 5,
+    "overflow": false,
+    "file": ".qa-shots/r-home-hero-1280.png"
+  },
+  {
+    "name": "home-about-1280",
+    "broken": 5,
+    "overflow": false,
+    "file": ".qa-shots/r-home-about-1280.png"
+  },
+  {
+    "name": "home-featured-1280",
+    "broken": 5,
+    "overflow": false,
+    "file": ".qa-shots/r-home-featured-1280.png"
+  },
+  {
+    "name": "home-other-1280",
+    "broken": 0,
+    "overflow": false,
+    "file": ".qa-shots/r-home-other-1280.png"
+  },
+  {
+    "name": "work-1280",
+    "broken": 0,
+    "overflow": false,
+    "file": ".qa-shots/r-work-1280.png"
+  },
+  {
+    "name": "igl-1280",
+    "broken": 16,
+    "overflow": false,
+    "file": ".qa-shots/r-igl-1280.png"
+  },
+  {
+    "name": "igl-body-1280",
+    "broken": 12,
+    "overflow": false,
+    "file": ".qa-shots/r-igl-body-1280.png"
+  },
+  {
+    "name": "air-india-1280",
+    "broken": 10,
+    "overflow": false,
+    "file": ".qa-shots/r-air-india-1280.png"
+  },
+  {
+    "name": "convergence-1280",
+    "broken": 4,
+    "overflow": false,
+    "file": ".qa-shots/r-convergence-1280.png"
+  },
+  {
+    "name": "akshar-1280",
+    "broken": 24,
+    "overflow": false,
+    "file": ".qa-shots/r-akshar-1280.png"
+  },
+  {
+    "name": "home-hero-1920",
+    "broken": 8,
+    "overflow": false,
+    "file": ".qa-shots/r-home-hero-1920.png"
+  }
+]

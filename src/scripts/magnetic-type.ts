@@ -18,6 +18,11 @@ export interface InitMagneticTypeOptions {
 	readonly weightMax?: number;
 	readonly minDesktopWidth?: number;
 	readonly charSelector?: string;
+	/**
+	 * Play the left→right sweep when the root first enters the viewport.
+	 * Pass `true` for defaults, or sweep timing options.
+	 */
+	readonly autoplayOnView?: boolean | MagneticAutoplayOptions;
 }
 
 /** Options for the post-intro left→right magnetic sweep. */
@@ -199,6 +204,7 @@ export const initMagneticType = (
 		weightMax = DEFAULT_WEIGHT_MAX,
 		minDesktopWidth = DEFAULT_MIN_DESKTOP,
 		charSelector = DEFAULT_CHAR_SELECTOR,
+		autoplayOnView = false,
 	} = options;
 
 	const prefersReduced = window.matchMedia(
@@ -245,6 +251,7 @@ export const initMagneticType = (
 	let mouseInitialized = false;
 	let disposed = false;
 	let autoplay: AutoplayState | null = null;
+	let viewObserver: IntersectionObserver | null = null;
 
 	const STYLE_EPSILON = 0.015;
 
@@ -540,10 +547,41 @@ export const initMagneticType = (
 		captureRects();
 	};
 
-	if (document.fonts?.ready) {
-		void document.fonts.ready.then(boot);
-	} else {
+	/**
+	 * One-shot viewport trigger — same sweep as the hero, when Contact scroll
+	 * (or any scroll) brings the heading on screen.
+	 */
+	const setupAutoplayOnView = (): void => {
+		if (!autoplayOnView || disposed || prefersReduced) return;
+		if (typeof IntersectionObserver === 'undefined') return;
+
+		const autoplayOpts =
+			typeof autoplayOnView === 'object' ? autoplayOnView : {};
+
+		viewObserver = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					playAutoplay(autoplayOpts);
+					viewObserver?.disconnect();
+					viewObserver = null;
+					break;
+				}
+			},
+			{ threshold: 0.35 },
+		);
+		viewObserver.observe(root);
+	};
+
+	const afterReady = (): void => {
 		boot();
+		setupAutoplayOnView();
+	};
+
+	if (document.fonts?.ready) {
+		void document.fonts.ready.then(afterReady);
+	} else {
+		afterReady();
 	}
 
 	root.addEventListener('mousemove', onMove);
@@ -554,6 +592,8 @@ export const initMagneticType = (
 	const dispose = (): void => {
 		disposed = true;
 		autoplay = null;
+		viewObserver?.disconnect();
+		viewObserver = null;
 		if (rafId) cancelAnimationFrame(rafId);
 		if (scrollRafId) cancelAnimationFrame(scrollRafId);
 		rafId = 0;
@@ -573,6 +613,7 @@ export const initMagneticType = (
  * Initialize every `[data-magnetic-root]` on the page that is not already live.
  * Roots with `data-magnetic-invert` rest heavier and thin toward the cursor.
  * Optional `data-magnetic-rest` sets the resting weight (default 700).
+ * Optional `data-magnetic-autoplay` plays the sweep when the root enters view.
  */
 export const initMagneticTypeAll = (
 	overrides: Omit<InitMagneticTypeOptions, 'root'> = {},
@@ -587,9 +628,15 @@ export const initMagneticTypeAll = (
 			? Number.parseInt(restAttr, 10)
 			: DEFAULT_WEIGHT_MAX;
 		const peakWeight = DEFAULT_WEIGHT_MIN;
+		const autoplayOnView =
+			overrides.autoplayOnView ??
+			(root.hasAttribute('data-magnetic-autoplay')
+				? { delay: 0, duration: 1200 }
+				: false);
 		initMagneticType({
 			...overrides,
 			root,
+			autoplayOnView,
 			weightMin: inverted
 				? (Number.isFinite(restWeight) ? restWeight : DEFAULT_WEIGHT_MAX)
 				: (overrides.weightMin ?? DEFAULT_WEIGHT_MIN),

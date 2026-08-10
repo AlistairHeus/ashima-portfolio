@@ -38,7 +38,7 @@ const {
 	}
 	<div class="relative mt-10 md:mt-14">
 		<section
-			class="relative z-[1] mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)]"
+			class="relative z-[1] page-shell"
 			aria-labelledby="igl-brand-today-title"
 		>
 			{/* Extra inset vs hero/intro — Figma pulls this block inward */}
@@ -107,7 +107,7 @@ const {
 			aria-labelledby="igl-problem-title"
 		>
 			<div
-				class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,4vw,3.25rem)] md:py-[clamp(3rem,5vw,4.5rem)]"
+				class="page-shell py-[clamp(2rem,4vw,3.25rem)] md:py-[clamp(3rem,5vw,4.5rem)]"
 			>
 				<div class="px-6 md:px-20">
 					<h2
@@ -118,7 +118,7 @@ const {
 					</h2>
 
 					<p
-						class="mt-3 max-w-[49.5rem] font-body text-[clamp(1.125rem,1.5vw,1.5rem)] leading-[1.35] text-[#377c34] md:mt-4"
+						class="mt-3 max-w-[49.5rem] type-body-lg text-[#377c34] md:mt-4"
 					>
 						{
 							problemStatement.body.map((part) =>
@@ -139,7 +139,7 @@ const {
 
 	{/* Section 4 — Stakeholder Workshop (HTML text + precomposed collage) */}
 	<section
-		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+		class="page-shell mt-12 md:mt-16"
 		aria-labelledby="igl-workshop-title"
 	>
 		<IglWhiteboardFrame label="Stakeholder workshop whiteboard">
@@ -170,7 +170,7 @@ const {
 					>
 						<h2
 							id="igl-workshop-title"
-							class="font-display whitespace-nowrap text-[clamp(1.35rem,2.4vw,2.5rem)] font-normal leading-tight text-ink"
+							class="type-h5 whitespace-nowrap text-ink"
 						>
 							{workshop.title}
 						</h2>
@@ -205,7 +205,7 @@ const {
 		aria-labelledby="igl-big-insights-title"
 	>
 		<div
-			class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,4vw,3.25rem)] md:py-[clamp(2.75rem,5vw,4rem)]"
+			class="page-shell py-[clamp(2rem,4vw,3.25rem)] md:py-[clamp(2.75rem,5vw,4rem)]"
 		>
 			{
 				/*
@@ -224,7 +224,7 @@ const {
 				</h2>
 
 				<p
-					class="max-w-[48rem] font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-ink md:flex-1"
+					class="max-w-[48rem] type-body text-ink md:flex-1"
 				>
 					{
 						bigInsights.lead.map((part) =>
@@ -260,10 +260,10 @@ const {
 							</figure>
 
 							<div class="text-center">
-								<h3 class="font-label text-[clamp(1.125rem,1.8vw,1.625rem)] font-bold uppercase leading-tight tracking-[0.18em] text-project-green-bright">
+								<h3 class="type-label-lg text-project-green-bright">
 									{card.title}
 								</h3>
-								<p class="mt-1.5 font-body text-[clamp(1rem,1.4vw,1.25rem)] leading-8 text-ink">
+								<p class="mt-1.5 type-body-md text-ink">
 									{card.caption}
 								</p>
 							</div>
@@ -278,10 +278,10 @@ const {
 		/* Section 6 — Brand Code / Core concept (HTML panels over field texture) */
 	}
 	<section class="mt-12 md:mt-16" aria-labelledby="igl-brand-code-title">
-		<div class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)]">
+		<div class="page-shell">
 			<p
 				id="igl-brand-code-title"
-				class="mx-auto max-w-[49.25rem] px-6 text-center font-body text-[clamp(1.125rem,1.5vw,1.5rem)] leading-[1.35] text-ink md:px-0"
+				class="mx-auto max-w-[49.25rem] px-6 text-center type-body-lg text-ink md:px-0"
 			>
 				{
 					brandCode.intro.map((part) =>
@@ -315,7 +315,7 @@ const {
 			/>
 
 			<div
-				class="relative mx-auto max-w-[83.375rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,4vw,3.5rem)]"
+				class="relative mx-auto max-w-[83.375rem] gutter-x-md py-[clamp(2rem,4vw,3.5rem)]"
 			>
 				<div
 					class="flex flex-col items-center gap-2 bg-canvas px-5 py-4 sm:flex-row sm:justify-center sm:gap-6 md:gap-8 md:px-10 md:py-5"
@@ -324,7 +324,7 @@ const {
 						{brandCode.coreLabel}
 					</p>
 					<p
-						class="font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-medium uppercase leading-tight text-project-green-bright"
+						class="type-h5 font-medium uppercase text-project-green-bright"
 					>
 						{brandCode.coreConcept}
 					</p>
@@ -336,18 +336,18 @@ const {
 					{
 						brandCode.panels.map((panel) => (
 							<li class="flex min-h-[15.625rem] flex-col bg-[#edffed]/90 px-4 py-5 text-center md:px-5 md:py-6">
-								<h3 class="font-label text-[clamp(0.9375rem,1.2vw,1.25rem)] font-bold uppercase tracking-[0.14em] text-project-green">
+								<h3 class="type-label-md text-project-green">
 									{panel.title}
 								</h3>
 
 								{panel.kind === "list" && panel.items ? (
-									<ul class="m-0 mt-4 list-none space-y-1.5 p-0 font-body text-[clamp(1rem,1.2vw,1.125rem)] leading-[1.65] text-ink">
+									<ul class="m-0 mt-4 list-none space-y-1.5 p-0 type-body text-ink">
 										{panel.items.map((item) => (
 											<li>{item}</li>
 										))}
 									</ul>
 								) : (
-									<p class="mt-4 text-left font-body text-[clamp(0.9375rem,1.1vw,1.125rem)] leading-[1.35] text-ink md:text-center">
+									<p class="mt-4 text-left type-body text-ink md:text-center">
 										{panel.body}
 									</p>
 								)}
@@ -381,12 +381,12 @@ const {
 			/>
 					<div>
 						<p
-							class="whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] uppercase tracking-[0.14em] text-[#377c34]"
+							class="type-label-md whitespace-nowrap text-[#377c34]"
 						>
 							{archetypes.primary.label}
 						</p>
 						<h2
-							class="mt-1 whitespace-nowrap font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-bold uppercase leading-tight text-project-green-bright"
+							class="mt-1 type-h5 whitespace-nowrap font-bold uppercase text-project-green-bright"
 						>
 							{archetypes.primary.name}
 						</h2>
@@ -394,7 +394,7 @@ const {
 				</div>
 
 				<ul
-					class="m-0 list-disc space-y-2 pl-5 font-body text-[clamp(1rem,1.2vw,1.125rem)] leading-[1.4] text-ink marker:text-ink"
+					class="m-0 list-disc space-y-2 pl-5 type-body text-ink marker:text-ink"
 				>
 					{archetypes.primary.points.map((point) => <li>{point}</li>)}
 				</ul>
@@ -421,12 +421,12 @@ const {
 			/>
 					<div>
 						<p
-							class="whitespace-nowrap font-label text-[clamp(0.875rem,1.1vw,1.125rem)] uppercase tracking-[0.14em] text-[#377c34]"
+							class="type-label-md whitespace-nowrap text-[#377c34]"
 						>
 							{archetypes.secondary.label}
 						</p>
 						<h2
-							class="mt-1 whitespace-nowrap font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-bold uppercase leading-tight text-project-green-bright"
+							class="mt-1 type-h5 whitespace-nowrap font-bold uppercase text-project-green-bright"
 						>
 							{archetypes.secondary.name}
 						</h2>
@@ -434,7 +434,7 @@ const {
 				</div>
 
 				<ul
-					class="m-0 list-disc space-y-2 pl-5 font-body text-[clamp(1rem,1.2vw,1.125rem)] leading-[1.4] text-ink marker:text-ink"
+					class="m-0 list-disc space-y-2 pl-5 type-body text-ink marker:text-ink"
 				>
 					{
 						archetypes.secondary.points.map((point) => (
@@ -450,7 +450,7 @@ const {
 	<section class="mt-12 md:mt-16" aria-labelledby="igl-directions-title">
 		<div class="bg-[#d9e7dd]">
 			<div
-				class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(1.75rem,3.5vw,2.75rem)]"
+				class="page-shell py-[clamp(1.75rem,3.5vw,2.75rem)]"
 			>
 				<div
 					class="flex flex-col gap-4 px-6 md:flex-row md:items-center md:justify-between md:gap-10 md:px-12 lg:px-20"
@@ -462,7 +462,7 @@ const {
 						{directions.title}
 					</h2>
 					<p
-						class="max-w-[30.375rem] font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-project-green"
+						class="max-w-[30.375rem] type-body text-project-green"
 					>
 						{directions.lead}
 					</p>
@@ -489,22 +489,22 @@ const {
 	{
 		concepts.map((concept, index) => (
 			<section
-				class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+				class="page-shell mt-12 md:mt-16"
 				aria-labelledby={`igl-concept-${index + 1}-title`}
 			>
 				<div class="border-t border-outline/45 pt-8 md:pt-10">
 					<div class="grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,1fr)_minmax(12rem,22rem)] md:gap-8 lg:gap-10">
 						<div class="px-1 md:px-2">
-							<p class="font-label text-[clamp(0.875rem,1.1vw,1.25rem)] font-black uppercase tracking-[0.14em] text-[#79b477]">
+							<p class="type-label-md font-black text-[#79b477]">
 								{concept.eyebrow}
 							</p>
 							<h2
 								id={`igl-concept-${index + 1}-title`}
-								class="mt-2 font-display text-[clamp(1.75rem,3vw,2.75rem)] font-normal leading-tight text-ink"
+								class="mt-2 type-h4 font-normal normal-case tracking-normal text-ink"
 							>
 								{concept.title}
 							</h2>
-							<p class="mt-4 max-w-[36.75rem] font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-ink">
+							<p class="mt-4 max-w-[36.75rem] type-body text-ink">
 								{concept.description}
 							</p>
 						</div>
@@ -546,7 +546,7 @@ const {
 	<section class="mt-12 md:mt-16" aria-labelledby="igl-final-title">
 		<div class="bg-[#d9e7dd]">
 			<div
-				class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] py-[clamp(1.75rem,3.5vw,2.75rem)]"
+				class="page-shell py-[clamp(1.75rem,3.5vw,2.75rem)]"
 			>
 				<div
 					class="flex flex-col gap-4 px-6 md:flex-row md:items-center md:justify-between md:gap-10 md:px-12 lg:px-20"
@@ -558,7 +558,7 @@ const {
 						{finalDirection.title}
 					</h2>
 					<p
-						class="max-w-[30.375rem] font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-project-green"
+						class="max-w-[30.375rem] type-body text-project-green"
 					>
 						{finalDirection.lead}
 					</p>
@@ -583,7 +583,7 @@ const {
 
 	{/* Section 14 — Brand Guidelines closing */}
 	<section
-		class="mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pb-4 md:mt-16 md:pb-8"
+		class="page-shell mt-12 pb-4 md:mt-16 md:pb-8"
 		aria-labelledby="igl-closing-title"
 	>
 		<div
@@ -598,19 +598,19 @@ const {
 				</h2>
 
 				<p
-					class="mt-5 font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-ink"
+					class="mt-5 type-body text-ink"
 				>
 					{closing.lead}
 				</p>
 
 				<p
-					class="mt-5 font-body text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.45] text-ink"
+					class="mt-5 type-body text-ink"
 				>
 					{closing.subtext}
 				</p>
 
 				<p
-					class="mt-6 font-display text-[clamp(1.5rem,2.5vw,2.25rem)] font-medium uppercase leading-tight text-project-green-bright"
+					class="mt-6 type-h5 font-medium uppercase text-project-green-bright"
 				>
 					{closing.brandIdea}
 				</p>

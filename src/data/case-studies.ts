@@ -288,8 +288,6 @@ export interface AksharChitraCaseStudyContent {
 		}[];
 		readonly diagramTitle: string;
 		readonly diagram: CaseStudyImage;
-		/** Devanagari line-art spanning Landscape through Process on the right edge. */
-		readonly watermark: CaseStudyImage;
 	};
 	readonly insight: {
 		readonly quotes: readonly CaseStudyTextPart[][];
@@ -302,8 +300,6 @@ export interface AksharChitraCaseStudyContent {
 	};
 	readonly process: {
 		readonly title: string;
-		/** Devanagari line-art on the left edge of this section. */
-		readonly watermarkLeft: CaseStudyImage;
 		readonly steps: readonly {
 			readonly title: string;
 			readonly titleColor: string;
@@ -1578,10 +1574,6 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 					src: '/images/case-studies/akshar-chitra/learning-diagram.png',
 					alt: 'Diagram of four neural processors in the reading process',
 				},
-				watermark: {
-					src: '/images/case-studies/akshar-chitra/watermark-right.png',
-					alt: '',
-				},
 			},
 			insight: {
 				quotes: [
@@ -1625,10 +1617,6 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			},
 			process: {
 				title: 'Process and Project Approach',
-				watermarkLeft: {
-					src: '/images/case-studies/akshar-chitra/watermark-left.png',
-					alt: '',
-				},
 				steps: [
 					{
 						title: 'Vocabulary Mapping & Research',

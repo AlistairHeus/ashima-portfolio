@@ -97,7 +97,7 @@ const useLayers = Boolean(heroLayers && heroLayers.length > 0);
 		{overlayNavbar && <Navbar currentPath={currentPath} />}
 
 		<div
-			class="mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pt-[clamp(2.5rem,6vw,5.5rem)] pb-[clamp(2.5rem,5vw,5.25rem)] text-center"
+			class="page-shell pt-[clamp(2.5rem,6vw,5.5rem)] pb-[clamp(2.5rem,5vw,5.25rem)] text-center"
 		>
 			<p
 				class="case-study-hero__number font-label text-[clamp(2.5rem,5vw,4rem)] font-light leading-none text-ink"
@@ -141,7 +141,7 @@ const useLayers = Boolean(heroLayers && heroLayers.length > 0);
 		class="case-study-hero__media relative z-[1] col-start-1 row-start-2 row-end-4"
 		data-cs-intro="media"
 	>
-		<figure class="relative mx-auto m-0 max-w-[75rem] px-[clamp(1rem,3vw,2rem)]">
+		<figure class="page-shell relative m-0">
 			{
 				useLayers ? (
 					<div

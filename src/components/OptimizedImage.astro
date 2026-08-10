@@ -2,6 +2,9 @@
 /**
  * Site-wide optimized image — Astro `<Picture>` for rasters (AVIF/WebP + srcset).
  * Animated GIFs stay as plain `<img>` so frames are preserved.
+ *
+ * Width/height props are layout hints only. Output dimensions always keep the
+ * source aspect ratio so Astro’s image service never crops to a mismatched box.
  */
 import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
@@ -32,12 +35,22 @@ const {
 	decoding = 'async',
 	fetchpriority,
 	width,
-	height,
 	'aria-hidden': ariaHidden,
 } = Astro.props;
 
 const meta: ImageMetadata = typeof src === 'string' ? getAsset(src) : src;
 const isGif = meta.format === 'gif';
+
+/** Cap at intrinsic width — never request an upscaled / wrong-aspect transform. */
+const outWidth = Math.min(width ?? meta.width, meta.width);
+const outHeight = Math.round((outWidth / meta.width) * meta.height);
+const safeWidths = [
+	...new Set(
+		widths
+			.map((w) => Math.min(Math.round(w), meta.width))
+			.filter((w) => w > 0),
+	),
+].sort((a, b) => a - b);
 ---
 
 {
@@ -45,8 +58,8 @@ const isGif = meta.format === 'gif';
 		<img
 			src={meta.src}
 			alt={alt}
-			width={width ?? meta.width}
-			height={height ?? meta.height}
+			width={outWidth}
+			height={outHeight}
 			class={className}
 			loading={loading}
 			decoding={decoding}
@@ -58,10 +71,10 @@ const isGif = meta.format === 'gif';
 			src={meta}
 			alt={alt}
 			formats={['avif', 'webp']}
-			widths={widths}
+			widths={safeWidths}
 			sizes={sizes}
-			width={width}
-			height={height}
+			width={outWidth}
+			height={outHeight}
 			class={className}
 			loading={loading}
 			decoding={decoding}

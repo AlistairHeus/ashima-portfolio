@@ -1,0 +1,398 @@
+[
+  {
+    "name": "home",
+    "vw": "375",
+    "status": 200,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "overflow": false,
+    "file": ".qa-shots/home-375.png"
+  },
+  {
+    "name": "home",
+    "vw": "768",
+    "status": 200,
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "overflow": false,
+    "file": ".qa-shots/home-768.png"
+  },
+  {
+    "name": "home",
+    "vw": "1280",
+    "status": 200,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "overflow": false,
+    "file": ".qa-shots/home-1280.png"
+  },
+  {
+    "name": "home",
+    "vw": "1920",
+    "status": 200,
+    "scrollWidth": 1920,
+    "clientWidth": 1920,
+    "overflow": false,
+    "file": ".qa-shots/home-1920.png"
+  },
+  {
+    "name": "work",
+    "vw": "375",
+    "status": 200,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "overflow": false,
+    "file": ".qa-shots/work-375.png"
+  },
+  {
+    "name": "work",
+    "vw": "768",
+    "status": 200,
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "overflow": false,
+    "file": ".qa-shots/work-768.png"
+  },
+  {
+    "name": "work",
+    "vw": "1280",
+    "status": 200,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "overflow": false,
+    "file": ".qa-shots/work-1280.png"
+  },
+  {
+    "name": "work",
+    "vw": "1920",
+    "status": 200,
+    "scrollWidth": 1920,
+    "clientWidth": 1920,
+    "overflow": false,
+    "file": ".qa-shots/work-1920.png"
+  },
+  {
+    "name": "air-india",
+    "vw": "375",
+    "status": 200,
+    "scrollWidth": 579,
+    "clientWidth": 375,
+    "overflow": true,
+    "file": ".qa-shots/air-india-375.png"
+  },
+  {
+    "name": "air-india",
+    "vw": "768",
+    "status": 200,
+    "scrollWidth": 863,
+    "clientWidth": 768,
+    "overflow": true,
+    "file": ".qa-shots/air-india-768.png"
+  },
+  {
+    "name": "air-india",
+    "vw": "1280",
+    "status": 200,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "overflow": false,
+    "file": ".qa-shots/air-india-1280.png"
+  },
+  {
+    "name": "air-india",
+    "vw": "1920",
+    "status": 200,
+    "scrollWidth": 1920,
+    "clientWidth": 1920,
+    "overflow": false,
+    "file": ".qa-shots/air-india-1920.png"
+  },
+  {
+    "name": "igl",
+    "vw": "375",
+    "status": 200,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "overflow": false,
+    "file": ".qa-shots/igl-375.png"
+  },
+  {
+    "name": "igl",
+    "vw": "768",
+    "status": 200,
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "overflow": false,
+    "file": ".qa-shots/igl-768.png"
+  },
+  {
+    "name": "igl",
+    "vw": "1280",
+    "status": 200,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "overflow": false,
+    "file": ".qa-shots/igl-1280.png"
+  },
+  {
+    "name": "igl",
+    "vw": "1920",
+    "status": 200,
+    "scrollWidth": 1920,
+    "clientWidth": 1920,
+    "overflow": false,
+    "file": ".qa-shots/igl-1920.png"
+  },
+  {
+    "name": "mythila",
+    "vw": "375",
+    "status": 200,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "overflow": false,
+    "file": ".qa-shots/mythila-375.png"
+  },
+  {
+    "name": "mythila",
+    "vw": "768",
+    "status": 200,
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "overflow": false,
+    "file": ".qa-shots/mythila-768.png"
+  },
+  {
+    "name": "mythila",
+    "vw": "1280",
+    "status": 200,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "overflow": false,
+    "file": ".qa-shots/mythila-1280.png"
+  },
+  {
+    "name": "mythila",
+    "vw": "1920",
+    "status": 200,
+    "scrollWidth": 1920,
+    "clientWidth": 1920,
+    "overflow": false,
+    "file": ".qa-shots/mythila-1920.png"
+  },
+  {
+    "name": "akshar",
+    "vw": "375",
+    "status": 200,
+    "scrollWidth": 447,
+    "clientWidth": 375,
+    "overflow": true,
+    "file": ".qa-shots/akshar-375.png"
+  },
+  {
+    "name": "akshar",
+    "vw": "768",
+    "status": 200,
+    "scrollWidth": 835,
+    "clientWidth": 768,
+    "overflow": true,
+    "file": ".qa-shots/akshar-768.png"
+  },
+  {
+    "name": "akshar",
+    "vw": "1280",
+    "status": 200,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "overflow": false,
+    "file": ".qa-shots/akshar-1280.png"
+  },
+  {
+    "name": "akshar",
+    "vw": "1920",
+    "status": 200,
+    "scrollWidth": 1920,
+    "clientWidth": 1920,
+    "overflow": false,
+    "file": ".qa-shots/akshar-1920.png"
+  },
+  {
+    "name": "convergence",
+    "vw": "375",
+    "status": 200,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "overflow": false,
+    "file": ".qa-shots/convergence-375.png"
+  },
+  {
+    "name": "convergence",
+    "vw": "768",
+    "status": 200,
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "overflow": false,
+    "file": ".qa-shots/convergence-768.png"
+  },
+  {
+    "name": "convergence",
+    "vw": "1280",
+    "status": 200,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "overflow": false,
+    "file": ".qa-shots/convergence-1280.png"
+  },
+  {
+    "name": "convergence",
+    "vw": "1920",
+    "status": 200,
+    "scrollWidth": 1920,
+    "clientWidth": 1920,
+    "overflow": false,
+    "file": ".qa-shots/convergence-1920.png"
+  },
+  {
+    "name": "himalayan",
+    "vw": "375",
+    "status": 200,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "overflow": false,
+    "file": ".qa-shots/himalayan-375.png"
+  },
+  {
+    "name": "himalayan",
+    "vw": "768",
+    "status": 200,
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "overflow": false,
+    "file": ".qa-shots/himalayan-768.png"
+  },
+  {
+    "name": "himalayan",
+    "vw": "1280",
+    "status": 200,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "overflow": false,
+    "file": ".qa-shots/himalayan-1280.png"
+  },
+  {
+    "name": "himalayan",
+    "vw": "1920",
+    "status": 200,
+    "scrollWidth": 1920,
+    "clientWidth": 1920,
+    "overflow": false,
+    "file": ".qa-shots/himalayan-1920.png"
+  },
+  {
+    "name": "witch",
+    "vw": "375",
+    "status": 200,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "overflow": false,
+    "file": ".qa-shots/witch-375.png"
+  },
+  {
+    "name": "witch",
+    "vw": "768",
+    "status": 200,
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "overflow": false,
+    "file": ".qa-shots/witch-768.png"
+  },
+  {
+    "name": "witch",
+    "vw": "1280",
+    "status": 200,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "overflow": false,
+    "file": ".qa-shots/witch-1280.png"
+  },
+  {
+    "name": "witch",
+    "vw": "1920",
+    "status": 200,
+    "scrollWidth": 1920,
+    "clientWidth": 1920,
+    "overflow": false,
+    "file": ".qa-shots/witch-1920.png"
+  },
+  {
+    "name": "maahi",
+    "vw": "375",
+    "status": 200,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "overflow": false,
+    "file": ".qa-shots/maahi-375.png"
+  },
+  {
+    "name": "maahi",
+    "vw": "768",
+    "status": 200,
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "overflow": false,
+    "file": ".qa-shots/maahi-768.png"
+  },
+  {
+    "name": "maahi",
+    "vw": "1280",
+    "status": 200,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "overflow": false,
+    "file": ".qa-shots/maahi-1280.png"
+  },
+  {
+    "name": "maahi",
+    "vw": "1920",
+    "status": 200,
+    "scrollWidth": 1920,
+    "clientWidth": 1920,
+    "overflow": false,
+    "file": ".qa-shots/maahi-1920.png"
+  },
+  {
+    "name": "vivan",
+    "vw": "375",
+    "status": 200,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "overflow": false,
+    "file": ".qa-shots/vivan-375.png"
+  },
+  {
+    "name": "vivan",
+    "vw": "768",
+    "status": 200,
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "overflow": false,
+    "file": ".qa-shots/vivan-768.png"
+  },
+  {
+    "name": "vivan",
+    "vw": "1280",
+    "status": 200,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "overflow": false,
+    "file": ".qa-shots/vivan-1280.png"
+  },
+  {
+    "name": "vivan",
+    "vw": "1920",
+    "status": 200,
+    "scrollWidth": 1920,
+    "clientWidth": 1920,
+    "overflow": false,
+    "file": ".qa-shots/vivan-1920.png"
+  }
+]

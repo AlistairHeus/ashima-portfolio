@@ -21,7 +21,7 @@ const { content } = Astro.props;
 	*/}
 	<div class="relative">
 		<section
-			class="relative z-[1] mx-auto mt-12 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-16"
+			class="relative z-[1] page-shell mt-12 md:mt-16"
 			aria-label="Letterform studies"
 		>
 			<div class="grid grid-cols-1 md:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)]">
@@ -75,7 +75,7 @@ const { content } = Astro.props;
 				)
 			}
 			<div
-				class="absolute inset-0 z-[1] flex items-center justify-center px-[clamp(1rem,3vw,2rem)] pt-[clamp(2.75rem,7vw,5.5rem)] text-center"
+				class="absolute inset-0 z-[1] flex items-center justify-center gutter-x-md pt-[clamp(2.75rem,7vw,5.5rem)] text-center"
 			>
 				<p
 					class="mx-auto max-w-[55rem] text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.25] tracking-wide uppercase"
@@ -92,7 +92,7 @@ const { content } = Astro.props;
 
 	{/* Process flowchart */}
 	<section
-		class="relative z-[1] pt-5 mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)]"
+		class="relative z-[1] pt-5 page-shell"
 		aria-label="Process"
 	>
 		<figure class="m-0 overflow-hidden">
@@ -112,7 +112,7 @@ const { content } = Astro.props;
 
 	{/* Process documentation photos */}
 	<section
-		class="mx-auto mt-10 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-14"
+		class="page-shell mt-10 md:mt-14"
 		aria-label="Making of"
 	>
 		<figure class="m-0 overflow-hidden">
@@ -165,7 +165,7 @@ const { content } = Astro.props;
 	*/}
 	<div class="relative">
 		<section
-			class="relative z-[1] mx-auto mt-16 max-w-[75rem] px-[clamp(1rem,3vw,2rem)] md:mt-20"
+			class="page-shell relative z-[1] mt-16 md:mt-20"
 			aria-label="Features of the font"
 		>
 			<figure class="m-0 overflow-hidden">
@@ -205,7 +205,7 @@ const { content } = Astro.props;
 
 			{/* Applications gallery */}
 			<section
-				class="relative z-[1] mx-auto max-w-[75rem] px-[clamp(1rem,3vw,2rem)] pt-[clamp(3.5rem,10vw,8rem)] md:pt-[clamp(4.5rem,12vw,10rem)]"
+				class="relative z-[1] page-shell pt-[clamp(3.5rem,10vw,8rem)] md:pt-[clamp(4.5rem,12vw,10rem)]"
 				aria-label="Type in use"
 			>
 				<MythilaApplications images={content.applications} />
@@ -216,7 +216,7 @@ const { content } = Astro.props;
 	{
 		content.purchaseHref && (
 			<section
-				class="mx-auto mt-12 flex max-w-[75rem] justify-center px-[clamp(1rem,3vw,2rem)] pb-6 md:mt-16 md:pb-8"
+				class="page-shell mt-12 flex justify-center pb-6 md:mt-16 md:pb-8"
 				aria-label="Purchase license"
 			>
 				<a
