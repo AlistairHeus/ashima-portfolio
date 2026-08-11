@@ -96,9 +96,8 @@ export interface CaseStudy {
 }
 
 export interface MythilaCaseStudyContent {
-	readonly tagline: readonly { readonly text: string; readonly className: string }[];
-	/** Faint folk-art collage behind the tagline / process band. */
-	readonly bandWatermarkSrc?: string;
+	/** Flattened tagline lockup (type + folk-art frame) — full-bleed band. */
+	readonly tagline: CaseStudyImage;
 	readonly sketches: CaseStudyImage;
 	readonly quote: CaseStudyImage;
 	readonly process: CaseStudyImage;
@@ -940,13 +939,10 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		folderColor: '#619996',
 		body: 'mythila',
 		mythila: {
-			tagline: [
-				{ text: 'A HANDCRAFTED typeface,', className: 'font-display font-extralight text-[#d77a13]' },
-				{ text: ' Reimagining', className: 'font-display font-light text-[#b74909]' },
-				{ text: ' Mithila', className: 'font-display font-normal text-[#b74909]' },
-				{ text: ' Folk art.', className: 'font-display font-normal text-[#b74909]' },
-			],
-			bandWatermarkSrc: '/images/case-studies/mythila/watermark2.png',
+			tagline: {
+				src: '/images/case-studies/mythila/tagline-banner.png',
+				alt: 'A handcrafted typeface, reimagining Mithila folk art',
+			},
 			sketches: {
 				src: '/images/case-studies/mythila/sketches.png',
 				alt: 'Hand-drawn Mythila character sketches on a warm panel',
@@ -2467,15 +2463,39 @@ export const publishedCaseStudies: readonly CaseStudy[] = caseStudyDetails.filte
 );
 
 /**
+ * Published catalogue projects in Work page display order (01 → 09).
+ * Filters `allWorkProjects` to studies that have a published detail page.
+ */
+const getPublishedWorkProjects = (): readonly WorkProject[] => {
+	const publishedIds = new Set(publishedCaseStudies.map((study) => study.id));
+	return allWorkProjects.filter((project) => publishedIds.has(project.id));
+};
+
+/**
+ * Circular previous / next neighbours for case-study hero navigation.
+ */
+export const getAdjacentCaseStudies = (
+	currentId: string,
+): { readonly previous: WorkProject; readonly next: WorkProject } | null => {
+	const projects = getPublishedWorkProjects();
+	const index = projects.findIndex((project) => project.id === currentId);
+	if (index < 0 || projects.length < 2) return null;
+
+	const previous = projects[(index - 1 + projects.length) % projects.length];
+	const next = projects[(index + 1) % projects.length];
+	if (!previous?.href || !next?.href) return null;
+
+	return { previous, next };
+};
+
+/**
  * Catalogue projects for the case-study footer carousel (excludes the current study).
  * Order follows the published list, starting with the study after `currentId`.
  */
 export const getCaseStudyNavProjects = (
 	currentId: string,
 ): readonly WorkProject[] => {
-	const navProjects = publishedCaseStudies
-		.map((study) => allWorkProjects.find((project) => project.id === study.id))
-		.filter((project): project is WorkProject => project !== undefined);
+	const navProjects = getPublishedWorkProjects();
 
 	const index = navProjects.findIndex((project) => project.id === currentId);
 	if (index < 0 || navProjects.length < 2) return [];

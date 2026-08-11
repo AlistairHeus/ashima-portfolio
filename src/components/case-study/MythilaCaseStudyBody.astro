@@ -16,8 +16,8 @@ const { content } = Astro.props;
 
 <div class="mythila-body">
 	{/*
-	  Sketches sit above; watermark2 tucks under their bottom edge and
-	  carries the tagline — bridging the two sections like Figma.
+	  Tagline band tucks under the sketches/quote panels (Figma overlap):
+	  panels stay above; full-bleed banner pulls up behind them.
 	*/}
 	<div class="relative">
 		<section
@@ -34,9 +34,9 @@ const { content } = Astro.props;
 						height={740}
 						loading="lazy"
 						decoding="async"
-				widths={[480, 640, 960]}
-				sizes="(min-width: 768px) 50vw, 100vw"
-			/>
+						widths={[480, 640, 960]}
+						sizes="(min-width: 768px) 50vw, 100vw"
+					/>
 				</figure>
 				<figure class="m-0 overflow-hidden">
 					<OptimizedImage
@@ -47,46 +47,30 @@ const { content } = Astro.props;
 						height={740}
 						loading="lazy"
 						decoding="async"
-				widths={[640, 960, 1280, 1600]}
-				sizes="(min-width: 75rem) 75rem, 100vw"
-			/>
+						widths={[640, 960, 1280, 1600]}
+						sizes="(min-width: 75rem) 75rem, 100vw"
+					/>
 				</figure>
 			</div>
 		</section>
 
 		<section
-			class="relative -mt-[clamp(2.75rem,7vw,5.5rem)] aspect-[1920/587] w-full max-md:aspect-auto max-md:min-h-[18rem]"
+			class="relative z-0 -mt-[clamp(2.75rem,7vw,5.5rem)] w-full"
 			aria-label="Project tagline"
 		>
-			{
-				content.bandWatermarkSrc && (
-					<OptimizedImage
-						src={content.bandWatermarkSrc}
-						alt=""
-						aria-hidden="true"
-						class="pointer-events-none -top-10 absolute inset-0 z-0 h-full w-full select-none object-cover object-top opacity-80"
-						width={1920}
-						height={587}
-						loading="lazy"
-						decoding="async"
-						widths={[640, 960, 1280, 1600]}
-						sizes="100vw"
-					/>
-				)
-			}
-			<div
-				class="absolute inset-0 z-[1] flex items-center justify-center gutter-x-md pt-[clamp(2.75rem,7vw,5.5rem)] text-center"
-			>
-				<p
-					class="mx-auto max-w-[55rem] text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.25] tracking-wide uppercase"
-				>
-					{
-						content.tagline.map((part) => (
-							<span class={part.className}>{part.text}</span>
-						))
-					}
-				</p>
-			</div>
+			<figure class="m-0">
+				<OptimizedImage
+					src={content.tagline.src}
+					alt={content.tagline.alt}
+					class="h-auto w-full"
+					width={1024}
+					height={313}
+					loading="lazy"
+					decoding="async"
+					widths={[640, 960, 1280, 1600]}
+					sizes="100vw"
+				/>
+			</figure>
 		</section>
 	</div>
 

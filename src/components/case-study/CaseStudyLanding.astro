@@ -9,14 +9,20 @@
 import CaseStudyHero from './CaseStudyHero.astro';
 import CaseStudyIntro from './CaseStudyIntro.astro';
 import type { CaseStudy } from '../../data/case-studies';
+import type { WorkProject } from '../../data/work';
 
 interface Props {
 	readonly study: CaseStudy;
 	readonly number: string;
 	readonly currentPath?: string;
+	/** Circular previous / next published case studies for hero arrows. */
+	readonly adjacent?: {
+		readonly previous: WorkProject;
+		readonly next: WorkProject;
+	} | null;
 }
 
-const { study, number, currentPath = '/work' } = Astro.props;
+const { study, number, currentPath = '/work', adjacent = null } = Astro.props;
 ---
 
 <div class="case-study-landing" data-case-study-landing data-case-study-intro="pending">
@@ -33,6 +39,7 @@ const { study, number, currentPath = '/work' } = Astro.props;
 		heroLayers={study.heroLayers}
 		currentPath={currentPath}
 		overlayNavbar={false}
+		adjacent={adjacent}
 	/>
 
 	<div data-cs-intro="overview">
@@ -45,15 +52,14 @@ const { study, number, currentPath = '/work' } = Astro.props;
 </div>
 
 <style>
+	/* Hide intro targets until GSAP runs. :global — children live in CaseStudyHero. */
 	@media (prefers-reduced-motion: no-preference) {
-		[data-case-study-landing][data-case-study-intro='pending'] [data-cs-intro],
+		[data-case-study-landing][data-case-study-intro='pending'] :global([data-cs-intro]),
 		[data-case-study-landing][data-case-study-intro='pending']
-			#case-study-title
-			[data-magnetic-char],
-		[data-case-study-landing][data-case-study-intro='running'] [data-cs-intro],
+			:global(#case-study-title [data-magnetic-char]),
+		[data-case-study-landing][data-case-study-intro='running'] :global([data-cs-intro]),
 		[data-case-study-landing][data-case-study-intro='running']
-			#case-study-title
-			[data-magnetic-char] {
+			:global(#case-study-title [data-magnetic-char]) {
 			opacity: 0;
 		}
 	}

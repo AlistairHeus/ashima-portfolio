@@ -19,6 +19,7 @@ import CaseStudyNav from '../../components/case-study/CaseStudyNav.astro';
 import {
 	publishedCaseStudies,
 	getCaseStudyNavProjects,
+	getAdjacentCaseStudies,
 	getCaseStudyById,
 	allWorkProjects,
 } from '../../data/case-studies';
@@ -38,6 +39,7 @@ if (!study) {
 
 const catalogueProject = allWorkProjects.find((project) => project.id === study.id);
 const navProjects = getCaseStudyNavProjects(study.id);
+const adjacent = getAdjacentCaseStudies(study.id);
 
 const pageTitle = `${study.title} — Ashima Kaushik`;
 const pageDescription = study.description[0] ?? study.title;
@@ -73,6 +75,7 @@ const jsonLd = {
 			study={study}
 			number={displayNumber}
 			currentPath="/work"
+			adjacent={adjacent}
 		/>
 
 		{
