@@ -673,8 +673,8 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 			reimagining: {
 				title: 'Reimagining the Boarding Pass',
 				visual: {
-					src: '/images/case-studies/air-india/maharaja-boarding-2.png',
-					alt: 'Maharaja sitting on a white banner while holding a legacy Air India boarding pass',
+					src: '/images/case-studies/air-india/maharaja-boarding-with-text.png',
+					alt: 'Reimagining the boarding pass — Maharaja holding a legacy pass beside airline, passenger, and technical pain points',
 				},
 				painPoints: [
 					{
