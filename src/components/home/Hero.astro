@@ -27,6 +27,10 @@ interface HeroPolaroid {
 	readonly top: string;
 	readonly left: string;
 	readonly width: string;
+	/** Phone-only resting position; desktop keeps the values above. */
+	readonly mobileTop?: string;
+	readonly mobileLeft?: string;
+	readonly mobileWidth?: string;
 	readonly aspectRatio: string;
 	readonly rotate: number;
 	/** Stacking order — higher sits above. */
@@ -43,6 +47,9 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		top: '2.4%',
 		left: '11.9%',
 		width: 'clamp(7.7rem, 15.5vw, 11.8rem)',
+		mobileTop: '4%',
+		mobileLeft: '2%',
+		mobileWidth: 'clamp(6rem, 29vw, 8.25rem)',
 		aspectRatio: '3 / 4',
 		rotate: -9,
 		z: 1,
@@ -54,6 +61,9 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		top: '64.6%',
 		left: '85.7%',
 		width: 'clamp(8.3rem, 17.7vw, 13.5rem)',
+		mobileTop: '71%',
+		mobileLeft: '68%',
+		mobileWidth: 'clamp(6.5rem, 30vw, 8.25rem)',
 		aspectRatio: '5 / 4',
 		rotate: 4,
 		z: 47,
@@ -85,6 +95,9 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		top: '64.2%',
 		left: '5.2%',
 		width: 'clamp(8.9rem, 19vw, 14.2rem)',
+		mobileTop: '70%',
+		mobileLeft: '-2%',
+		mobileWidth: 'clamp(6.75rem, 33vw, 9rem)',
 		aspectRatio: '5 / 4',
 		rotate: -10,
 		z: 11,
@@ -116,6 +129,9 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		top: '40.9%',
 		left: '83.8%',
 		width: 'clamp(9.8rem, 21.1vw, 15.8rem)',
+		mobileTop: '23%',
+		mobileLeft: '68%',
+		mobileWidth: 'clamp(6.75rem, 34vw, 9.5rem)',
 		aspectRatio: '16 / 9',
 		rotate: -5,
 		z: 42,
@@ -314,7 +330,7 @@ const folderStuff: readonly FolderStuffCard[] = [
 							data-hero-polaroid
 							data-rotate={card.rotate}
 							data-mobile-show={card.mobileShow ? 'true' : undefined}
-							style={`position: fixed; top: ${card.top}; left: ${card.left}; width: ${card.width}; z-index: ${card.z ?? index + 1}; transform: rotate(${card.rotate}deg);`}
+							style={`--hero-polaroid-top: ${card.top}; --hero-polaroid-left: ${card.left}; --hero-polaroid-width: ${card.width}; --hero-polaroid-mobile-top: ${card.mobileTop ?? card.top}; --hero-polaroid-mobile-left: ${card.mobileLeft ?? card.left}; --hero-polaroid-mobile-width: ${card.mobileWidth ?? card.width}; z-index: ${card.z ?? index + 1}; transform: rotate(${card.rotate}deg);`}
 						>
 							<Polaroid
 								imageSrc={card.src}
@@ -384,6 +400,21 @@ const folderStuff: readonly FolderStuffCard[] = [
 	.hero-stuff {
 		opacity: 0;
 		pointer-events: none;
+	}
+
+	.hero-polaroid {
+		position: fixed;
+		top: var(--hero-polaroid-mobile-top);
+		left: var(--hero-polaroid-mobile-left);
+		width: var(--hero-polaroid-mobile-width);
+	}
+
+	@media (width >= 48rem) {
+		.hero-polaroid {
+			top: var(--hero-polaroid-top);
+			left: var(--hero-polaroid-left);
+			width: var(--hero-polaroid-width);
+		}
 	}
 
 	.hero[data-hero-intro='done'] .hero-polaroid {
