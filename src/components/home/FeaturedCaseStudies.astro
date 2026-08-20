@@ -86,9 +86,85 @@ const trackHeightVh = Math.max(1, projects.length) * 100 + 50;
 	aria-label="Featured case studies"
 	data-featured
 >
+	{/*
+	  Phones get a complete reading experience in normal document flow.
+	  The wide folder stack remains below for tablet and desktop viewports.
+	*/}
+	<div class="featured-mobile relative overflow-hidden px-4 py-16 sm:px-6 md:hidden">
+		<div
+			class="featured__dots pointer-events-none absolute inset-0 z-0"
+			aria-hidden="true"
+			style={`background-image: url('${dotsUrl}')`}
+		></div>
+
+		<div class="relative z-[1] mx-auto max-w-[32rem]">
+			<p class="type-label-md text-primary">Selected work</p>
+			<h2 class="type-h4 mt-2 text-ink">Featured case studies</h2>
+			<p class="type-body mt-4 max-w-[32rem] text-muted">
+				Research-led identity, editorial, and experience design projects.
+			</p>
+
+			<div class="mt-10 flex flex-col gap-10">
+				{
+					projects.map((project, index) => (
+						<article
+							class="featured-mobile__project relative pt-8"
+							style={`--featured-accent: ${project.bandColor}; --featured-outline: ${project.folderColor};`}
+						>
+							<div
+								class="featured-mobile__tab absolute top-0 left-0 z-[1] flex h-10 min-w-[8.5rem] items-center px-4 font-label text-xs font-bold tracking-[0.16em] text-ink uppercase"
+								aria-hidden="true"
+							>
+								{String(index + 1).padStart(2, '0')} · Case study
+							</div>
+
+							<a
+								href={project.href}
+								class="featured-mobile__card group relative block overflow-hidden rounded-[0_1.25rem_1.25rem_1.25rem] border border-ink/15 text-ink no-underline shadow-[0_8px_24px_rgb(24_24_24_/_0.12)] outline-offset-4 focus-visible:outline-2 focus-visible:outline-primary"
+							>
+								<div class="relative aspect-[4/3] overflow-hidden bg-canvas">
+									<OptimizedImage
+										src={project.imageSrc}
+										alt={project.imageAlt}
+										class="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.025]"
+										loading="lazy"
+										decoding="async"
+										widths={[320, 480, 640, 800]}
+										sizes="(max-width: 767px) calc(100vw - 2rem), 32rem"
+									/>
+								</div>
+
+								<div class="p-5 sm:p-6">
+									{project.category ? (
+										<p class="type-label-md font-light text-ink">{project.category}</p>
+									) : null}
+									<h3 class="type-h5 mt-1 text-ink">{project.title}</h3>
+									<p class="type-body mt-4 text-ink">{project.description}</p>
+
+									<div class="mt-5 flex flex-wrap gap-2">
+										{project.chips.map((chip) => (
+											<Chip label={chip} class="bg-canvas/45 px-3" />
+										))}
+									</div>
+
+									<span
+										class="mt-6 inline-flex min-h-11 items-center gap-3 type-label-md text-ink"
+									>
+										View case study
+										<span class="text-2xl leading-none transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+									</span>
+								</div>
+							</a>
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</div>
+
 	{/* Tall track creates scroll distance; stage sticks while folders stack */}
 	<div
-		class="featured__track relative"
+		class="featured__track relative hidden md:block"
 		style={`height: ${trackHeightVh}vh`}
 		data-featured-track
 	>
@@ -291,6 +367,21 @@ const trackHeightVh = Math.max(1, projects.length) * 100 + 50;
 
 	.featured__stage {
 		container-type: inline-size;
+	}
+
+	.featured-mobile__tab,
+	.featured-mobile__card {
+		background: linear-gradient(
+			155deg,
+			color-mix(in srgb, var(--featured-accent, #efe8e0) 78%, #ffffff),
+			color-mix(in srgb, var(--featured-accent, #efe8e0) 34%, #ffffff)
+		);
+	}
+
+	.featured-mobile__tab {
+		border: 1px solid rgb(24 24 24 / 0.15);
+		border-bottom: 0;
+		border-radius: 0.75rem 0.75rem 0 0;
 	}
 
 	/* Figma: Lato Bold 24 / tracking 4.32 on a ~1480px folder */
