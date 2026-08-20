@@ -17,9 +17,8 @@
  */
 import Navbar from '../Navbar.astro';
 import MagneticChars from '../MagneticChars.astro';
-import type { CaseStudyHeroLayer } from '../../data/case-studies';
+import type { CaseStudyHeroLayer, NamedWorkProject } from '../../data/case-studies';
 import OptimizedImage from '../OptimizedImage.astro';
-import type { WorkProject } from '../../data/work';
 
 interface Props {
 	readonly number: string;
@@ -37,8 +36,8 @@ interface Props {
 	readonly overlayNavbar?: boolean;
 	/** Circular previous / next published case studies for hero arrows. */
 	readonly adjacent?: {
-		readonly previous: WorkProject;
-		readonly next: WorkProject;
+		readonly previous: NamedWorkProject;
+		readonly next: NamedWorkProject;
 	} | null;
 }
 

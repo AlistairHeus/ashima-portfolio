@@ -4,10 +4,10 @@
  * Single responsibility: lay out ProjectCards — no data ownership.
  */
 import ProjectCard from '../ProjectCard.astro';
-import type { WorkProject } from '../../data/work';
+import type { NamedWorkProject } from '../../data/case-studies';
 
 interface Props {
-	readonly projects: readonly WorkProject[];
+	readonly projects: readonly NamedWorkProject[];
 	readonly class?: string;
 }
 
@@ -16,7 +16,7 @@ const { projects, class: className } = Astro.props;
 
 <ul
 	class:list={[
-		'm-0 grid list-none grid-cols-1 gap-x-10 gap-y-14 p-0 md:grid-cols-2 md:gap-x-12 md:gap-y-16 lg:gap-x-16',
+		'm-0 grid list-none grid-cols-1 gap-x-8 gap-y-10 p-0 md:grid-cols-2 md:gap-x-10 md:gap-y-12 2xl:gap-x-16 2xl:gap-y-16',
 		className,
 	]}
 >

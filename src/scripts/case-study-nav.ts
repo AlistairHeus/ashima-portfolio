@@ -1,5 +1,5 @@
 /**
- * Case study footer carousel — two visible projects; arrows rotate circularly.
+ * Case study footer carousel — two visible projects; arrows rotate by a pair.
  * Folder links navigate; arrow buttons only advance the window.
  * Advances animate with a directional slide (GSAP).
  */
@@ -9,10 +9,10 @@ interface NavProject {
 	readonly id: string;
 	readonly number: string;
 	readonly title: string;
+	readonly category: string;
 	readonly description: string;
 	readonly imageSrc: string;
 	readonly imageAlt: string;
-	readonly chips: readonly string[];
 	readonly href?: string;
 	readonly accentColor?: string;
 	/** Pre-resolved URL used when swapping folder photos client-side. */
@@ -78,24 +78,17 @@ const paintSlot = (
 		}
 	}
 
+	const category = copy.querySelector('[data-nav-category]');
+	if (category instanceof HTMLElement) {
+		category.textContent = project.category;
+		category.classList.toggle('hidden', !project.category);
+	}
+
 	const title = copy.querySelector('[data-nav-title]');
 	if (title) title.textContent = project.title;
 
 	const description = copy.querySelector('[data-nav-description]');
 	if (description) description.textContent = project.description;
-
-	const chips = copy.querySelector('[data-nav-chips]');
-	if (chips) {
-		chips.replaceChildren(
-			...project.chips.map((label) => {
-				const span = document.createElement('span');
-				span.className =
-					'type-chip inline-flex items-center justify-center rounded-md border border-outline px-2.5 py-1 text-on-surface-variant 2xl:rounded-lg 2xl:px-4 2xl:py-1.5';
-				span.textContent = label;
-				return span;
-			}),
-		);
-	}
 };
 
 /**
@@ -129,9 +122,9 @@ export const initCaseStudyNav = (): void => {
 	const count = projects.length;
 	if (count < 2) return;
 
-	/** Start on [previous, next] of the current page (see getCaseStudyNavProjects order). */
+	/** Start on the first pair in catalogue order (see getCaseStudyNavProjects). */
 	const parsedOffset = Number.parseInt(root.dataset.navOffset ?? '', 10);
-	let offset = Number.isFinite(parsedOffset) ? parsedOffset : count - 1;
+	let offset = Number.isFinite(parsedOffset) ? parsedOffset : 0;
 	offset = ((offset % count) + count) % count;
 
 	const buttons = Array.from(
@@ -163,7 +156,8 @@ export const initCaseStudyNav = (): void => {
 	const step = (delta: number): void => {
 		if (animating || delta === 0) return;
 
-		offset = (offset + delta + count) % count;
+		/** Move a full pair so both visible projects change together. */
+		offset = (offset + delta * 2 + count) % count;
 
 		if (prefersReducedMotion()) {
 			render();

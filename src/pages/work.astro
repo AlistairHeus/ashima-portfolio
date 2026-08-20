@@ -7,6 +7,10 @@ import Layout from '../layouts/Layout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import WorkProjectGrid from '../components/work/WorkProjectGrid.astro';
 import { caseStudies, otherWorkProjects } from '../data/work';
+import { withCaseStudyTitle } from '../data/case-studies';
+
+const namedCaseStudies = caseStudies.map(withCaseStudyTitle);
+const namedOtherProjects = otherWorkProjects.map(withCaseStudyTitle);
 ---
 
 <Layout
@@ -15,25 +19,25 @@ import { caseStudies, otherWorkProjects } from '../data/work';
 	currentPath="/work"
 >
 	<main class="bg-canvas" data-work-page data-work-intro="pending">
-		<div class="page-shell pb-20 pt-10 md:pb-28 md:pt-14">
+		<div class="work-page page-shell pb-16 pt-8 md:pb-20 md:pt-10 2xl:pb-28 2xl:pt-14">
 			<section aria-labelledby="case-studies-heading" class="scroll-mt-8">
 				<div data-work-intro="heading">
 					<SectionHeading id="case-studies-heading" title="Case Studies" />
 				</div>
-				<div class="mt-10 md:mt-14">
-					<WorkProjectGrid projects={caseStudies} />
+				<div class="mt-8 md:mt-10 2xl:mt-14">
+					<WorkProjectGrid projects={namedCaseStudies} />
 				</div>
 			</section>
 
 			<section
 				aria-labelledby="other-projects-heading"
-				class="mt-20 scroll-mt-8 md:mt-28"
+				class="mt-16 scroll-mt-8 md:mt-20 2xl:mt-28"
 			>
 				<div data-work-intro="heading">
 					<SectionHeading id="other-projects-heading" title="Other Projects" />
 				</div>
-				<div class="mt-10 md:mt-14">
-					<WorkProjectGrid projects={otherWorkProjects} />
+				<div class="mt-8 md:mt-10 2xl:mt-14">
+					<WorkProjectGrid projects={namedOtherProjects} />
 				</div>
 			</section>
 		</div>
@@ -41,6 +45,17 @@ import { caseStudies, otherWorkProjects } from '../data/work';
 </Layout>
 
 <style>
+	/* 75rem measure is already full at 1200px; keep 13-inch at 75% until 2xl. */
+	.work-page {
+		max-width: 56.25rem;
+	}
+
+	@media (width >= 96rem) {
+		.work-page {
+			max-width: 75rem;
+		}
+	}
+
 	@media (prefers-reduced-motion: no-preference) {
 		[data-work-page][data-work-intro='pending'] [data-work-intro='heading'],
 		[data-work-page][data-work-intro='pending'] [data-work-intro='card'],

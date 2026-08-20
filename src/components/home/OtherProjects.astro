@@ -8,17 +8,22 @@
 import Chip from '../Chip.astro';
 import Polaroid from '../Polaroid.astro';
 import { otherWorkProjects } from '../../data/work';
+import { withCaseStudyTitle } from '../../data/case-studies';
 
-const projects = otherWorkProjects.map((project) => ({
-	id: project.id,
-	title: project.title,
-	chips: project.chips,
-	href: project.href,
-	imageSrc: project.imageSrc,
-	imageAlt: project.imageAlt,
-	/** Dim entries that do not yet have a dedicated case-study page. */
-	muted: !project.href || project.href === '/work',
-}));
+const projects = otherWorkProjects.map((project) => {
+	const named = withCaseStudyTitle(project);
+	return {
+		id: named.id,
+		title: named.title,
+		category: named.category,
+		chips: named.chips,
+		href: named.href,
+		imageSrc: named.imageSrc,
+		imageAlt: named.imageAlt,
+		/** Dim entries that do not yet have a dedicated case-study page. */
+		muted: !named.href || named.href === '/work',
+	};
+});
 
 /**
  * Stack slots from back → front. Length matches project count so every
@@ -51,7 +56,7 @@ const stackSlots = [
 		<div
 			class="mt-8 grid items-center gap-8 lg:mt-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-10 2xl:mt-14 2xl:gap-16"
 		>
-			<ul class="m-0 list-none divide-y divide-muted/30 border-y border-muted/30 p-0">
+			<ul class="m-0 list-none divide-y divide-muted/30 border-b border-muted/30 p-0">
 				{
 					projects.map((project, index) => (
 						<li
@@ -68,7 +73,19 @@ const stackSlots = [
 									class="flex items-center gap-3 text-heading no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary 2xl:gap-5"
 								>
 									<div class="min-w-0 flex-1">
-										<p class="type-h6 uppercase">{project.title}</p>
+										{
+											project.category ? (
+												<p class="type-eyebrow-sm text-ink">{project.category}</p>
+											) : null
+										}
+										<p
+											class:list={[
+												'type-h6 uppercase',
+												project.category && 'mt-1',
+											]}
+										>
+											{project.title}
+										</p>
 										<div class="mt-2 flex flex-wrap gap-1.5 2xl:mt-3 2xl:gap-2">
 											{project.chips.map((chip) => (
 												<Chip label={chip} muted={project.muted} />
@@ -82,7 +99,19 @@ const stackSlots = [
 								</a>
 							) : (
 								<>
-									<p class="type-h6 uppercase text-heading">{project.title}</p>
+									{
+										project.category ? (
+											<p class="type-eyebrow-sm text-ink">{project.category}</p>
+										) : null
+									}
+									<p
+										class:list={[
+											'type-h6 uppercase text-heading',
+											project.category && 'mt-1',
+										]}
+									>
+										{project.title}
+									</p>
 									<div class="mt-2 flex flex-wrap gap-1.5 2xl:mt-3 2xl:gap-2">
 										{project.chips.map((chip) => (
 											<Chip label={chip} muted={project.muted} />

@@ -9,7 +9,7 @@ import Chip from '../Chip.astro';
 import MagneticChars from '../MagneticChars.astro';
 import OptimizedImage from '../OptimizedImage.astro';
 import { caseStudies } from '../../data/work';
-import { getCaseStudyById } from '../../data/case-studies';
+import { getCaseStudyById, withCaseStudyTitle } from '../../data/case-studies';
 
 interface FolderMeta {
 	readonly folderSrc: string;
@@ -31,6 +31,7 @@ const dotsUrl = '/images/home/dots.svg';
 
 const projects = caseStudies.slice(0, folderMeta.length).map((study, index) => {
 	const folder = folderMeta[index]!;
+	const named = withCaseStudyTitle(study);
 	const detail = getCaseStudyById(study.id);
 	/** Hero band — drives ProjectFolder-style gradient fill. */
 	const bandColor = detail?.heroBandColor || '#efe8e0';
@@ -42,19 +43,18 @@ const projects = caseStudies.slice(0, folderMeta.length).map((study, index) => {
 	 */
 	const accentColor = study.id === 'mythila' ? '#ddc3ae' : bandColor;
 	return {
-		id: study.id,
+		id: named.id,
 		label: `PROJECT ${index + 1}`,
 		folderSrc: folder.folderSrc,
 		bandColor: accentColor,
 		folderColor,
-		/** Case-study page naming: category above, short title below. */
-		category: detail?.category ?? '',
-		title: detail?.title ?? study.title,
-		description: study.description,
-		imageSrc: study.imageSrc,
-		imageAlt: study.imageAlt,
-		chips: study.chips,
-		href: study.href ?? '/work',
+		category: named.category,
+		title: named.title,
+		description: named.description,
+		imageSrc: named.imageSrc,
+		imageAlt: named.imageAlt,
+		chips: named.chips,
+		href: named.href ?? '/work',
 	};
 });
 
@@ -136,7 +136,7 @@ const trackHeightVh = Math.max(1, projects.length) * 100 + 50;
 
 								<div class="min-w-0 p-5 sm:p-6">
 									{project.category ? (
-										<p class="type-eyebrow text-ink">{project.category}</p>
+										<p class="type-eyebrow-sm text-ink">{project.category}</p>
 									) : null}
 									<h3 class="type-featured mt-1 text-ink">
 										{project.title}
@@ -290,7 +290,7 @@ const trackHeightVh = Math.max(1, projects.length) * 100 + 50;
 											<div class="min-h-0 min-w-0">
 												{
 													project.category ? (
-														<p class="type-eyebrow text-ink">
+														<p class="type-eyebrow-sm text-ink">
 															{project.category}
 														</p>
 													) : null

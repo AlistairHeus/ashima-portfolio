@@ -8,8 +8,7 @@
  */
 import CaseStudyHero from './CaseStudyHero.astro';
 import CaseStudyIntro from './CaseStudyIntro.astro';
-import type { CaseStudy } from '../../data/case-studies';
-import type { WorkProject } from '../../data/work';
+import type { CaseStudy, NamedWorkProject } from '../../data/case-studies';
 
 interface Props {
 	readonly study: CaseStudy;
@@ -17,8 +16,8 @@ interface Props {
 	readonly currentPath?: string;
 	/** Circular previous / next published case studies for hero arrows. */
 	readonly adjacent?: {
-		readonly previous: WorkProject;
-		readonly next: WorkProject;
+		readonly previous: NamedWorkProject;
+		readonly next: NamedWorkProject;
 	} | null;
 }
 

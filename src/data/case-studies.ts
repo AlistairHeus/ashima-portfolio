@@ -1,6 +1,7 @@
 /**
  * Case study detail content for /work/[slug] pages.
- * Catalogue cards live in work.ts; this module holds long-form page content.
+ * Canonical project title and category live here; work.ts holds catalogue
+ * visuals and card body copy only.
  */
 import { caseStudies, otherWorkProjects, type WorkProject } from './work';
 
@@ -38,7 +39,9 @@ export type CaseStudyBody =
 
 export interface CaseStudy {
 	readonly id: string;
+	/** Discipline eyebrow above the H1 (also used on work cards and home). */
 	readonly category: string;
+	/** Canonical display name — the only project title used sitewide. */
 	readonly title: string;
 	readonly client: string;
 	readonly description: readonly string[];
@@ -2463,12 +2466,35 @@ export const publishedCaseStudies: readonly CaseStudy[] = caseStudyDetails.filte
 );
 
 /**
+ * Catalogue card with the case-study H1 and category attached.
+ * Title is never stored on WorkProject — CaseStudy.title is the only name.
+ */
+export interface NamedWorkProject extends WorkProject {
+	readonly title: string;
+	readonly category: string;
+}
+
+/**
+ * Attach canonical case-study naming (H1 + category eyebrow) to a catalogue row.
+ */
+export const withCaseStudyTitle = (project: WorkProject): NamedWorkProject => {
+	const study = caseStudyDetails.find((item) => item.id === project.id);
+	return {
+		...project,
+		title: study?.title ?? project.id,
+		category: study?.category ?? '',
+	};
+};
+
+/**
  * Published catalogue projects in Work page display order (01 → 09).
  * Filters `allWorkProjects` to studies that have a published detail page.
  */
-const getPublishedWorkProjects = (): readonly WorkProject[] => {
+const getPublishedWorkProjects = (): readonly NamedWorkProject[] => {
 	const publishedIds = new Set(publishedCaseStudies.map((study) => study.id));
-	return allWorkProjects.filter((project) => publishedIds.has(project.id));
+	return allWorkProjects
+		.filter((project) => publishedIds.has(project.id))
+		.map(withCaseStudyTitle);
 };
 
 /**
@@ -2476,7 +2502,7 @@ const getPublishedWorkProjects = (): readonly WorkProject[] => {
  */
 export const getAdjacentCaseStudies = (
 	currentId: string,
-): { readonly previous: WorkProject; readonly next: WorkProject } | null => {
+): { readonly previous: NamedWorkProject; readonly next: NamedWorkProject } | null => {
 	const projects = getPublishedWorkProjects();
 	const index = projects.findIndex((project) => project.id === currentId);
 	if (index < 0 || projects.length < 2) return null;
@@ -2494,7 +2520,7 @@ export const getAdjacentCaseStudies = (
  */
 export const getCaseStudyNavProjects = (
 	currentId: string,
-): readonly WorkProject[] => {
+): readonly NamedWorkProject[] => {
 	const navProjects = getPublishedWorkProjects();
 
 	const index = navProjects.findIndex((project) => project.id === currentId);

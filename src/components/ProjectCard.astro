@@ -5,11 +5,10 @@
  */
 import Chip from './Chip.astro';
 import ProjectFolder from './ProjectFolder.astro';
-import { getCaseStudyById } from '../data/case-studies';
-import type { WorkProject } from '../data/work';
+import { getCaseStudyById, type NamedWorkProject } from '../data/case-studies';
 
 interface Props {
-	readonly project: WorkProject;
+	readonly project: NamedWorkProject;
 	/** Text + chips alignment under the folder. Work grid = start; case-study nav = center. */
 	readonly align?: 'start' | 'center';
 	readonly class?: string;
@@ -28,16 +27,33 @@ const accentColor = getCaseStudyById(project.id)?.folderColor;
 		linkLabel={project.title}
 		href={project.href}
 		accentColor={accentColor}
-		class:list={['max-w-none', isCentered && 'mx-auto']}
+		class:list={[
+			'w-full max-w-[24rem] 2xl:max-w-[510px]',
+			isCentered && 'mx-auto',
+		]}
 	/>
 
 	<div
 		class:list={[
-			'mt-6 flex flex-col gap-3',
+			'mt-5 flex flex-col gap-2 2xl:mt-8 2xl:gap-3',
 			isCentered && 'items-center text-center',
 		]}
 	>
-		<h3 class="type-h6 uppercase text-heading">{project.title}</h3>
+		<div>
+			{
+				project.category ? (
+					<p class="type-eyebrow-sm text-ink">{project.category}</p>
+				) : null
+			}
+			<h3
+				class:list={[
+					'type-h6 uppercase text-heading',
+					project.category && 'mt-1',
+				]}
+			>
+				{project.title}
+			</h3>
+		</div>
 		<p
 			class:list={[
 				'type-body text-ink',
@@ -48,7 +64,7 @@ const accentColor = getCaseStudyById(project.id)?.folderColor;
 		</p>
 		<div
 			class:list={[
-				'mt-1 flex flex-wrap gap-2',
+				'mt-1 flex flex-wrap gap-1.5 2xl:gap-2',
 				isCentered && 'justify-center',
 			]}
 		>

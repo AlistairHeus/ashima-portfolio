@@ -1,21 +1,19 @@
 ---
 /**
- * Case study footer carousel — always two projects; arrows rotate the pair.
+ * Case study footer carousel — always two projects; arrows rotate to the next pair.
  * Folders link to case studies; arrows only advance the carousel (circular).
  */
 import { getImage } from 'astro:assets';
-import Chip from '../Chip.astro';
 import ProjectFolder from '../ProjectFolder.astro';
 import SectionHeading from '../SectionHeading.astro';
-import { getCaseStudyById } from '../../data/case-studies';
+import { getCaseStudyById, type NamedWorkProject } from '../../data/case-studies';
 import { tryGetAsset } from '../../lib/images';
-import type { WorkProject } from '../../data/work';
 
 interface Props {
-	readonly projects: readonly WorkProject[];
+	readonly projects: readonly NamedWorkProject[];
 }
 
-interface NavProject extends WorkProject {
+interface NavProject extends NamedWorkProject {
 	readonly accentColor?: string;
 	/** Browser-loadable URL for JS carousel swaps (Picture sources get stripped). */
 	readonly carouselImageSrc: string;
@@ -47,12 +45,11 @@ const navProjects: readonly NavProject[] = await Promise.all(
 	})),
 );
 
-/** Start on circular neighbors of the current page: [previous, next]. */
-const initialLeft =
-	navProjects.length >= 2 ? navProjects[navProjects.length - 1] : navProjects[0];
-const initialRight = navProjects[0];
+/** Start on the next two catalogue projects in order. */
+const initialLeft = navProjects[0];
+const initialRight = navProjects[1];
 const canCarousel = navProjects.length >= 2 && initialLeft && initialRight;
-const initialOffset = navProjects.length >= 2 ? navProjects.length - 1 : 0;
+const initialOffset = 0;
 
 const arrowBtnClass =
 	'inline-flex items-center justify-center border-0 bg-transparent p-0 text-heading no-underline transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-default disabled:opacity-40';
@@ -77,13 +74,15 @@ const arrowBtnClass =
 			  Desktop: 4 columns × 2 rows
 			  Row 1 — arrow | folder | folder | arrow
 			  Row 2 —       | copy   | copy   |
+			  items-start so a taller description does not vertically
+			  center the other column's eyebrow + title.
 			*/}
 			<div
-				class="case-study-nav__stage mt-10 grid grid-cols-1 gap-y-6 overflow-x-clip md:mt-14 md:grid-cols-[2.75rem_minmax(0,1fr)_minmax(0,1fr)_2.75rem] md:items-center md:gap-x-8 md:gap-y-6 lg:gap-x-12 xl:gap-x-16"
+				class="case-study-nav__stage mt-10 grid grid-cols-1 gap-y-6 overflow-x-clip md:mt-14 md:grid-cols-[2.75rem_minmax(0,1fr)_minmax(0,1fr)_2.75rem] md:items-start md:gap-x-8 md:gap-y-6 lg:gap-x-12 xl:gap-x-16"
 			>
 				<button
 					type="button"
-					class:list={[arrowBtnClass, 'justify-self-start md:col-start-1 md:row-start-1 md:justify-self-center']}
+					class:list={[arrowBtnClass, 'justify-self-start md:col-start-1 md:row-start-1 md:self-center md:justify-self-center']}
 					data-nav-dir="-1"
 					aria-label="Show previous projects"
 				>
@@ -110,17 +109,21 @@ const arrowBtnClass =
 					class="flex w-full flex-col items-center gap-3 text-center md:col-start-2 md:row-start-2"
 					data-nav-copy="0"
 				>
+					<p
+						class:list={[
+							'type-eyebrow-sm w-full text-ink',
+							!initialLeft.category && 'hidden',
+						]}
+						data-nav-category
+					>
+						{initialLeft.category}
+					</p>
 					<h3 class="type-h6 w-full uppercase text-heading text-balance" data-nav-title>
 						{initialLeft.title}
 					</h3>
 					<p class="type-body w-full text-ink text-pretty" data-nav-description>
 						{initialLeft.description}
 					</p>
-					<div class="mt-1 flex flex-wrap justify-center gap-2" data-nav-chips>
-						{initialLeft.chips.map((chip) => (
-							<Chip label={chip} class="border-outline" />
-						))}
-					</div>
 				</div>
 
 				{/* Right slot */}
@@ -140,22 +143,26 @@ const arrowBtnClass =
 					class="flex w-full flex-col items-center gap-3 text-center md:col-start-3 md:row-start-2"
 					data-nav-copy="1"
 				>
+					<p
+						class:list={[
+							'type-eyebrow-sm w-full text-ink',
+							!initialRight.category && 'hidden',
+						]}
+						data-nav-category
+					>
+						{initialRight.category}
+					</p>
 					<h3 class="type-h6 w-full uppercase text-heading text-balance" data-nav-title>
 						{initialRight.title}
 					</h3>
 					<p class="type-body w-full text-ink text-pretty" data-nav-description>
 						{initialRight.description}
 					</p>
-					<div class="mt-1 flex flex-wrap justify-center gap-2" data-nav-chips>
-						{initialRight.chips.map((chip) => (
-							<Chip label={chip} class="border-outline" />
-						))}
-					</div>
 				</div>
 
 				<button
 					type="button"
-					class:list={[arrowBtnClass, 'justify-self-end md:col-start-4 md:row-start-1 md:justify-self-center']}
+					class:list={[arrowBtnClass, 'justify-self-end md:col-start-4 md:row-start-1 md:self-center md:justify-self-center']}
 					data-nav-dir="1"
 					aria-label="Show next projects"
 				>
