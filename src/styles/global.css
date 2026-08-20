@@ -26,7 +26,7 @@
 	--color-on-surface-state: rgb(29 27 32 / 0.08);
 	--color-heading: #4c4c4c;
 	--color-footer-ink: #2e2f38;
-	/* Opaque mix of primary @ 20% over canvas — covers fixed hero underneath */
+	/* Opaque mix of primary @ 20% over canvas. */
 	--color-footer: color-mix(in srgb, rgb(96 114 140) 20%, #f7f1ec);
 	--color-primary: #60728c;
 	--color-primary-soft: #aad0f1;

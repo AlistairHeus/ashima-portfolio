@@ -1,7 +1,7 @@
 ---
 /**
- * Home hero — fixed cream grid + name lockup + project polaroids.
- * Scroll (200svh spacer): folder swallow first, then Featured slides over.
+ * Home hero — sticky cream grid + name lockup + project polaroids.
+ * Its bounded 200svh track contains the folder swallow before About follows.
  * Folder matches ProjectFolder (back → cards → front flap).
  */
 import Polaroid from '../Polaroid.astro';
@@ -227,11 +227,15 @@ const folderStuff: readonly FolderStuffCard[] = [
 ];
 ---
 
-<section
-	class="hero fixed inset-0 z-0 flex h-svh w-full flex-col overflow-hidden bg-canvas"
-	aria-labelledby="hero-heading"
-	data-hero
+<div
+	class="hero-track relative -mt-[var(--spacing-page-chrome)] h-[200svh] w-full"
+	data-hero-track
 >
+	<section
+		class="hero sticky top-0 z-0 flex h-svh w-full flex-col overflow-hidden bg-canvas"
+		aria-labelledby="hero-heading"
+		data-hero
+	>
 	<div
 		class="pointer-events-none absolute inset-0 z-0"
 		style={`background-image: url('${gridSrc}'); background-size: 80%; background-position: center center; background-repeat: repeat; mask-image: linear-gradient(black 0%, black 85%, transparent 85%); -webkit-mask-image: linear-gradient(black 0%, black 85%, transparent 85%);`}
@@ -371,20 +375,26 @@ const folderStuff: readonly FolderStuffCard[] = [
 		</p>
 	</div>
 
-</section>
+	</section>
 
 {/*
   Two-stage scroll stand-in:
   1) first viewport — folder swallow plays (Featured still below)
   2) second viewport — Featured slides over the fixed hero
 */}
-<div
-	class="pointer-events-none relative -mt-[var(--spacing-page-chrome)] h-[200svh] w-full"
-	data-hero-spacer
-	aria-hidden="true"
-></div>
+	<div
+		class="pointer-events-none absolute inset-0"
+		data-hero-spacer
+		aria-hidden="true"
+	></div>
+</div>
 
 <style>
+	.hero {
+		/* Keep fixed scatter cards bound to this sticky section after release. */
+		transform: translateZ(0);
+	}
+
 	.hero-name,
 	:global(.hero-name-line) {
 		font-size: clamp(3.5rem, 10vw, 8rem);

@@ -58,8 +58,8 @@ const pillars: readonly Pillar[] = [
 ];
 ---
 
-<section class="about-me relative z-20 overflow-x-clip" aria-label="About me" data-about-me>
-	{/* Full scrapbook sheet — bottom tear extends over Featured */}
+<section class="about-me relative z-20 overflow-hidden" aria-label="About me" data-about-me>
+	{/* Full scrapbook sheet — contained within the About section. */}
 	<div class="about-me__sheet pointer-events-none absolute inset-x-0 top-0 -z-10 w-full select-none">
 		<OptimizedImage
 			src="/images/home/torn-page.png"
@@ -158,19 +158,12 @@ const pillars: readonly Pillar[] = [
 </section>
 
 <style>
-	/*
-	  Sheet fills the section and hangs past the bottom so the torn edge
-	  paints over Featured. Negative margin pulls Featured up under the tear.
-	*/
 	.about-me {
-		--about-tear-overlap: clamp(1.75rem, 4.5vw, 3.5rem);
 		min-height: min(72vw, 45rem);
-		margin-bottom: calc(var(--about-tear-overlap) * -1);
-		padding-bottom: var(--about-tear-overlap);
 	}
 
 	.about-me__sheet {
-		height: calc(100% + var(--about-tear-overlap));
+		height: 100%;
 	}
 
 	/* Quote sits on the paper band — left clears the baked-in avatar badge */
