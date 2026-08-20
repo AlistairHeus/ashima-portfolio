@@ -3,7 +3,7 @@
  * About me + what shapes my work — panel between Hero and Featured.
  * Portrait is the circular badge cropped from torn-description.png.
  */
-import OptimizedImage from '../OptimizedImage.astro';
+import OptimizedImage from "../OptimizedImage.astro";
 
 interface Pillar {
 	readonly title: string;
@@ -16,42 +16,42 @@ interface Pillar {
 }
 
 const aboutQuote =
-	'I believe in creating thoughtful visual systems through research, strategy, typography and storytelling.';
+	"I believe in creating thoughtful visual systems through research, strategy, typography and storytelling.";
 
 const pillars: readonly Pillar[] = [
 	{
-		title: 'Observe',
-		body: 'Notice people, places and systems with curiosity.',
-		bg: '#b5a45c',
-		titleColor: '#4a3a06',
-		bodyColor: '#f7e5ae',
+		title: "Observe",
+		body: "Notice people, places and systems with curiosity.",
+		bg: "#b5a45c",
+		titleColor: "#4a3a06",
+		bodyColor: "#f7e5ae",
 		rotate: -1,
 		clipRotate: 0,
 	},
 	{
-		title: 'Absorb',
-		body: 'Learn through conversations, books, critique and collaboration.',
-		bg: '#c76e3a',
-		titleColor: '#7c340a',
-		bodyColor: '#ffddca',
+		title: "Absorb",
+		body: "Learn through conversations, books, critique and collaboration.",
+		bg: "#c76e3a",
+		titleColor: "#7c340a",
+		bodyColor: "#ffddca",
 		rotate: 1,
 		clipRotate: 1,
 	},
 	{
-		title: 'Collect',
-		body: 'Gather stories, objects and visual ephemera that spark future ideas.',
-		bg: '#b0beca',
-		titleColor: '#3b576e',
-		bodyColor: '#40688b',
+		title: "Collect",
+		body: "Gather stories, objects and visual ephemera that spark future ideas.",
+		bg: "#b0beca",
+		titleColor: "#3b576e",
+		bodyColor: "#40688b",
 		rotate: 0,
 		clipRotate: 0,
 	},
 	{
-		title: 'Translate',
-		body: 'Turn insights into visual systems that people can understand and use.',
-		bg: '#7e846e',
-		titleColor: '#2e3716',
-		bodyColor: '#dee0d6',
+		title: "Translate",
+		body: "Turn insights into visual systems that people can understand and use.",
+		bg: "#7e846e",
+		titleColor: "#2e3716",
+		bodyColor: "#dee0d6",
 		rotate: -1,
 		clipRotate: -1,
 	},
@@ -59,87 +59,87 @@ const pillars: readonly Pillar[] = [
 ---
 
 <section
-	class="about-me relative z-20 overflow-hidden bg-canvas"
+	class="about-me mt-12 relative h-dvh overflow-hidden bg-[#E5D8CE]"
 	aria-label="About me"
 	data-about-me
 >
-	<div
-		class="relative z-10 page-shell flex flex-col items-center py-16 md:py-24 2xl:py-32"
-	>
-		<h2 class="type-label-lg text-center text-[#2e2f38]">
-			About me
-		</h2>
+	<div class="h-full  page-shell flex flex-col items-center justify-center gap-4">
+		<div class="">
+			<h2 class="type-label-lg text-center text-footer-ink">About me</h2>
 
-		<figure
-			class="mt-8 flex w-full max-w-[42rem] flex-col items-center gap-6 md:mt-10 lg:flex-row lg:items-center lg:gap-8"
-		>
-			<div
-				class="size-28 shrink-0 overflow-hidden rounded-full shadow-[0_4px_16px_rgb(0_0_0_/_0.16)] lg:size-36"
+			<figure
+				class="flex w-full  flex-col items-center gap-6 lg:flex-row lg:items-center lg:gap-8"
 			>
-				<OptimizedImage
-					src="/images/home/torn-description.png"
-					alt="Illustrated portrait of Ashima holding a cat"
-					class="size-full object-cover object-left"
-					decoding="async"
-					widths={[262, 400, 524]}
-					sizes="10.5rem"
-				/>
-			</div>
-			<blockquote class="m-0 max-w-[32rem] text-center lg:text-left">
-				<p class="type-body-lg text-pretty text-[#2e2f38]">{aboutQuote}</p>
-			</blockquote>
-		</figure>
+				<div
+					class="size-28 shrink-0 overflow-hidden rounded-full 2xl:size-36"
+				>
+					<OptimizedImage
+						src="/images/home/torn-description.png"
+						alt="Illustrated portrait of Ashima holding a cat"
+						class="size-full object-cover object-left"
+						decoding="async"
+						widths={[262, 400, 524]}
+						sizes="10.5rem"
+					/>
+				</div>
+				<blockquote class="xl:max-w-md text-center lg:text-left">
+					<p class="type-body-lg text-pretty text-footer-ink">
+						{aboutQuote}
+					</p>
+				</blockquote>
+			</figure>
+		</div>
 
-		<h2
-			class="type-label-lg mt-16 text-center text-[#2e2f38] md:mt-24"
-		>
-			What shapes my work
-		</h2>
+		<div class="">
+			<h2 class="type-label-lg text-center text-footer-ink">
+				What shapes my work
+			</h2>
 
-		<ul
-			class="mt-8 grid w-full list-none grid-cols-1 gap-x-6 gap-y-10 p-0 md:mt-10 md:grid-cols-2 lg:grid-cols-4 2xl:gap-x-8"
-		>
-			{
-				pillars.map((pillar) => (
-					<li
-						class="about-me__pillar relative mx-auto w-full max-w-[17.625rem] pt-[2.65rem]"
-						style={`transform: rotate(${pillar.rotate}deg)`}
-					>
-						<div
-							class="about-me__clip pointer-events-none absolute -top-2 left-1/2 z-20 w-16 select-none drop-shadow-[0_4px_4px_rgb(0_0_0_/_0.33)] lg:w-20"
-							style={`transform: translateX(-50%) rotate(${pillar.clipRotate}deg)`}
+			<ul
+				class="mt-8 grid w-full list-none grid-cols-1 gap-x-6 gap-y-10 p-0 md:mt-10 md:grid-cols-2 lg:grid-cols-4 2xl:gap-x-8"
+			>
+				{
+					pillars.map((pillar) => (
+						<li
+							class="about-me__pillar relative mx-auto w-full max-w-[17.625rem] pt-[2.65rem]"
+							style={`transform: rotate(${pillar.rotate}deg)`}
 						>
-							<OptimizedImage
-								src="/images/home/binder-clip.png"
-								alt=""
-								aria-hidden="true"
-								class="block h-auto w-full"
-								decoding="async"
-								widths={[96, 160, 240]}
-								sizes="5.75rem"
-							/>
-						</div>
-						<article
-							class="flex min-h-44 flex-col items-center justify-center gap-3 px-5 py-6 text-center shadow-[0_4px_4px_rgb(0_0_0_/_0.25)]"
-							style={`background: ${pillar.bg}`}
-						>
-							<h3
-								class="type-note leading-none"
-								style={`color: ${pillar.titleColor}`}
+							<div
+								class="about-me__clip pointer-events-none absolute -top-2 left-1/2 z-20 w-16 select-none drop-shadow-[0_4px_4px_rgb(0_0_0_/_0.33)] 2xl:w-20"
+								style={`transform: translateX(-50%) rotate(${pillar.clipRotate}deg)`}
 							>
-								{pillar.title}
-							</h3>
-							<p
-								class="type-body max-w-[16rem] font-display leading-snug"
-								style={`color: ${pillar.bodyColor}`}
+								<OptimizedImage
+									src="/images/home/binder-clip.png"
+									alt=""
+									aria-hidden="true"
+									class="block h-auto w-full"
+									decoding="async"
+									widths={[96, 160, 240]}
+									sizes="5.75rem"
+								/>
+							</div>
+							<article
+								class="flex min-h-44 flex-col items-center justify-center gap-3 px-5 py-6 text-center shadow-[0_4px_4px_rgb(0_0_0_/_0.25)]"
+								style={`background: ${pillar.bg}`}
 							>
-								{pillar.body}
-							</p>
-						</article>
-					</li>
-				))
-			}
-		</ul>
+								<h3
+									class="type-note leading-none"
+									style={`color: ${pillar.titleColor}`}
+								>
+									{pillar.title}
+								</h3>
+								<p
+									class="type-body max-w-[16rem] font-display leading-snug"
+									style={`color: ${pillar.bodyColor}`}
+								>
+									{pillar.body}
+								</p>
+							</article>
+						</li>
+					))
+				}
+			</ul>
+		</div>
 	</div>
 </section>
 

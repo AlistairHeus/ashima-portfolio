@@ -45,7 +45,7 @@
  */
 :root {
 	--spacing-page-top: 48px;
-	--spacing-nav-bar: 3.75rem;
+	--spacing-nav-bar: 2.75rem;
 	--spacing-page-chrome: calc(var(--spacing-page-top) + var(--spacing-nav-bar));
 }
 
@@ -97,8 +97,8 @@
 
 /*
  * Type roles — family / weight / tracking from the style guide.
- * Size: compact by default, heading bump at xl, guide @ 1920 at 2xl.
- * Skip lg so 13-inch laptops stay compact (see responsive-design skill).
+ * 2xl = guide @ 1920. xl (13-inch) = 75% of that size (24 → 18).
+ * Never drop below the mobile default. Skip lg on type.
  */
 
 @utility type-chip {
@@ -144,7 +144,7 @@
 	text-transform: uppercase;
 
 	@variant xl {
-		font-size: 1.25rem;
+		font-size: 1.125rem;
 	}
 
 	@variant 2xl {
@@ -161,7 +161,7 @@
 	text-transform: uppercase;
 
 	@variant xl {
-		font-size: 1.25rem;
+		font-size: 1.125rem;
 	}
 
 	@variant 2xl {
@@ -194,10 +194,6 @@
 	letter-spacing: 0;
 	line-height: 1.35;
 
-	@variant xl {
-		font-size: 1.25rem;
-	}
-
 	@variant 2xl {
 		font-size: 1.5rem;
 	}
@@ -224,6 +220,10 @@
 	line-height: 1.2;
 	text-transform: uppercase;
 
+	@variant xl {
+		font-size: 1.5rem;
+	}
+
 	@variant 2xl {
 		font-size: 2rem;
 		letter-spacing: 0.1em;
@@ -248,10 +248,6 @@
 	letter-spacing: 0.1em;
 	line-height: 1.25;
 
-	@variant xl {
-		font-size: 1.75rem;
-	}
-
 	@variant 2xl {
 		font-size: 2rem;
 	}
@@ -265,7 +261,7 @@
 	line-height: 1.2;
 
 	@variant xl {
-		font-size: 1.875rem;
+		font-size: 1.6875rem;
 	}
 
 	@variant 2xl {
@@ -281,7 +277,7 @@
 	line-height: 1.15;
 
 	@variant xl {
-		font-size: 2rem;
+		font-size: 1.875rem;
 	}
 
 	@variant 2xl {
@@ -311,7 +307,7 @@
 	text-transform: uppercase;
 
 	@variant xl {
-		font-size: 2.5rem;
+		font-size: 2.625rem;
 	}
 
 	@variant 2xl {
@@ -329,7 +325,7 @@
 	text-transform: uppercase;
 
 	@variant xl {
-		font-size: 2.5rem;
+		font-size: 2.625rem;
 	}
 
 	@variant 2xl {
@@ -346,7 +342,7 @@
 	text-transform: uppercase;
 
 	@variant xl {
-		font-size: 2.5rem;
+		font-size: 2.25rem;
 	}
 
 	@variant 2xl {
@@ -393,7 +389,7 @@
 	line-height: 1.15;
 
 	@variant xl {
-		font-size: 3.5rem;
+		font-size: 3.375rem;
 	}
 
 	@variant 2xl {
@@ -410,6 +406,19 @@
 
 	@variant 2xl {
 		font-size: 1.125rem;
+	}
+}
+
+@utility type-nav {
+	font-family: var(--font-display);
+	font-size: 0.875rem;
+	font-weight: 400;
+	letter-spacing: 0.12em;
+	line-height: 1.2;
+	text-transform: uppercase;
+
+	@variant 2xl {
+		font-size: 1rem;
 	}
 }
 

@@ -899,7 +899,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 	},
 	{
 		id: 'mythila',
-		category: 'Display Typeface Design',
+		category: 'Typeface Design',
 		title: 'Mythila Devanagari',
 		client: 'With Typecraft Initiative',
 		description: [

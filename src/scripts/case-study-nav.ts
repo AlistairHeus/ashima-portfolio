@@ -90,7 +90,7 @@ const paintSlot = (
 			...project.chips.map((label) => {
 				const span = document.createElement('span');
 				span.className =
-					'type-chip inline-flex items-center justify-center rounded-lg border border-outline px-4 py-1.5 text-on-surface-variant';
+					'type-chip inline-flex items-center justify-center rounded-md border border-outline px-2.5 py-1 text-on-surface-variant 2xl:rounded-lg 2xl:px-4 2xl:py-1.5';
 				span.textContent = label;
 				return span;
 			}),

@@ -46,10 +46,10 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		alt: 'IGL rebrand',
 		top: '2.4%',
 		left: '11.9%',
-		width: 'clamp(7.7rem, 15.5vw, 11.8rem)',
+		width: '11.8rem',
 		mobileTop: '4%',
 		mobileLeft: '2%',
-		mobileWidth: 'clamp(6rem, 29vw, 8.25rem)',
+		mobileWidth: '6.5rem',
 		aspectRatio: '3 / 4',
 		rotate: -9,
 		z: 1,
@@ -60,10 +60,10 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		alt: 'Mythila typeface',
 		top: '64.6%',
 		left: '85.7%',
-		width: 'clamp(8.3rem, 17.7vw, 13.5rem)',
+		width: '13.5rem',
 		mobileTop: '71%',
 		mobileLeft: '68%',
-		mobileWidth: 'clamp(6.5rem, 30vw, 8.25rem)',
+		mobileWidth: '6.5rem',
 		aspectRatio: '5 / 4',
 		rotate: 4,
 		z: 47,
@@ -74,7 +74,7 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		alt: 'IGL logo',
 		top: '15.8%',
 		left: '3.7%',
-		width: 'clamp(8.9rem, 19vw, 14.2rem)',
+		width: '14.2rem',
 		aspectRatio: '5 / 4',
 		rotate: 11,
 		z: 3,
@@ -84,7 +84,7 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		alt: 'Akshar Chitra',
 		top: '12.7%',
 		left: '85.5%',
-		width: 'clamp(7.4rem, 14.8vw, 11.6rem)',
+		width: '11.6rem',
 		aspectRatio: '5 / 6',
 		rotate: -11,
 		z: 49,
@@ -94,10 +94,10 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		alt: 'Air India brand',
 		top: '64.2%',
 		left: '5.2%',
-		width: 'clamp(8.9rem, 19vw, 14.2rem)',
+		width: '14.2rem',
 		mobileTop: '70%',
 		mobileLeft: '-2%',
-		mobileWidth: 'clamp(6.75rem, 33vw, 9rem)',
+		mobileWidth: '6.75rem',
 		aspectRatio: '5 / 4',
 		rotate: -10,
 		z: 11,
@@ -108,7 +108,7 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		alt: 'Himalayan book',
 		top: '75.2%',
 		left: '77.5%',
-		width: 'clamp(8.1rem, 17.3vw, 12.9rem)',
+		width: '12.9rem',
 		aspectRatio: '5 / 4',
 		rotate: -4,
 		z: 48,
@@ -118,7 +118,7 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		alt: 'Vivan Hospital',
 		top: '76.7%',
 		left: '14.1%',
-		width: 'clamp(7.1rem, 15.5vw, 11.8rem)',
+		width: '11.8rem',
 		aspectRatio: '5 / 4',
 		rotate: 4,
 		z: 7,
@@ -128,10 +128,10 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		alt: 'Convergence',
 		top: '40.9%',
 		left: '83.8%',
-		width: 'clamp(9.8rem, 21.1vw, 15.8rem)',
+		width: '15.8rem',
 		mobileTop: '23%',
 		mobileLeft: '68%',
-		mobileWidth: 'clamp(6.75rem, 34vw, 9.5rem)',
+		mobileWidth: '6.75rem',
 		aspectRatio: '16 / 9',
 		rotate: -5,
 		z: 42,
@@ -142,7 +142,7 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		alt: 'whatsapp image 2026 08 04 at 23 10 58',
 		top: '41.1%',
 		left: '1.7%',
-		width: 'clamp(11.6rem, 23.4vw, 17.7rem)',
+		width: '17.7rem',
 		aspectRatio: '2.2 / 1',
 		rotate: 5,
 		z: 9,
@@ -152,7 +152,7 @@ const heroPolaroids: readonly HeroPolaroid[] = [
 		alt: 'whatsapp image 2026 08 05 at 00 26 22',
 		top: '4.6%',
 		left: '76.3%',
-		width: 'clamp(7.9rem, 16vw, 12.2rem)',
+		width: '12.2rem',
 		aspectRatio: '5 / 4',
 		rotate: 9,
 		z: 50,
@@ -267,7 +267,7 @@ const folderStuff: readonly FolderStuffCard[] = [
 	  No transform on this wrapper so position:fixed scatter stays correct.
 	*/}
 	<div
-		class="pointer-events-none absolute bottom-[5%] left-0 right-0 z-[4] mx-auto w-[min(52vw,22rem)]"
+		class="pointer-events-none absolute bottom-[5%] left-0 right-0 z-[4] mx-auto w-[12.5rem] md:w-56 xl:w-[16.5rem] 2xl:w-[22rem]"
 		data-hero-folder
 		aria-hidden="true"
 	>
@@ -397,9 +397,23 @@ const folderStuff: readonly FolderStuffCard[] = [
 
 	.hero-name,
 	:global(.hero-name-line) {
-		font-size: clamp(3.5rem, 10vw, 8rem);
+		font-size: 3.5rem;
 		line-height: 1;
 		letter-spacing: 0;
+	}
+
+	@media (width >= 80rem) {
+		.hero-name,
+		:global(.hero-name-line) {
+			font-size: 6rem;
+		}
+	}
+
+	@media (width >= 96rem) {
+		.hero-name,
+		:global(.hero-name-line) {
+			font-size: 8rem;
+		}
 	}
 
 	:global(.hero-name-char) {
@@ -423,6 +437,12 @@ const folderStuff: readonly FolderStuffCard[] = [
 		.hero-polaroid {
 			top: var(--hero-polaroid-top);
 			left: var(--hero-polaroid-left);
+			width: calc(var(--hero-polaroid-width) * 0.75);
+		}
+	}
+
+	@media (width >= 96rem) {
+		.hero-polaroid {
 			width: var(--hero-polaroid-width);
 		}
 	}

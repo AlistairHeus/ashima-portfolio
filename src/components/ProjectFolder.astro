@@ -72,7 +72,7 @@ const folderClipPath =
 		href={href}
 		aria-label={href ? (linkLabel ?? imageAlt) : undefined}
 		class:list={[
-			'project-folder relative block w-full overflow-visible',
+			'project-folder relative block w-full overflow-visible @container',
 			href &&
 				'no-underline outline-offset-4 focus-visible:outline-2 focus-visible:outline-primary',
 		]}
@@ -117,7 +117,7 @@ const folderClipPath =
 			{
 				showNumber && (
 					<p
-						class="project-folder__number absolute top-[1.9%] left-[7.45%] z-[1] w-[18.2%] font-label text-[clamp(2.5rem,8vw,4.375rem)] font-bold leading-none"
+						class="project-folder__number absolute top-[1.9%] left-[7.45%] z-[1] w-[18.2%] font-label text-[length:min(4.375rem,13.5cqi)] font-bold leading-none"
 						aria-hidden="true"
 					>
 						{number}

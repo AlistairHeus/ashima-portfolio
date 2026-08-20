@@ -72,7 +72,7 @@ const linkClass =
 			</h2>
 
 			<div
-				class="site-footer__contact flex flex-col gap-8 font-display text-[clamp(1.125rem,1.2vw+0.75rem,1.5rem)]  tracking-[0.08rem] uppercase md:items-end md:text-right"
+				class="site-footer__contact flex flex-col gap-8 font-display text-lg tracking-[0.08rem] uppercase md:items-end md:text-right 2xl:text-xl"
 			>
 				<a
 					href={emailHref}
@@ -102,10 +102,21 @@ const linkClass =
 
 <style>
 	.site-footer__name {
-		/* Match hero size; tight lh for stacked caps */
-		font-size: clamp(3.5rem, 10vw, 8rem);
+		font-size: 3.5rem;
 		line-height: 1;
-		letter-spacing: -0.03em;
+		letter-spacing: 0;
+	}
+
+	@media (width >= 80rem) {
+		.site-footer__name {
+			font-size: 6rem;
+		}
+	}
+
+	@media (width >= 96rem) {
+		.site-footer__name {
+			font-size: 8rem;
+		}
 	}
 
 	.site-footer__name-line {

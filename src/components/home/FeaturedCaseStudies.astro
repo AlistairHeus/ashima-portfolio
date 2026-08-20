@@ -99,7 +99,7 @@ const trackHeightVh = Math.max(1, projects.length) * 100 + 50;
 
 		<div class="relative z-[1] mx-auto max-w-[32rem]">
 			<p class="type-label-md text-primary">Selected work</p>
-			<h2 class="type-h5 mt-2 text-balance text-ink">Featured case studies</h2>
+			<h2 class="type-h5 mt-2 text-balance uppercase text-ink">Featured case studies</h2>
 			<p class="type-body mt-4 max-w-[32rem] text-muted">
 				Research-led identity, editorial, and experience design projects.
 			</p>
@@ -145,7 +145,7 @@ const trackHeightVh = Math.max(1, projects.length) * 100 + 50;
 
 									<div class="mt-5 flex flex-wrap gap-2">
 										{project.chips.map((chip) => (
-											<Chip label={chip} class="bg-canvas/45 px-3" />
+											<Chip label={chip} class="bg-canvas/45" />
 										))}
 									</div>
 
@@ -405,6 +405,14 @@ const trackHeightVh = Math.max(1, projects.length) * 100 + 50;
 		border: 1px solid rgb(24 24 24 / 0.15);
 		border-bottom: 0;
 		border-radius: 0.75rem 0.75rem 0 0;
+	}
+
+	/*
+	  Tab type tracks folder width (cqi), capped at type-label @ 2xl (18px).
+	  Viewport tokens stay too large in the 50rem 13-inch folder.
+	*/
+	.featured__tab-label {
+		font-size: min(1.125rem, 1.6cqi);
 	}
 
 	.featured__card {
