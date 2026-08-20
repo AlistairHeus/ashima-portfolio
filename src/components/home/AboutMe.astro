@@ -1,7 +1,7 @@
 ---
 /**
  * About me + what shapes my work — panel between Hero and Featured.
- * Portrait is the circular badge cropped from torn-description.png.
+ * Portrait, torn paper, and quote are one asset.
  */
 import OptimizedImage from "../OptimizedImage.astro";
 
@@ -59,39 +59,33 @@ const pillars: readonly Pillar[] = [
 ---
 
 <section
-	class="about-me mt-12 relative h-dvh overflow-hidden bg-[#E5D8CE]"
+	class="about-me relative mt-12 min-h-dvh overflow-x-clip bg-[#E5D8CE]"
 	aria-label="About me"
 	data-about-me
 >
-	<div class="h-full  page-shell flex flex-col items-center justify-center gap-4">
-		<div class="">
-			<h2 class="type-label-lg text-center text-footer-ink">About me</h2>
+	<div
+		class="page-shell flex min-h-dvh flex-col items-center justify-center gap-8 py-16 md:py-24 md:gap-10 2xl:py-32 2xl:gap-14"
+	>
+		<div class="w-full">
+			<h2 class="type-eyebrow text-center text-footer-ink">About me</h2>
 
-			<figure
-				class="flex w-full  flex-col items-center gap-6 lg:flex-row lg:items-center lg:gap-8"
-			>
-				<div
-					class="size-28 shrink-0 overflow-hidden rounded-full 2xl:size-36"
-				>
-					<OptimizedImage
-						src="/images/home/torn-description.png"
-						alt="Illustrated portrait of Ashima holding a cat"
-						class="size-full object-cover object-left"
-						decoding="async"
-						widths={[262, 400, 524]}
-						sizes="10.5rem"
-					/>
-				</div>
-				<blockquote class="xl:max-w-md text-center lg:text-left">
-					<p class="type-body-lg text-pretty text-footer-ink">
-						{aboutQuote}
-					</p>
+			<figure class="mx-auto mt-6 w-full max-w-[55.1875rem]">
+				<OptimizedImage
+					src="/images/home/torn-page-with-badge-and-text.png"
+					alt="Illustrated portrait of Ashima holding a cat, on a torn paper strip"
+					class="h-auto w-full"
+					widths={[640, 883]}
+					sizes="(min-width: 883px) 883px, 100vw"
+					decoding="async"
+				/>
+				<blockquote class="sr-only">
+					<p>{aboutQuote}</p>
 				</blockquote>
 			</figure>
 		</div>
 
-		<div class="">
-			<h2 class="type-label-lg text-center text-footer-ink">
+		<div class="w-full">
+			<h2 class="type-eyebrow text-center text-footer-ink">
 				What shapes my work
 			</h2>
 
