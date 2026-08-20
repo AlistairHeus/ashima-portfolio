@@ -7,7 +7,8 @@
  *   - ../src/styles/space-utilities.css
  *
  * Safer than weblet: does NOT wipe Tailwind `--text-*` / `--spacing`.
- * Emits Ashima `--type-*`, `--gutter-*`, `--space-*`, `--measure-*` instead.
+ * Emits Ashima `--gutter-*`, `--space-*`, `--measure-*`.
+ * Type roles live in `src/styles/global.css` (breakpoint scale, not fluid).
  *
  * Do not hand-edit the generated CSS. Re-run after changing the scale:
  *   npm run tokens:generate
@@ -32,7 +33,6 @@ const spaceUtilitiesPath = join(
  * @typedef {{ min: number, max: number }} SizeRange
  * @typedef {{
  *   viewport: { min: number, max: number },
- *   type: Record<string, SizeRange>,
  *   gutter: Record<string, SizeRange>,
  *   measure: Record<string, string>,
  *   spacing: Record<string, SizeRange>,
@@ -107,14 +107,6 @@ for (const [step, spacingKey] of Object.entries(scale.space ?? {})) {
 	}
 }
 
-const typeLines = Object.entries(scale.type).map(([step, range]) =>
-	themeLine(
-		`type-${step}`,
-		toFluidClamp(range.min, range.max, viewport.min, viewport.max),
-		2,
-	),
-);
-
 const gutterLines = Object.entries(scale.gutter ?? {}).map(([step, range]) =>
 	themeLine(
 		`gutter-${step}`,
@@ -143,13 +135,11 @@ const tokensCss = `/*
  * Regenerate: npm run tokens:generate
  *
  * Fluid values use clamp() across ${viewport.min}px -> ${viewport.max}px viewports.
- * Does not replace Tailwind defaults — Ashima type/gutter/space only.
+ * Does not replace Tailwind defaults — Ashima gutter/space/measure only.
+ * Type roles: src/styles/global.css
  */
 
 @theme {
-  /* Semantic fluid type scale (consumed by @utility type-*). */
-${typeLines.join('\n')}
-
   /* Page-margin gutters. */
 ${gutterLines.join('\n')}
 

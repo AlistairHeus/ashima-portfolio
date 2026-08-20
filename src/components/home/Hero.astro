@@ -7,7 +7,7 @@
 import Polaroid from '../Polaroid.astro';
 import { getAsset } from '../../lib/images';
 
-/** Role eyebrow above the name — single-line, Lato Bold, all caps. */
+/** Role eyebrow above the name — Amarna Bold, all caps. */
 const roleLabel = 'VISUAL DESIGNER';
 
 const gridSrc = getAsset('/images/home/grid.webp').src;
@@ -369,7 +369,7 @@ const folderStuff: readonly FolderStuffCard[] = [
 		</h1>
 
 		<p
-			class="hero-subtitle mt-3 type-label-md whitespace-nowrap text-center text-[#242424]"
+			class="hero-subtitle mt-3 type-hero-role whitespace-nowrap text-center text-[#242424]"
 		>
 			{roleLabel}
 		</p>
@@ -399,7 +399,7 @@ const folderStuff: readonly FolderStuffCard[] = [
 	:global(.hero-name-line) {
 		font-size: clamp(3.5rem, 10vw, 8rem);
 		line-height: 1;
-		letter-spacing: -0.03em;
+		letter-spacing: 0;
 	}
 
 	:global(.hero-name-char) {

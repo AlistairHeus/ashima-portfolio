@@ -3,20 +3,6 @@
 		"min": 375,
 		"max": 1920
 	},
-	"type": {
-		"chip": { "min": 12, "max": 14 },
-		"label-md": { "min": 16, "max": 18 },
-		"body": { "min": 18, "max": 20 },
-		"body-md": { "min": 18, "max": 22 },
-		"body-lg": { "min": 20, "max": 28 },
-		"label-lg": { "min": 20, "max": 28 },
-		"h6": { "min": 24, "max": 32 },
-		"h5": { "min": 28, "max": 40 },
-		"h4": { "min": 32, "max": 48 },
-		"h3": { "min": 36, "max": 56 },
-		"h2": { "min": 40, "max": 64 },
-		"h1": { "min": 48, "max": 72 }
-	},
 	"gutter": {
 		"sm": { "min": 16, "max": 32 },
 		"md": { "min": 16, "max": 64 },

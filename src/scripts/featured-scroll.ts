@@ -3,6 +3,7 @@
  * Folders rise from below the viewport with their tab labels.
  * A tab becomes clickable only after its folder has landed — and stays clickable.
  * Covered folders switch to neutral beige once the next reaches ~2/3 of the page.
+ * The sticky stack is the `lg` chrome; below 1024px native stacked cards handle layout.
  */
 
 /** Offset below the viewport used as the enter position for stacking folders. */
@@ -20,6 +21,9 @@ const INACTIVE_THRESHOLD = 2 / 3;
  * (without a long empty scroll).
  */
 const STACK_END = 0.88;
+
+/** Sticky folder stack is the `lg` layout fork (1024px). */
+const DESKTOP_LAYOUT_QUERY = '(min-width: 1024px)';
 
 /**
  * Initialize the featured case-studies scroll stack on the page.
@@ -198,6 +202,7 @@ export const initFeaturedScroll = (): void => {
 		rafId = 0;
 		if (!needsUpdate) return;
 		needsUpdate = false;
+		if (!window.matchMedia(DESKTOP_LAYOUT_QUERY).matches) return;
 		applyProgress(getProgress());
 		updateScrollHint();
 	};
@@ -231,6 +236,7 @@ export const initFeaturedScroll = (): void => {
 
 	window.addEventListener('scroll', onScroll, { passive: true });
 	window.addEventListener('resize', onScroll, { passive: true });
+	window.matchMedia(DESKTOP_LAYOUT_QUERY).addEventListener('change', onScroll);
 
 	tabs.forEach((tab) => {
 		tab.addEventListener('click', (event) => {

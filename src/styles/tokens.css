@@ -5,24 +5,11 @@
  * Regenerate: npm run tokens:generate
  *
  * Fluid values use clamp() across 375px -> 1920px viewports.
- * Does not replace Tailwind defaults — Ashima type/gutter/space only.
+ * Does not replace Tailwind defaults — Ashima gutter/space/measure only.
+ * Type roles: src/styles/global.css
  */
 
 @theme {
-  /* Semantic fluid type scale (consumed by @utility type-*). */
-  --type-chip: clamp(0.75rem, 0.7197rem + 0.129vw, 0.875rem);
-  --type-label-md: clamp(1rem, 0.9697rem + 0.129vw, 1.125rem);
-  --type-body: clamp(1.125rem, 1.0947rem + 0.129vw, 1.25rem);
-  --type-body-md: clamp(1.125rem, 1.0643rem + 0.259vw, 1.375rem);
-  --type-body-lg: clamp(1.25rem, 1.1286rem + 0.518vw, 1.75rem);
-  --type-label-lg: clamp(1.25rem, 1.1286rem + 0.518vw, 1.75rem);
-  --type-h6: clamp(1.5rem, 1.3786rem + 0.518vw, 2rem);
-  --type-h5: clamp(1.75rem, 1.568rem + 0.777vw, 2.5rem);
-  --type-h4: clamp(2rem, 1.7573rem + 1.036vw, 3rem);
-  --type-h3: clamp(2.25rem, 1.9466rem + 1.294vw, 3.5rem);
-  --type-h2: clamp(2.5rem, 2.1359rem + 1.553vw, 4rem);
-  --type-h1: clamp(3rem, 2.6359rem + 1.553vw, 4.5rem);
-
   /* Page-margin gutters. */
   --gutter-sm: clamp(1rem, 0.7573rem + 1.036vw, 2rem);
   --gutter-md: clamp(1rem, 0.2718rem + 3.107vw, 4rem);
