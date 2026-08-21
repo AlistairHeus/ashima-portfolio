@@ -85,21 +85,16 @@ const metaClass = 'type-body text-muted';
 								resumeRoles.map((role) => (
 									<li>
 										<div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-											<div>
-												<h3 class="type-h6 text-ink">
-													{role.org}
-													{role.location ? (
-														<span class="font-normal text-muted">
-															{' '}
-															· {role.location}
-														</span>
-													) : null}
-												</h3>
+											<div class="min-w-0">
+												<h3 class="type-h6 text-ink">{role.org}</h3>
 												<p class="type-body mt-1 text-ink">
 													{role.title}
 												</p>
 											</div>
-											<p class={`${metaClass} shrink-0`}>{role.dates}</p>
+											<p class={`${metaClass} shrink-0 sm:text-right`}>
+												{role.dates}
+												{role.location ? ` · ${role.location}` : ''}
+											</p>
 										</div>
 										<div class="mt-5 space-y-5">
 											{role.groups.map((group) => (
@@ -126,27 +121,6 @@ const metaClass = 'type-body text-muted';
 								))
 							}
 						</ol>
-					</section>
-
-					<section aria-labelledby="awards-heading">
-						<h2 id="awards-heading" class={sectionTitleClass}>
-							Awards and Recognition
-						</h2>
-						<ul class="mt-8 space-y-8">
-							{
-								resumeAwards.map((award) => (
-									<li>
-										<h3 class="type-h6 text-ink">{award.title}</h3>
-										<p class="type-body mt-1 text-muted">{award.detail}</p>
-										{award.body ? (
-											<p class="type-body mt-3 max-w-[40rem] text-ink text-pretty">
-												{award.body}
-											</p>
-										) : null}
-									</li>
-								))
-							}
-						</ul>
 					</section>
 				</div>
 
@@ -217,6 +191,27 @@ const metaClass = 'type-body text-muted';
 												<li>{course}</li>
 											))}
 										</ul>
+									</li>
+								))
+							}
+						</ul>
+					</section>
+
+					<section aria-labelledby="awards-heading">
+						<h2 id="awards-heading" class={sectionTitleClass}>
+							Awards and Recognition
+						</h2>
+						<ul class="mt-5 space-y-6">
+							{
+								resumeAwards.map((award) => (
+									<li>
+										<h3 class="type-h6 text-ink">{award.title}</h3>
+										<p class="type-body mt-1 text-muted">{award.detail}</p>
+										{award.body ? (
+											<p class="type-body mt-2 text-ink text-pretty">
+												{award.body}
+											</p>
+										) : null}
 									</li>
 								))
 							}

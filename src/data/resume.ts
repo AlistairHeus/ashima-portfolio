@@ -45,8 +45,8 @@ export interface ResumeCertification {
 	readonly courses: readonly string[];
 }
 
-export const resumePdfHref = '/resume/Ashima-Kaushik-Resume.pdf';
-export const resumePdfFilename = 'Ashima-Kaushik-Resume.pdf';
+export const resumePdfFilename = 'Ashima Kaushik_Resume.pdf';
+export const resumePdfHref = `/resume/${encodeURIComponent(resumePdfFilename)}`;
 
 export const resumeContact: ResumeContact = {
 	email: 'ashimakaushik.design@gmail.com',
@@ -89,6 +89,7 @@ export const resumeRoles: readonly ResumeRole[] = [
 	},
 	{
 		org: 'Self Employed',
+		location: 'Remote',
 		title: 'Freelance Designer',
 		dates: 'Jan 2023 – Present',
 		groups: [
@@ -116,6 +117,7 @@ export const resumeRoles: readonly ResumeRole[] = [
 	},
 	{
 		org: 'The Typecraft Initiative',
+		location: 'Dehradun',
 		title: 'Graduation Project Intern',
 		dates: 'Jan 2022 – May 2022',
 		groups: [
@@ -131,6 +133,7 @@ export const resumeRoles: readonly ResumeRole[] = [
 	},
 	{
 		org: 'SEWA (Self Employed Women’s Association) NGO',
+		location: 'Remote',
 		title: 'Product Development Intern',
 		dates: 'Jul 2021 – Sep 2021',
 		groups: [
@@ -143,6 +146,7 @@ export const resumeRoles: readonly ResumeRole[] = [
 	},
 	{
 		org: 'Centre for Public Policy and Good Governance, Uttarakhand',
+		location: 'Remote',
 		title: 'Design Intern',
 		dates: 'Jun 2020 – Jul 2020',
 		groups: [
