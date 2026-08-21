@@ -17,7 +17,7 @@ export default defineConfig({
 	},
 	integrations: [
 		sitemap({
-			filter: (page) => !page.includes('/reference'),
+			filter: (page) => !page.includes('/reference') && !page.includes('/home-v2'),
 		}),
 	],
 	adapter: vercel(),

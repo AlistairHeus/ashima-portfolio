@@ -1,0 +1,30 @@
+---
+/**
+ * Experimental home layout — OSMO-inspired hero, existing site chrome.
+ */
+import Layout from '../layouts/Layout.astro';
+import HeroV2 from '../components/home/HeroV2.astro';
+import AboutMe from '../components/home/AboutMe.astro';
+import FeaturedCaseStudies from '../components/home/FeaturedCaseStudies.astro';
+import OtherProjects from '../components/home/OtherProjects.astro';
+import Clients from '../components/home/Clients.astro';
+
+const description =
+	'Ashima Kaushik — visual communication design through research, strategy, typography and storytelling.';
+---
+
+<Layout
+	title="Ashima Kaushik — Home v2"
+	description={description}
+	image="/icons/web-app-manifest-512x512.png"
+	currentPath="/home-v2"
+	robots="noindex, nofollow"
+>
+	<main>
+		<HeroV2 />
+		<AboutMe />
+		<FeaturedCaseStudies />
+		<OtherProjects />
+		<Clients />
+	</main>
+</Layout>

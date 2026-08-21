@@ -1,0 +1,295 @@
+---
+/**
+ * Experimental home hero — home name intro + rotating polaroid fan.
+ */
+import Polaroid from '../Polaroid.astro';
+import { getAsset } from '../../lib/images';
+
+const gridSrc = getAsset('/images/home/grid.webp').src;
+
+interface FanPolaroid {
+	readonly src: string;
+	readonly alt: string;
+	readonly aspectRatio: string;
+}
+
+/** Same photos as the current home hero polaroids. */
+const heroFanPolaroids: readonly FanPolaroid[] = [
+	{
+		src: '/images/work/02-igl.png',
+		alt: 'IGL rebrand',
+		aspectRatio: '3 / 4',
+	},
+	{
+		src: '/images/work/03-mythila.png',
+		alt: 'Mythila typeface',
+		aspectRatio: '5 / 4',
+	},
+	{
+		src: '/images/work/igl-logo.jpeg',
+		alt: 'IGL logo',
+		aspectRatio: '5 / 4',
+	},
+	{
+		src: '/images/work/aksharchitraletter.png',
+		alt: 'Akshar Chitra',
+		aspectRatio: '5 / 6',
+	},
+	{
+		src: '/images/work/maharaja-bg.png',
+		alt: 'Air India brand',
+		aspectRatio: '5 / 4',
+	},
+	{
+		src: '/images/case-studies/himalayan/gallery-storyteller.png',
+		alt: 'Himalayan book',
+		aspectRatio: '5 / 4',
+	},
+	{
+		src: '/images/case-studies/vivan/brochure.png',
+		alt: 'Vivan Hospital',
+		aspectRatio: '5 / 4',
+	},
+	{
+		src: '/images/case-studies/convergence/cover.png',
+		alt: 'Convergence',
+		aspectRatio: '16 / 9',
+	},
+	{
+		src: '/images/work/whatsapp-image-2026-08-04-at-23-10-58.jpg',
+		alt: 'Studio work',
+		aspectRatio: '2.2 / 1',
+	},
+	{
+		src: '/images/work/whatsapp-image-2026-08-05-at-00-26-22.jpg',
+		alt: 'Studio work',
+		aspectRatio: '5 / 4',
+	},
+];
+
+const fanItems = [...heroFanPolaroids, ...heroFanPolaroids];
+---
+
+<section
+	class="hero-v2 relative flex min-h-svh flex-col overflow-x-clip bg-canvas"
+	aria-labelledby="hero-heading"
+	data-hero
+>
+	<div
+		class="pointer-events-none absolute inset-0 opacity-40"
+		style={`background-image: url('${gridSrc}'); background-size: 80%; background-position: center; background-repeat: repeat;`}
+		aria-hidden="true"
+	>
+	</div>
+
+	<div
+		class="relative z-[1] flex flex-1 flex-col pt-[calc(var(--spacing-page-chrome)+1.25rem)]"
+	>
+		<div class="page-shell flex flex-col items-center">
+			<div
+				class="hero-title-group relative z-10 flex w-full flex-col items-center justify-center"
+			>
+				<h1
+					id="hero-heading"
+					class="hero-name cursor-default whitespace-nowrap text-center font-display uppercase text-[#242424]"
+				>
+					Ashima Kaushik
+				</h1>
+				<p
+					class="hero-subtitle type-body-xl mt-5 max-w-prose text-pretty text-center text-[#242424] md:mt-6"
+				>
+					A visual communication designer creating thoughtful visual
+					systems through{' '}
+					<strong class="font-bold">research</strong>,{' '}
+					<strong class="font-bold">strategy</strong>,{' '}
+					<strong class="font-bold">typography</strong>
+					{' '}and{' '}
+					<strong class="font-bold">storytelling</strong>.
+				</p>
+			</div>
+		</div>
+
+		<div
+			class="hero-v2-fan mt-auto w-full -translate-y-[10%]"
+			data-hero-fan
+			style={`--count: ${fanItems.length}`}
+			aria-hidden="true"
+		>
+			{
+				fanItems.map((card, index) => (
+					<div
+						class="hero-v2-card"
+						data-hero-fan-card
+						style={`--index: ${index}`}
+					>
+						<Polaroid
+							imageSrc={card.src}
+							imageAlt=""
+							variant="classic"
+							rotate={0}
+							aspectRatio="16 / 10"
+							class="!max-w-none w-full"
+							shadow={false}
+							loading={
+								index === 0 ||
+								index === 1 ||
+								index === fanItems.length - 1
+									? 'eager'
+									: 'lazy'
+							}
+							sizes="(max-width: 1023px) 220px, 400px"
+							widths={[240, 400]}
+						/>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<script is:inline>
+	(() => {
+		const hero = document.querySelector('[data-hero]');
+		if (!hero) return;
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			hero.setAttribute('data-hero-intro', 'done');
+			return;
+		}
+		hero.setAttribute('data-hero-intro', 'pending');
+	})();
+</script>
+
+<script>
+	import { initHeroIntro } from '../../scripts/hero-intro';
+	import { initHeroFan } from '../../scripts/hero-fan';
+	import {
+		buildWordRanges,
+		initMagneticType,
+	} from '../../scripts/magnetic-type';
+
+	const nameText = 'ASHIMA KAUSHIK';
+
+	const enhanceHeroName = (root: HTMLElement): void => {
+		if (root.dataset.heroNameEnhanced === 'true') return;
+
+		const lineElement = document.createElement('span');
+		lineElement.className =
+			'hero-name-line whitespace-nowrap font-display text-[#242424]';
+
+		for (const character of Array.from(nameText)) {
+			if (character === ' ') {
+				const space = document.createElement('span');
+				space.className = 'hero-name-char magnetic-type__char';
+				space.dataset.magneticChar = '';
+				space.textContent = '\u00a0';
+				lineElement.append(space);
+				continue;
+			}
+
+			const inWord = lineElement.lastElementChild?.classList.contains(
+				'magnetic-type__word',
+			);
+			const existingWord = lineElement.lastElementChild;
+			const wordElement =
+				inWord && existingWord instanceof HTMLElement
+					? existingWord
+					: document.createElement('span');
+
+			if (wordElement.parentElement !== lineElement) {
+				wordElement.className = 'magnetic-type__word';
+				wordElement.dataset.magneticWord = '';
+				lineElement.append(wordElement);
+			}
+
+			const characterElement = document.createElement('span');
+			characterElement.className = 'hero-name-char magnetic-type__char';
+			characterElement.dataset.magneticChar = '';
+			characterElement.textContent = character;
+			wordElement.append(characterElement);
+		}
+
+		root.replaceChildren(lineElement);
+		root.dataset.heroNameEnhanced = 'true';
+	};
+
+	const startMagnetic = () => {
+		const root = document.getElementById('hero-heading');
+		if (!(root instanceof HTMLElement)) return;
+		if (root.dataset.magneticInit === 'true') return;
+		root.dataset.magneticInit = 'true';
+		const magnetic = initMagneticType({
+			root,
+			wordRanges: buildWordRanges(nameText),
+		});
+		magnetic.playAutoplay({ delay: 0, duration: 1200 });
+	};
+
+	const boot = () => {
+		const nameRoot = document.getElementById('hero-heading');
+		if (nameRoot instanceof HTMLElement) {
+			enhanceHeroName(nameRoot);
+		}
+
+		initHeroFan();
+		initHeroIntro(() => {
+			startMagnetic();
+		});
+	};
+
+	void Promise.all([document.fonts?.ready ?? Promise.resolve()]).then(boot);
+</script>
+
+<style>
+	.hero-name,
+	:global(.hero-name-line) {
+		font-size: 3.5rem;
+		line-height: 1;
+		letter-spacing: 0;
+	}
+
+	@media (width >= 80rem) {
+		.hero-name,
+		:global(.hero-name-line) {
+			font-size: 6rem;
+		}
+	}
+
+	@media (width >= 96rem) {
+		.hero-name,
+		:global(.hero-name-line) {
+			font-size: 7.5rem;
+		}
+	}
+
+	:global(.hero-name-char) {
+		display: inline-block;
+	}
+
+	.hero-v2-fan {
+		--size-unit: 16;
+		--size-container-ideal: 1440;
+		position: relative;
+		height: 20em;
+		overflow: visible;
+		font-size: clamp(
+			calc(992px * var(--size-unit) / var(--size-container-ideal)),
+			calc(100vw * var(--size-unit) / var(--size-container-ideal)),
+			calc(1920px * var(--size-unit) / var(--size-container-ideal))
+		);
+	}
+
+	.hero-v2-card {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 18.125em;
+		transform-origin: 50% 100%;
+		contain: layout style;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.hero-v2-fan.is-spinning .hero-v2-card {
+		will-change: transform;
+	}
+</style>

@@ -30,6 +30,8 @@ interface Props {
 	readonly loading?: 'lazy' | 'eager';
 	readonly sizes?: string;
 	readonly widths?: number[];
+	/** Drop the matte shadow and inset well. Off for the hero fan. */
+	readonly shadow?: boolean;
 }
 
 const {
@@ -45,6 +47,7 @@ const {
 	loading = 'lazy',
 	sizes = '(max-width: 768px) 42vw, 16vw',
 	widths = [240, 400, 640],
+	shadow = true,
 } = Astro.props;
 
 const Wrapper = href ? 'a' : 'div';
@@ -57,10 +60,11 @@ const hasSlot = Astro.slots.has('default');
 		class:list={[
 			'polaroid relative block w-full bg-white',
 			`polaroid--${variant}`,
+			!shadow && 'polaroid--flat',
 			href &&
 				'no-underline outline-offset-4 focus-visible:outline-2 focus-visible:outline-primary',
 		]}
-		style={`transform: rotate(${rotate}deg); border-radius: ${radius}px;`}
+		style={`${rotate !== 0 ? `transform: rotate(${rotate}deg); ` : ''}border-radius: ${radius}px;`}
 	>
 		<div
 			class="polaroid__media relative w-full overflow-hidden"
@@ -81,11 +85,14 @@ const hasSlot = Astro.slots.has('default');
 					/>
 				) : null
 			}
-			{/* Figma inset on photo well */}
-			<div
-				class="pointer-events-none absolute inset-0 shadow-[inset_-1px_-1px_3.5px_0_rgba(0,0,0,0.25)]"
-				aria-hidden="true"
-			/>
+			{
+				shadow ? (
+					<div
+						class="pointer-events-none absolute inset-0 shadow-[inset_-1px_-1px_3.5px_0_rgba(0,0,0,0.25)]"
+						aria-hidden="true"
+					/>
+				) : null
+			}
 		</div>
 
 		{
@@ -107,6 +114,10 @@ const hasSlot = Astro.slots.has('default');
 
 	.polaroid--sticker {
 		box-shadow: 0 4px 4px rgb(0 0 0 / 0.25);
+	}
+
+	.polaroid--flat {
+		box-shadow: none;
 	}
 
 	/* Padding % is relative to width — keeps the matte proportional when scaling */

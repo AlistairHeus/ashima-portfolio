@@ -213,6 +213,18 @@
 	}
 }
 
+@utility type-body-xl {
+	font-family: var(--font-display);
+	font-size: 1.5rem;
+	font-weight: 400;
+	letter-spacing: 0;
+	line-height: 1.35;
+
+	@variant 2xl {
+		font-size: 2rem;
+	}
+}
+
 @utility type-note {
 	font-family: var(--font-display);
 	font-size: 1rem;
