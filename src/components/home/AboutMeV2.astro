@@ -13,8 +13,9 @@ const aboutCta: 'dial' | 'folder' = 'dial';
 ---
 
 <section
-	class="about-v2 relative min-h-dvh overflow-x-clip"
+	class="about-v2 relative z-2 min-h-dvh overflow-x-clip"
 	aria-labelledby="about-v2-heading"
+	data-about-v2
 >
 	<div
 		class="page-shell flex min-h-dvh flex-col items-center py-16 md:py-24 2xl:py-32"
@@ -31,7 +32,10 @@ const aboutCta: 'dial' | 'folder' = 'dial';
 		>
 			{
 				aboutCta === 'folder' ? (
-					<div class="relative z-1 w-[20rem] shrink-0 2xl:w-[28rem]">
+					<div
+						class="relative z-10 w-[20rem] shrink-0 2xl:w-[28rem]"
+						data-about-cta
+					>
 						<ProjectFolder
 							number=""
 							showNumber={false}
@@ -51,8 +55,9 @@ const aboutCta: 'dial' | 'folder' = 'dial';
 				) : (
 					<a
 						href="/work"
-						class="about-v2__dial group relative flex size-[min(72vw,16rem)] items-center justify-center rounded-full text-ink no-underline outline-offset-4 2xl:size-[20rem] focus-visible:outline-2 focus-visible:outline-primary"
+						class="about-v2__dial group relative z-10 flex size-[min(72vw,16rem)] items-center justify-center rounded-full bg-white text-ink no-underline outline-offset-4 2xl:size-[20rem] focus-visible:outline-2 focus-visible:outline-primary"
 						aria-label="View selected work"
+						data-about-cta
 					>
 						<svg
 						xmlns="http://www.w3.org/2000/svg"

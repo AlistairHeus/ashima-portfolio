@@ -56,7 +56,7 @@ const fanItems = [...heroFanPolaroids, ...heroFanPolaroids];
 ---
 
 <section
-	class="hero-v2 relative flex min-h-svh flex-col overflow-x-clip"
+	class="hero-v2 relative z-2 flex min-h-svh flex-col overflow-x-clip"
 	aria-labelledby="hero-heading"
 	data-hero
 >
@@ -87,9 +87,11 @@ const fanItems = [...heroFanPolaroids, ...heroFanPolaroids];
 			</div>
 		</div>
 
+		<div class="hero-v2-fan-slot" data-hero-fan-slot aria-hidden="true"></div>
 		<div
-			class="hero-v2-fan mt-auto w-full -translate-y-[10%]"
+			class="hero-v2-fan w-full"
 			data-hero-fan
+			data-hero-fan-unique={heroFanPolaroids.length}
 			style={`--count: ${fanItems.length}`}
 			aria-hidden="true"
 		>
@@ -239,17 +241,49 @@ const fanItems = [...heroFanPolaroids, ...heroFanPolaroids];
 		display: inline-block;
 	}
 
-	.hero-v2-fan {
+	.hero-v2-fan,
+	.hero-v2-fan-slot {
 		--size-unit: 16;
 		--size-container-ideal: 1440;
-		position: relative;
-		height: 20em;
-		overflow: visible;
 		font-size: clamp(
 			calc(992px * var(--size-unit) / var(--size-container-ideal)),
 			calc(100vw * var(--size-unit) / var(--size-container-ideal)),
 			calc(1920px * var(--size-unit) / var(--size-container-ideal))
 		);
+	}
+
+	.hero-v2-fan-slot {
+		display: none;
+		flex-shrink: 0;
+		width: 100%;
+		height: 20em;
+		margin-top: auto;
+		transform: translateY(-10%);
+		pointer-events: none;
+	}
+
+	.hero-v2-fan-slot.is-active {
+		display: block;
+	}
+
+	.hero-v2-fan {
+		position: relative;
+		height: 20em;
+		margin-top: auto;
+		overflow: visible;
+		transform: translateY(-10%);
+	}
+
+	.hero-v2-fan.is-overlay {
+		position: fixed;
+		inset: 0;
+		z-index: 1;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		transform: none;
+		overflow: hidden;
+		pointer-events: none;
 	}
 
 	.hero-v2-card {
