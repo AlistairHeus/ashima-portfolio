@@ -6,8 +6,9 @@
  * 1. Tabbed back — CSS gradient clipped to the folder SVG path
  * 2. Index number on the tab
  * 3. Front flap panel (rounded gradient rect — the pocket)
- * 4. Tilted project image
- * 5. Paperclip
+ * 4. Optional inner page (named slot `page`) — tucked, then lifts on hover
+ * 5. Tilted project image, or named slot `photo`
+ * 6. Paperclip
  *
  * Accent: when `accentColor` is set (case-study hero band), a second gradient
  * layer crossfades in on hover / focus. Clip-path only shapes the paint;
@@ -19,8 +20,9 @@ import OptimizedImage from './OptimizedImage.astro';
 
 interface Props {
 	readonly number: string;
-	readonly imageSrc: string;
-	readonly imageAlt: string;
+	/** Project photo. Omit when the `photo` slot supplies custom content. */
+	readonly imageSrc?: string;
+	readonly imageAlt?: string;
 	/** Accessible name when `href` is set (defaults to imageAlt). */
 	readonly linkLabel?: string;
 	readonly href?: string;
@@ -37,7 +39,7 @@ interface Props {
 const {
 	number,
 	imageSrc,
-	imageAlt,
+	imageAlt = '',
 	linkLabel,
 	href,
 	paperclipSrc = '/icons/paperclip.png',
@@ -45,6 +47,10 @@ const {
 	showNumber = true,
 	class: className,
 } = Astro.props;
+
+const hasPhotoSlot = Astro.slots.has('photo');
+const hasPageSlot = Astro.slots.has('page');
+const showPhoto = hasPhotoSlot || Boolean(imageSrc);
 
 const Wrapper = href ? 'a' : 'div';
 /** Unique clip id so multiple folders on one page do not collide. */
@@ -126,6 +132,24 @@ const folderClipPath =
 			}
 
 			{/*
+			  2b. Optional inner page — between the SVG back (z-0) and the
+			  front flap (z-2). Rectangular sheet in the pocket; do not clip
+			  to the folder path or the tab shoulder shears the page / clip.
+			*/}
+			{
+				hasPageSlot && (
+					<div
+						class="project-folder__page-well pointer-events-none absolute inset-0 z-[1] overflow-hidden"
+						aria-hidden="true"
+					>
+						<div class="project-folder__page">
+							<slot name="page" />
+						</div>
+					</div>
+				)
+			}
+
+			{/*
 			  3. Front flap — Figma 405:1228
 			  top 69 / 370.5 ≈ 18.6%, height 302 / 370.5 ≈ 81.5%
 			  No overflow:hidden — soft shadow must cast onto the back/tab.
@@ -140,24 +164,31 @@ const folderClipPath =
 
 			{/*
 			  4 + 5. Image + paperclip — Figma 149:566
+			  `photo` slot replaces the raster when the folder is a label / CTA.
 			*/}
-			<div
-				class="absolute top-[23.55%] left-[9.06%] z-[3] flex h-[71.65%] w-[81.9%] items-center justify-center"
-			>
-				<div
-					class="project-folder__photo relative aspect-[402/238] w-[96.3%] -rotate-4 overflow-hidden rounded-xl shadow-[0px_1px_5.5px_0px_rgba(0,0,0,0.25)] transition-transform duration-300 ease-out group-hover/folder:rotate-0 group-hover/card:rotate-0 motion-reduce:transition-none"
-				>
-					<OptimizedImage
-						src={imageSrc}
-						alt={imageAlt}
-						class="absolute inset-0 size-full object-cover"
-						loading="lazy"
-						decoding="async"
-						widths={[400, 640, 960]}
-						sizes="(min-width: 768px) 30vw, 80vw"
-					/>
-				</div>
-			</div>
+			{
+				showPhoto && (
+					<div class="absolute top-[23.55%] left-[9.06%] z-[3] flex h-[71.65%] w-[81.9%] items-center justify-center">
+						<div class="project-folder__photo relative aspect-[402/238] w-[96.3%] -rotate-4 overflow-hidden rounded-xl shadow-[0px_1px_5.5px_0px_rgba(0,0,0,0.25)] transition-transform duration-300 ease-out group-hover/folder:rotate-0 group-hover/card:rotate-0 motion-reduce:transition-none">
+							{
+								hasPhotoSlot ? (
+									<slot name="photo" />
+								) : imageSrc ? (
+									<OptimizedImage
+										src={imageSrc}
+										alt={imageAlt}
+										class="absolute inset-0 size-full object-cover"
+										loading="lazy"
+										decoding="async"
+										widths={[400, 640, 960]}
+										sizes="(min-width: 768px) 30vw, 80vw"
+									/>
+								) : null
+							}
+						</div>
+					</div>
+				)
+			}
 
 			<img
 				src={paperclipSrc}
@@ -255,11 +286,46 @@ const folderClipPath =
 		color: color-mix(in srgb, var(--pf-accent) 22%, white);
 	}
 
+	/*
+	  Inner page — tucked in the pocket, then drawn up on hover / focus.
+	  Touch (no hover) keeps a slightly more revealed rest so the sheet reads.
+	*/
+	[data-project-folder] .project-folder__page {
+		position: absolute;
+		top: 0;
+		left: 10%;
+		width: 80%;
+		height: 86%;
+		transform: translate3d(0, 8%, 0);
+		transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		[data-project-folder]:is(:hover, :focus-within) .project-folder__page {
+			transform: translate3d(0, -6%, 0);
+		}
+	}
+
+	@media (hover: none) {
+		[data-project-folder] .project-folder__page {
+			transform: translate3d(0, 4%, 0);
+		}
+
+		[data-project-folder]:focus-within .project-folder__page {
+			transform: translate3d(0, -6%, 0);
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		[data-project-folder] .project-folder__back-accent,
 		[data-project-folder] .project-folder__flap-accent,
-		[data-project-folder] .project-folder__number {
+		[data-project-folder] .project-folder__number,
+		[data-project-folder] .project-folder__page {
 			transition: none;
+		}
+
+		[data-project-folder] .project-folder__page {
+			transform: none;
 		}
 	}
 </style>

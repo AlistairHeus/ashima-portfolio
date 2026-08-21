@@ -55,7 +55,7 @@
 	}
 
 	html {
-		background: var(--color-canvas);
+		background: #fff;
 		color: var(--color-ink);
 		font-family: var(--font-body);
 		scroll-behavior: smooth;
@@ -65,6 +65,24 @@
 		margin: 0;
 		min-width: 320px;
 		min-height: 100vh;
+	}
+
+	/*
+	  Viewport-locked paper (home v2). Must live on `html` — a layer inside
+	  `.page` still scrolls with sticky / transformed sections.
+	*/
+	html.paper-dots {
+		background-color: #fff;
+		background-image: url('/images/home/dots.svg');
+		background-size: 20px 20px;
+		background-position: 0 0;
+		background-repeat: repeat;
+		background-attachment: fixed;
+	}
+
+	html.paper-dots body,
+	html.paper-dots .page {
+		background-color: transparent;
 	}
 
 	/* Shared page chrome — reserve space for fixed nav (inset + bar height) */
@@ -214,7 +232,7 @@
 }
 
 @utility type-body-xl {
-	font-family: var(--font-display);
+	font-family: var(--font-label);
 	font-size: 1.5rem;
 	font-weight: 400;
 	letter-spacing: 0;
@@ -280,7 +298,7 @@
 }
 
 @utility type-callout {
-	font-family: var(--font-display);
+	font-family: var(--font-label);
 	font-size: 1.5rem;
 	font-weight: 700;
 	letter-spacing: 0;

@@ -1,8 +1,9 @@
 ---
 /**
  * Experimental home hero — home name intro + rotating polaroid fan.
+ * Fan images already include the Polaroid matte and caption.
  */
-import Polaroid from '../Polaroid.astro';
+import OptimizedImage from '../OptimizedImage.astro';
 import { getAsset } from '../../lib/images';
 
 const gridSrc = getAsset('/images/home/grid.webp').src;
@@ -10,60 +11,44 @@ const gridSrc = getAsset('/images/home/grid.webp').src;
 interface FanPolaroid {
 	readonly src: string;
 	readonly alt: string;
-	readonly aspectRatio: string;
 }
 
-/** Same photos as the current home hero polaroids. */
 const heroFanPolaroids: readonly FanPolaroid[] = [
 	{
-		src: '/images/work/02-igl.png',
-		alt: 'IGL rebrand',
-		aspectRatio: '3 / 4',
+		src: '/images/home-polaroids/air-india.png',
+		alt: 'Reimagining the Boarding Pass',
 	},
 	{
-		src: '/images/work/03-mythila.png',
-		alt: 'Mythila typeface',
-		aspectRatio: '5 / 4',
+		src: '/images/home-polaroids/akshar-chitra.png',
+		alt: 'Hindi Typography',
 	},
 	{
-		src: '/images/work/igl-logo.jpeg',
-		alt: 'IGL logo',
-		aspectRatio: '5 / 4',
+		src: '/images/home-polaroids/convergence.png',
+		alt: 'Convergence book cover',
 	},
 	{
-		src: '/images/work/aksharchitraletter.png',
-		alt: 'Akshar Chitra',
-		aspectRatio: '5 / 6',
+		src: '/images/home-polaroids/igl-2.png',
+		alt: 'IGL social media posts',
 	},
 	{
-		src: '/images/work/maharaja-bg.png',
-		alt: 'Air India brand',
-		aspectRatio: '5 / 4',
+		src: '/images/home-polaroids/igl.png',
+		alt: 'IGL brand identity system',
 	},
 	{
-		src: '/images/case-studies/himalayan/gallery-storyteller.png',
-		alt: 'Himalayan book',
-		aspectRatio: '5 / 4',
+		src: '/images/home-polaroids/illustrations.png',
+		alt: 'Illustrations',
 	},
 	{
-		src: '/images/case-studies/vivan/brochure.png',
-		alt: 'Vivan Hospital',
-		aspectRatio: '5 / 4',
+		src: '/images/home-polaroids/mythila.png',
+		alt: 'Devanagari display typeface',
 	},
 	{
-		src: '/images/case-studies/convergence/cover.png',
-		alt: 'Convergence',
-		aspectRatio: '16 / 9',
+		src: '/images/home-polaroids/tghe.png',
+		alt: 'Editorial and publication',
 	},
 	{
-		src: '/images/work/whatsapp-image-2026-08-04-at-23-10-58.jpg',
-		alt: 'Studio work',
-		aspectRatio: '2.2 / 1',
-	},
-	{
-		src: '/images/work/whatsapp-image-2026-08-05-at-00-26-22.jpg',
-		alt: 'Studio work',
-		aspectRatio: '5 / 4',
+		src: '/images/home-polaroids/vivan.png',
+		alt: 'Vivan brand identity extension',
 	},
 ];
 
@@ -71,17 +56,10 @@ const fanItems = [...heroFanPolaroids, ...heroFanPolaroids];
 ---
 
 <section
-	class="hero-v2 relative flex min-h-svh flex-col overflow-x-clip bg-canvas"
+	class="hero-v2 relative flex min-h-svh flex-col overflow-x-clip"
 	aria-labelledby="hero-heading"
 	data-hero
 >
-	<div
-		class="pointer-events-none absolute inset-0 opacity-40"
-		style={`background-image: url('${gridSrc}'); background-size: 80%; background-position: center; background-repeat: repeat;`}
-		aria-hidden="true"
-	>
-	</div>
-
 	<div
 		class="relative z-[1] flex flex-1 flex-col pt-[calc(var(--spacing-page-chrome)+1.25rem)]"
 	>
@@ -122,14 +100,10 @@ const fanItems = [...heroFanPolaroids, ...heroFanPolaroids];
 						data-hero-fan-card
 						style={`--index: ${index}`}
 					>
-						<Polaroid
-							imageSrc={card.src}
-							imageAlt=""
-							variant="classic"
-							rotate={0}
-							aspectRatio="16 / 10"
-							class="!max-w-none w-full"
-							shadow={false}
+						<OptimizedImage
+							src={card.src}
+							alt=""
+							class="hero-v2-card__img block h-auto w-full"
 							loading={
 								index === 0 ||
 								index === 1 ||
@@ -287,6 +261,13 @@ const fanItems = [...heroFanPolaroids, ...heroFanPolaroids];
 		contain: layout style;
 		opacity: 0;
 		pointer-events: none;
+	}
+
+	.hero-v2-card :global(picture),
+	.hero-v2-card :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
 	}
 
 	.hero-v2-fan.is-spinning .hero-v2-card {

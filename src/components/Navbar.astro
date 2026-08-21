@@ -52,13 +52,13 @@ const isNavItemActive = (href: string) => {
 
 <header
 	class:list={[
-		'site-nav fixed inset-x-0 top-0 z-[100] flex justify-center px-3 pt-[var(--spacing-page-top)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform pointer-events-none',
+		'site-nav fixed inset-x-0 top-0 z-100 flex justify-center bg-transparent px-3 pt-(--spacing-page-top) transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform pointer-events-none',
 		className,
 	]}
 	data-site-nav
 >
 	<nav
-		class="site-nav__tag pointer-events-auto relative flex max-w-full items-center px-8 py-2 shadow-[1px_2px_5px_rgb(0_0_0_/_0.15)] xl:px-10 2xl:px-12"
+		class="site-nav__tag pointer-events-auto relative flex max-w-full items-center bg-white px-8 py-2 shadow-[1px_2px_5px_rgb(0_0_0/0.15)] xl:px-10 2xl:px-12"
 		aria-label="Primary"
 	>
 		<ul class="m-0 flex list-none flex-wrap items-center justify-center gap-x-6 gap-y-2 p-0 xl:gap-x-7 2xl:gap-x-8">
@@ -86,10 +86,6 @@ const isNavItemActive = (href: string) => {
 </header>
 
 <style>
-	.site-nav__tag {
-		background: var(--color-canvas, #f7f1ec);
-	}
-
 	/* Pin holes */
 	.site-nav__tag::before,
 	.site-nav__tag::after {

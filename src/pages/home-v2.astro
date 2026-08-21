@@ -1,10 +1,11 @@
 ---
 /**
  * Experimental home layout — OSMO-inspired hero, existing site chrome.
+ * Paper dots live on `html` (fixed); every section is transparent.
  */
 import Layout from '../layouts/Layout.astro';
 import HeroV2 from '../components/home/HeroV2.astro';
-import AboutMe from '../components/home/AboutMe.astro';
+import AboutMeV2 from '../components/home/AboutMeV2.astro';
 import FeaturedCaseStudies from '../components/home/FeaturedCaseStudies.astro';
 import OtherProjects from '../components/home/OtherProjects.astro';
 import Clients from '../components/home/Clients.astro';
@@ -19,12 +20,28 @@ const description =
 	image="/icons/web-app-manifest-512x512.png"
 	currentPath="/home-v2"
 	robots="noindex, nofollow"
+	htmlClass="paper-dots"
 >
-	<main>
+	<main class="home-v2-page">
 		<HeroV2 />
-		<AboutMe />
+		<AboutMeV2 />
 		<FeaturedCaseStudies />
 		<OtherProjects />
 		<Clients />
 	</main>
 </Layout>
+
+<style>
+	/* Featured keeps its own dots on the original home page. */
+	.home-v2-page :global(.featured__dots) {
+		display: none;
+	}
+
+	.home-v2-page :global(.featured),
+	.home-v2-page :global(.featured-mobile),
+	.home-v2-page :global(.featured__sticky),
+	.home-v2-page :global(.other-projects),
+	.home-v2-page :global([data-clients]) {
+		background-color: transparent;
+	}
+</style>
