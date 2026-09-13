@@ -287,6 +287,25 @@ const folderClipPath =
 	}
 
 	/*
+	  On mobile / touch screens (where hover is unavailable),
+	  always display the folder accent color layer at full opacity.
+	*/
+	@media (hover: none), (max-width: 1023px) {
+		[data-project-folder][data-has-accent='true'] .project-folder__back-accent,
+		[data-project-folder][data-has-accent='true'] .project-folder__flap-accent {
+			opacity: 1;
+		}
+
+		[data-project-folder][data-has-accent='true'] .project-folder__number {
+			color: color-mix(in srgb, var(--pf-accent, #ddc3ae) 22%, white);
+		}
+
+		[data-project-folder] .project-folder__photo {
+			transform: rotate(0deg);
+		}
+	}
+
+	/*
 	  Inner page — tucked in the pocket, then drawn up on hover / focus.
 	  Touch (no hover) keeps a slightly more revealed rest so the sheet reads.
 	*/

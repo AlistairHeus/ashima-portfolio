@@ -16,7 +16,8 @@ interface Props {
 
 const { project, align = 'start', class: className } = Astro.props;
 const isCentered = align === 'center';
-const accentColor = getCaseStudyById(project.id)?.folderColor;
+const detail = getCaseStudyById(project.id);
+const accentColor = detail?.folderColor || detail?.heroBandColor || '#ddc3ae';
 ---
 
 <article class:list={['project-card group/card flex w-full flex-col', className]}>

@@ -1,0 +1,152 @@
+---
+/**
+ * Mobile view desktop recommendation notice modal / banner.
+ * Displays on mobile/tablet viewports (< 1024px) when opening case studies.
+ */
+interface Props {
+	readonly projectTitle?: string;
+	readonly showContinueOnMobile?: boolean;
+}
+
+const { projectTitle, showContinueOnMobile = true } = Astro.props;
+---
+
+<div
+	id="desktop-notice-modal"
+	class="fixed inset-0 z-[9999] flex items-end justify-center p-4 sm:items-center sm:p-6 lg:hidden opacity-0 pointer-events-none transition-opacity duration-300 ease-out"
+	role="dialog"
+	aria-modal="true"
+	aria-labelledby="desktop-notice-title"
+	data-desktop-notice
+	data-allow-dismiss={showContinueOnMobile ? 'true' : 'false'}
+>
+	{/* Backdrop overlay */}
+	<div
+		class="fixed inset-0 bg-ink/40 backdrop-blur-xs transition-opacity duration-300"
+		data-desktop-notice-backdrop
+	></div>
+
+	{/* Card container */}
+	<div
+		class="relative w-full max-w-md overflow-hidden rounded-2xl border border-ink/15 bg-surface-warm p-6 shadow-2xl transition-transform duration-300 ease-out translate-y-6 sm:translate-y-0 sm:scale-95"
+		data-desktop-notice-card
+	>
+		{/* Top accent tab */}
+		<div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-primary-soft to-primary"></div>
+
+		<div class="flex flex-col items-center text-center">
+			{/* Desktop Monitor SVG Icon */}
+			<div class="mb-4 flex size-14 items-center justify-center rounded-2xl bg-canvas p-3 text-primary shadow-inner">
+				<svg class="size-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0h-18" />
+				</svg>
+			</div>
+
+			<p class="type-eyebrow-sm text-primary mb-1">Recommended Experience</p>
+
+			<h3 id="desktop-notice-title" class="type-h6 uppercase text-ink">
+				Please View on Desktop
+			</h3>
+
+			{/* Action buttons */}
+			<div class="mt-6 flex w-full flex-col gap-2.5 sm:flex-row">
+				<button
+					type="button"
+					class="inline-flex min-h-11 flex-1 items-center justify-center rounded-xl bg-ink px-4 type-label-md text-white shadow-md hover:bg-ink-strong transition-all focus-visible:outline-2 focus-visible:outline-primary active:scale-[0.98]"
+					data-desktop-notice-copy
+				>
+					<svg class="mr-2 size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+					</svg>
+					<span data-copy-text>Copy Link for Desktop</span>
+				</button>
+
+				{showContinueOnMobile && (
+					<button
+						type="button"
+						class="inline-flex min-h-11 items-center justify-center rounded-xl border border-ink/20 bg-canvas px-4 type-label-md text-ink hover:bg-white transition-all focus-visible:outline-2 focus-visible:outline-primary"
+						data-desktop-notice-close
+					>
+						Continue on Mobile
+					</button>
+				)}
+			</div>
+
+			<a href="/" class="mt-5 inline-block type-label-sm text-ink/60 hover:text-primary transition-colors underline underline-offset-4">
+				Back to Home
+			</a>
+		</div>
+	</div>
+</div>
+
+<script>
+	const STORAGE_KEY = 'ashima_dismissed_desktop_notice';
+
+	function initDesktopNotice() {
+		const modal = document.querySelector('[data-desktop-notice]');
+		if (!modal) return;
+
+		const card = modal.querySelector('[data-desktop-notice-card]');
+		const backdrop = modal.querySelector('[data-desktop-notice-backdrop]');
+		const closeButtons = modal.querySelectorAll('[data-desktop-notice-close]');
+		const copyButton = modal.querySelector('[data-desktop-notice-copy]');
+		const copyText = modal.querySelector('[data-copy-text]');
+
+		const allowDismiss = modal.getAttribute('data-allow-dismiss') === 'true';
+		const isDismissed = sessionStorage.getItem(STORAGE_KEY) === 'true';
+
+		const isMobileView = () => window.innerWidth < 1024;
+
+		const showModal = () => {
+			if ((allowDismiss && isDismissed) || !isMobileView()) return;
+			modal.classList.remove('opacity-0', 'pointer-events-none');
+			modal.classList.add('opacity-100', 'pointer-events-auto');
+			if (card) {
+				card.classList.remove('translate-y-6', 'sm:scale-95');
+				card.classList.add('translate-y-0', 'sm:scale-100');
+			}
+		};
+
+		const hideModal = () => {
+			if (!allowDismiss) return;
+			modal.classList.remove('opacity-100', 'pointer-events-auto');
+			modal.classList.add('opacity-0', 'pointer-events-none');
+			sessionStorage.setItem(STORAGE_KEY, 'true');
+		};
+
+		setTimeout(showModal, 400);
+
+		closeButtons.forEach((btn) => {
+			btn.addEventListener('click', hideModal);
+		});
+
+		if (backdrop && allowDismiss) {
+			backdrop.addEventListener('click', hideModal);
+		}
+
+		if (copyButton) {
+			copyButton.addEventListener('click', async () => {
+				try {
+					await navigator.clipboard.writeText(window.location.href);
+					if (copyText) {
+						const originalText = copyText.textContent;
+						copyText.textContent = 'Link Copied!';
+						copyButton.classList.add('bg-green-700');
+						setTimeout(() => {
+							copyText.textContent = originalText;
+							copyButton.classList.remove('bg-green-700');
+						}, 2000);
+					}
+				} catch (e) {
+					console.error('Clipboard error:', e);
+				}
+			});
+		}
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initDesktopNotice);
+	} else {
+		initDesktopNotice();
+	}
+</script>

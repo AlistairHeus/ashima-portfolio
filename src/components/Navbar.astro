@@ -58,10 +58,10 @@ const isNavItemActive = (href: string) => {
 	data-site-nav
 >
 	<nav
-		class="site-nav__tag pointer-events-auto relative flex max-w-full items-center bg-white px-8 py-2 shadow-[1px_2px_5px_rgb(0_0_0/0.15)] xl:px-10 2xl:px-12"
+		class="site-nav__tag pointer-events-auto relative flex max-w-full items-center bg-white px-5 py-2 shadow-[1px_2px_5px_rgb(0_0_0/0.15)] sm:px-8 xl:px-10 2xl:px-12"
 		aria-label="Primary"
 	>
-		<ul class="m-0 flex list-none flex-wrap items-center justify-center gap-x-6 gap-y-2 p-0 xl:gap-x-7 2xl:gap-x-8">
+		<ul class="m-0 flex list-none flex-nowrap items-center justify-center gap-x-2.5 sm:gap-x-4 md:gap-x-6 p-0 xl:gap-x-7 2xl:gap-x-8">
 			{
 				items.map((item) => {
 					const isActive = isNavItemActive(item.href);
@@ -103,16 +103,32 @@ const isNavItemActive = (href: string) => {
 	}
 
 	.site-nav__tag::before {
-		left: 0.75rem;
+		left: 0.6rem;
 	}
 
 	.site-nav__tag::after {
-		right: 0.75rem;
+		right: 0.6rem;
+	}
+
+	@media (min-width: 640px) {
+		.site-nav__tag::before {
+			left: 0.75rem;
+		}
+
+		.site-nav__tag::after {
+			right: 0.75rem;
+		}
 	}
 
 	.site-nav__link {
 		display: inline-block;
-		padding: 0.125rem 0.4rem;
+		padding: 0.125rem 0.25rem;
+	}
+
+	@media (min-width: 640px) {
+		.site-nav__link {
+			padding: 0.125rem 0.4rem;
+		}
 	}
 
 	.site-nav__link--idle {

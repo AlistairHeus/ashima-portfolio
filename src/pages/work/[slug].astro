@@ -15,7 +15,9 @@ import AirIndiaCaseStudyBody from '../../components/case-study/AirIndiaCaseStudy
 import WitchCaseStudyBody from '../../components/case-study/WitchCaseStudyBody.astro';
 import ReconnectCaseStudyBody from '../../components/case-study/ReconnectCaseStudyBody.astro';
 import MaahiCaseStudyBody from '../../components/case-study/MaahiCaseStudyBody.astro';
+import DesktopNotice from '../../components/case-study/DesktopNotice.astro';
 import CaseStudyNav from '../../components/case-study/CaseStudyNav.astro';
+import { caseStudies } from '../../data/work';
 import {
 	publishedCaseStudies,
 	getCaseStudyNavProjects,
@@ -37,6 +39,7 @@ if (!study) {
 	throw new Error(`Unknown case study slug: ${slug}`);
 }
 
+const isFeatured = caseStudies.some((project) => project.id === study.id);
 const catalogueProject = allWorkProjects.find((project) => project.id === study.id);
 const navProjects = getCaseStudyNavProjects(study.id);
 const adjacent = getAdjacentCaseStudies(study.id);
@@ -71,6 +74,7 @@ const jsonLd = {
 	currentPath="/work"
 >
 	<main class="bg-canvas">
+		<DesktopNotice projectTitle={study.title} showContinueOnMobile={!isFeatured} />
 		<CaseStudyLanding
 			study={study}
 			number={displayNumber}

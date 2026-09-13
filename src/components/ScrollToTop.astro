@@ -7,7 +7,7 @@
 
 <button
 	type="button"
-	class="scroll-top fixed right-4 bottom-4 z-[90] flex size-[5.5rem] items-center justify-center text-[#4c4c4c] opacity-0 transition-[opacity,transform] duration-300 ease-out pointer-events-none md:right-6 md:bottom-6"
+	class="scroll-top fixed right-4 bottom-4 z-[90] flex size-[2.75rem] md:size-[5.5rem] items-center justify-center text-[#4c4c4c] opacity-0 transition-[opacity,transform] duration-300 ease-out pointer-events-none md:right-6 md:bottom-6"
 	data-scroll-top
 	aria-label="Scroll to top"
 	hidden
@@ -39,11 +39,18 @@
 		position: relative;
 		z-index: 1;
 		display: block;
-		width: 3.25rem;
-		height: 3.5rem;
+		width: 1.625rem;
+		height: 1.75rem;
 		-webkit-mask-image: url('/icons/arrow-right.svg');
 		mask-image: url('/icons/arrow-right.svg');
 		transform: rotate(-90deg);
+	}
+
+	@media (min-width: 768px) {
+		.scroll-top__arrow {
+			width: 3.25rem;
+			height: 3.5rem;
+		}
 	}
 
 	.scroll-top[data-visible='true'] {
