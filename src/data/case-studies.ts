@@ -860,7 +860,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		title: 'The Great Himalayan Exploration',
 		client: 'For Royal Enfield',
 		description: [
-			'A publication by Royal Enfield documenting journeys across the Himalayas, capturing landscapes, people, and stories from the road—concept and design by Ishan Khosla.',
+			'A publication by Royal Enfield documenting journeys across the Himalayas, capturing landscapes, people, and stories from the road—<strong>concept and design by Ishan Khosla</strong>.',
 			'I worked on layout refinements like adjusting compositions, placing imagery, adding captions and editorial updates across 250 pages.',
 		],
 		skills: ['Editorial Design', 'Layout & Compositions'],
@@ -1361,7 +1361,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		title: 'Convergence',
 		client: 'For Institut Français en Inde',
 		description: [
-			'A publication commissioned by Institut Français en Inde documenting 150 years of shared photographic history between France and India through rare archival works—concept and design by Ishan Khosla.',
+			'A publication commissioned by Institut Français en Inde documenting 150 years of shared photographic history between France and India through rare archival works—<strong>concept and design by Ishan Khosla</strong>.',
 			'I worked on layout refinements like maintaining consistency across compositions, text and colour, adding captions and editorial updates across 175 pages.',
 		],
 		skills: ['Editorial Design', 'Layout & Compositions'],
@@ -2049,7 +2049,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 		client: 'For Harper Collins',
 		description: [
 			'Way of the Witch by Ipsita Chakraborty explores Wicca as a belief system and way of life, delving into its rituals, symbolism and mythology.',
-			'Commissioned by HarperCollins India, Ishan Khosla Design Studio developed the book cover, with my contribution spanning concept development and visual design.',
+			'Commissioned by HarperCollins India, Ishan Khosla Design Studio developed the book cover, with my contribution spanning concept development, visual design and illustration.',
 		],
 		skills: ['Cover Design', 'Illustration'],
 		tools: [
@@ -2082,7 +2082,7 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 				src: '/images/case-studies/way-of-the-witch/moodboard.png',
 				alt: 'Research moodboard with occult symbols, leather bindings, cauldron, moon phases, and colour palette',
 			},
-			iterationsTitle: 'Proposed Iterations',
+			iterationsTitle: 'Proposed iterations by the team',
 			iterations: [
 				{
 					src: '/images/case-studies/way-of-the-witch/iteration-1.png',
@@ -2101,20 +2101,12 @@ export const caseStudyDetails: readonly CaseStudy[] = [
 					alt: 'Black cover iteration with triple moon',
 				},
 				{
-					src: '/images/case-studies/way-of-the-witch/iteration-5.png',
-					alt: 'Deep red cover iteration variant',
-				},
-				{
 					src: '/images/case-studies/way-of-the-witch/iteration-6.png',
 					alt: 'Forest green cover iteration variant',
 				},
 				{
 					src: '/images/case-studies/way-of-the-witch/iteration-7.png',
 					alt: 'Burgundy cover iteration variant',
-				},
-				{
-					src: '/images/case-studies/way-of-the-witch/iteration-8.png',
-					alt: 'Charcoal cover iteration variant',
 				},
 			],
 			selectedTitle: 'Selected Design',

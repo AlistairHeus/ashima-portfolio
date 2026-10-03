@@ -50,16 +50,16 @@ export const caseStudies: readonly WorkProject[] = [
 		],
 		href: '/work/mythila',
 	},
-	{
-		id: 'akshar-chitra',
-		number: '04',
-		description:
-			'Redefining the Hindi Primer through integrated letterforms and illustrations, making early literacy more intuitive & culturally rooted.',
-		imageSrc: '/images/work/04-akshar-chitra.png',
-		imageAlt: 'Akshar Chitra Hindi primer design',
-		chips: ['Research', 'Educational Design', 'Typography', 'Illustration'],
-		href: '/work/akshar-chitra',
-	},
+	// {
+	// 	id: 'akshar-chitra',
+	// 	number: '04',
+	// 	description:
+	// 		'Redefining the Hindi Primer through integrated letterforms and illustrations, making early literacy more intuitive & culturally rooted.',
+	// 	imageSrc: '/images/work/04-akshar-chitra.png',
+	// 	imageAlt: 'Akshar Chitra Hindi primer design',
+	// 	chips: ['Research', 'Educational Design', 'Typography', 'Illustration'],
+	// 	href: '/work/akshar-chitra',
+	// },
 ] as const;
 
 /** Other projects — second grid (05–09). */
@@ -69,8 +69,8 @@ export const otherWorkProjects: readonly WorkProject[] = [
 		number: '05',
 		description:
 			'A publication documenting 150 years of shared photographic history between France and India through rare archival works.',
-		imageSrc: '/images/case-studies/convergence/convergence_cover.gif',
-		imageAlt: 'Convergence book cover with photographic letterforms',
+		imageSrc: '/images/case-studies/convergence/spread-3.png',
+		imageAlt: 'Convergence book feature spread',
 		chips: ['Editorial Design', 'Layout & Composition', 'Book Design'],
 		href: '/work/convergence',
 	},
